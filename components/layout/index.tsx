@@ -4,6 +4,8 @@ import { NavbarTop } from "./navbar-top";
 import { ChevronDownIcon, Search } from "lucide-react";
 import { Suspense } from "react";
 import LanguageButton from "../language-button/language-button";
+import BookingNavbarTop from "./booking-navbar-top";
+import BookingNavbarTopContent from "../booking-navbar-top-content/booking-navbar-top-content";
 
 const DefaultLayout = ({
   children,
@@ -14,6 +16,9 @@ const DefaultLayout = ({
       <NavbarTop>
         <LanguageButton locale={locale} />
       </NavbarTop>
+      <BookingNavbarTop>
+        <BookingNavbarTopContent />
+      </BookingNavbarTop>
       {children}
     </>
   );

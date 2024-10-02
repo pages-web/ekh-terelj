@@ -19,10 +19,8 @@ import {
   reserveDateAtom,
   reserveGuestsAdultCountAtom,
   reserveGuestsChildrenCountAtom,
-  reserveGuestsPetAtom,
   reserveGuestsRoomCountAtom,
 } from "@/store/reserve";
-import { useParams } from "next/navigation";
 
 export const ChildrenWithTitle = ({
   children,
@@ -169,11 +167,11 @@ const ReserveFromHome = () => {
                 )}
               >
                 <Users className="mr-2 h-4 w-4" />
-                {adults > 0 || children > 0 ? (
-                  adults + children
-                ) : (
-                  <span>Add room</span>
-                )}
+                {!!adults && adults + `${adults > 1 ? " Adults" : " Adult"}`}
+                {!!adults && !!children && ", "}
+                {!!children &&
+                  children + `${children > 1 ? " Children" : " Child"}`}
+                {!children && !adults && "Add guests"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5 " align="start">
@@ -182,7 +180,7 @@ const ReserveFromHome = () => {
           </Popover>
         </ChildrenWithTitle>
 
-        <ReserveButton />
+        <ReserveButton arrow />
       </div>
     </div>
   );

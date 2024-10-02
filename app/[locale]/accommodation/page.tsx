@@ -1,8 +1,19 @@
+import CategoryTabs from "@/components/category-tabs/category-tabs";
+import Heading from "@/components/heading/heading";
+import AccommodationLayout from "./accommodation-layout";
+import ProductCard from "@/components/product-card/product-card";
+
 const Accommodation = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      hello world!
-    </div>
+    <AccommodationLayout>
+      <div className="grid grid-cols-4 gap-6">
+        {Array(5)
+          .fill(1)
+          .map((_, index) => {
+            return <ProductCard key={index} />;
+          })}
+      </div>
+    </AccommodationLayout>
   );
 };
 export default Accommodation;

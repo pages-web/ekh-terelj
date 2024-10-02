@@ -14,7 +14,7 @@ export async function NavbarTop({
   return (
     <header
       className={
-        "z-50 md:fixed py-3 md:shadow-md bg-background text-white w-full"
+        "z-50 sticky top-0 py-3 md:shadow-md bg-background text-white w-full border-b"
       }
       {...rest}
     >
