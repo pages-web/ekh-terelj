@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl";
 import Image from "@/components/ui/image";
 import ReserveFromHome from "@/components/reserve-from-home/reserve-from-home";
+import Footer from "@/components/footer/footer";
+import HotelDining from "@/components/dining/dining";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
@@ -21,6 +23,7 @@ export default function HomePage() {
           className="w-full brightness-[.8]"
         />
       </div>
+      {/* <Footer/> */}
     </div>
   );
 }
