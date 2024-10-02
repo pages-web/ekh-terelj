@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Separator } from "../ui/separator";
 import Image from "../ui/image";
 import { Suspense } from "react";
@@ -13,7 +13,9 @@ export async function NavbarTop({
   //   const { logo } = config?.uiOptions || {};
   return (
     <header
-      className={"z-50 md:fixed py-3 md:shadow-md bg-background text-white w-full"}
+      className={
+        "z-50 md:fixed py-3 md:shadow-md bg-background text-white w-full"
+      }
       {...rest}
     >
       <div className="flex gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">

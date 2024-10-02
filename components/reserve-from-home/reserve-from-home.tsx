@@ -22,6 +22,7 @@ import {
   reserveGuestsPetAtom,
   reserveGuestsRoomCountAtom,
 } from "@/store/reserve";
+import { useParams } from "next/navigation";
 
 export const ChildrenWithTitle = ({
   children,
@@ -37,17 +38,18 @@ export const ChildrenWithTitle = ({
 
 const ReserveFromHome = () => {
   const [date, setDate] = useAtom(reserveDateAtom);
-  const [room, setRoom] = useAtom(reserveGuestsRoomCountAtom);
-  const [adults, setAdults] = useAtom(reserveGuestsAdultCountAtom);
-  const [children, setChildren] = useAtom(reserveGuestsChildrenCountAtom);
-  const [pet, setPet] = useAtom(reserveGuestsPetAtom);
+  const [room] = useAtom(reserveGuestsRoomCountAtom);
+  const [adults] = useAtom(reserveGuestsAdultCountAtom);
+  const [children] = useAtom(reserveGuestsChildrenCountAtom);
   const [active, setActive] = useState(0);
+
   const filters = [
     { name: "Hotels", id: 0 },
     { name: "Villas", id: 1 },
     { name: "Apartments", id: 2 },
     { name: "Resort", id: 3 },
   ];
+
   return (
     <div className="flex flex-col p-6 gap-8 rounded-[12px] bg-white">
       <div className="flex gap-6 items-center">
@@ -179,6 +181,7 @@ const ReserveFromHome = () => {
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
+
         <ReserveButton />
       </div>
     </div>
