@@ -9,21 +9,26 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const images = [
   "/images/image 8.png",
+  "/images/image1.png",
   "/images/image 8.png",
-  "/images/image 8.png",
-  "/images/image 8.png",
+  "/images/image1.png",
 ]
 
 export default function HotelDining() {
-  const [currentImage, setCurrentImage] = React.useState(0)
+  const [currentImage, setCurrentImage] = React.useState(0);
+  const [activeButton, setActiveButton] = React.useState("Restaurant");
 
   const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % images.length)
-  }
+    setCurrentImage((prev) => (prev + 1) % images.length);
+  };
 
   const prevImage = () => {
-    setCurrentImage((prev) => (prev - 1 + images.length) % images.length)
-  }
+    setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleButtonClick = (buttonName: string) => {
+    setActiveButton(buttonName);
+  };
 
   return (
     <ScrollArea className="h-[100vh] w-full">
@@ -32,19 +37,25 @@ export default function HotelDining() {
         <p className="text-gray-600 mb-8">
           Aman Tokyo is home to one of the widest selections of dining venues found in any of the city's hotels.
         </p>
-        <div className="flex space-x-2 mb-8">
-          <Button variant="secondary" className="bg-black text-white hover:bg-gray-800">
-            Restaurant
-          </Button>
-          <Button variant="outline">Bar</Button>
-          <Button variant="outline">Lounge</Button>
-          <Button variant="outline">Private dining</Button>
+        <div className="lg:flex lg:justify-start grid grid-cols-2 justify-center items-center gap-2 space-x-2 mb-8">
+          {["Restaurant", "Bar", "Lounge", "Private dining"].map((name) => (
+            <Button
+              key={name}
+              variant="outline"
+              className={`${
+                activeButton === name ? "bg-black text-white" : "bg-white text-black"
+              } hover:bg-gray-800`}
+              onClick={() => handleButtonClick(name)}
+            >
+              {name}
+            </Button>
+          ))}
         </div>
         <Card className="mb-8">
           <CardContent className="p-0 relative">
-            <div className="relative  h-[600px] w-full">
+            <div className="relative h-[600px] w-full">
               <Image
-                className="rounded-3xl"
+                className="rounded-3xl bg-auto"
                 src={images[currentImage]}
                 alt={`Dining area ${currentImage + 1}`}
                 layout="fill"
@@ -102,5 +113,5 @@ export default function HotelDining() {
         </div>
       </div>
     </ScrollArea>
-  )
+  );
 }
