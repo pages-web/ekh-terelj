@@ -12,7 +12,7 @@ import { addDays, format } from "date-fns";
 import { Bed, CalendarIcon, MapPin, Users } from "lucide-react";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
-import ReserveButton from "../reserve-button/reserve-button";
+import ReserveButton from "../../containers/reserve/reserve-button";
 import { useAtom } from "jotai";
 import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
 import CountForm from "@/containers/reserve/count-form";

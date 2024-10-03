@@ -9,7 +9,7 @@ import { Calendar } from "../ui/calendar";
 import { useAtom } from "jotai";
 import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
 import BackButton from "../back-button/back-button";
-import ReserveButton from "../reserve-button/reserve-button";
+import ReserveButton from "../../containers/reserve/reserve-button";
 import CountForm from "@/containers/reserve/count-form";
 
 const BookingNavbarTopContent = () => {
@@ -111,7 +111,7 @@ const BookingNavbarTopContent = () => {
         <span className="text-textlg text-[#33977D] font-bold">
           750.000₮/Night
         </span>
-        <ReserveButton />
+        <ReserveButton path="/checkout" />
       </div>
     </div>
   );
