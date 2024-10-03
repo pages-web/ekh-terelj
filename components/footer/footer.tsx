@@ -39,7 +39,7 @@ export default function Footer() {
               <form className="mt-4">
                 <div className="flex max-w-md flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
                   <Input className="flex-grow" placeholder="Enter your email" type="email" />
-                  <Button type="submit">Subscribe</Button>
+                  <Button className="bg-blue-600" type="submit">Subscribe</Button>
                 </div>
               </form>
               <div className="mt-4 flex space-x-4">

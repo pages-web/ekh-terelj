@@ -5,6 +5,12 @@ import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import Footer from "@/components/footer/footer";
 import HotelDining from "@/components/dining/dining";
+import Offer from "@/components/offers/offers";
+import Contact from "@/components/contact/contact";
+import CheckOut from "@/components/check-out/checkout";
+import ContactComponent from "@/components/contact/contact";
+import Gallery from "@/components/gallery/gallery";
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,11 +28,15 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider messages={messages}>
+        {/* <NextIntlClientProvider messages={messages}>
           <DefaultLayout locale={locale}>{children}</DefaultLayout>
-        </NextIntlClientProvider>
+        </NextIntlClientProvider> */}
         <div>
-          <HotelDining/>
+          <Gallery/>
+          {/* <HotelDining/>
+          <Offer/>
+          <ContactComponent/>
+         <CheckOut/> */}
         </div>
         <footer>
         <Footer/>
