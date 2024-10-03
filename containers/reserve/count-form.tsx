@@ -1,19 +1,13 @@
 "use client";
 import { PropsWithChildren } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
 import { useAtom } from "jotai";
-import {
-  reserveGuestsAdultCountAtom,
-  reserveGuestsChildrenCountAtom,
-  reserveGuestsPetAtom,
-  reserveGuestsRoomCountAtom,
-} from "@/store/reserve";
-import CountField from "../count-field/count-field";
-import { PopoverClose } from "../ui/popover";
+import { reserveCountAtom } from "@/store/reserve";
+import CountField from "@/components/count-field/count-field";
+import { PopoverClose } from "@/components/ui/popover";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
 import {
   Form,
   FormControl,
@@ -23,9 +17,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Checkbox } from "../ui/checkbox";
-import { Input } from "../ui/input";
-
+import { Checkbox } from "@/components/ui/checkbox";
 const FormSchema = z.object({
   pet: z.boolean().default(false),
   room: z.number().min(0),
@@ -33,28 +25,22 @@ const FormSchema = z.object({
   children: z.number().min(0),
 });
 
-const ReserveRoomGuestsFields = () => {
-  const [room, setRoom] = useAtom(reserveGuestsRoomCountAtom);
-  const [adults, setAdults] = useAtom(reserveGuestsAdultCountAtom);
-  const [children, setChildren] = useAtom(reserveGuestsChildrenCountAtom);
-  const [pet, setPet] = useAtom(reserveGuestsPetAtom);
+const CountForm = () => {
+  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      pet: pet,
-      room: room,
-      adults: adults,
-      children: children,
+      pet: reserveCount?.pet || false,
+      room: reserveCount?.room || 0,
+      adults: reserveCount?.adults || 0,
+      children: reserveCount?.children || 0,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setRoom(data.room);
-    setAdults(data.adults);
-    setChildren(data.children);
-    setPet(data.pet);
-    console.log(data);
+    setReserveCount(data);
+    console.log(reserveCount);
   }
 
   return (
@@ -63,13 +49,6 @@ const ReserveRoomGuestsFields = () => {
         <div className="flex flex-col gap-6 ">
           <div className="flex flex-col gap-3">
             <h2 className="text-textxl">Guests</h2>
-            {/* <CountField title="Room" count={room} setCount={setRoom} />
-            <CountField title="Adults" count={adults} setCount={setAdults} />
-            <CountField
-              title="Children"
-              count={children}
-              setCount={setChildren}
-            /> */}
             <FormField
               control={form.control}
               name="room"
@@ -136,4 +115,4 @@ const ReserveRoomGuestsFields = () => {
     </Form>
   );
 };
-export default ReserveRoomGuestsFields;
+export default CountForm;

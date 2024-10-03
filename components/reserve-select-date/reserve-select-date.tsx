@@ -13,14 +13,10 @@ import { Bed, CalendarIcon, MapPin, Users } from "lucide-react";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
 import ReserveButton from "../reserve-button/reserve-button";
-import ReserveRoomGuestsFields from "../reserve-room-guests-fields/reserve-room-guests-fields";
 import { useAtom } from "jotai";
-import {
-  reserveDateAtom,
-  reserveGuestsAdultCountAtom,
-  reserveGuestsChildrenCountAtom,
-  reserveGuestsRoomCountAtom,
-} from "@/store/reserve";
+import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
+import CountForm from "@/containers/reserve/count-form";
+import DateForm from "@/containers/reserve/date-form";
 
 export const ChildrenWithTitle = ({
   children,
@@ -34,12 +30,11 @@ export const ChildrenWithTitle = ({
   );
 };
 
-const ReserveFromHome = () => {
-  const [date, setDate] = useAtom(reserveDateAtom);
-  const [room] = useAtom(reserveGuestsRoomCountAtom);
-  const [adults] = useAtom(reserveGuestsAdultCountAtom);
-  const [children] = useAtom(reserveGuestsChildrenCountAtom);
+const ReserveSelectDate = () => {
+  const [date] = useAtom(reserveDateAtom);
+  const [reserveCount] = useAtom(reserveCountAtom);
   const [active, setActive] = useState(0);
+  const { adults, children, room } = reserveCount || "";
 
   const filters = [
     { name: "Hotels", id: 0 },
@@ -57,7 +52,9 @@ const ReserveFromHome = () => {
             return (
               <Button
                 variant={filter.id === active ? "default" : "outline"}
-                onClick={() => setActive(filter.id)}
+                onClick={() => {
+                  setActive(filter.id);
+                }}
               >
                 {filter.name}
               </Button>
@@ -77,23 +74,16 @@ const ReserveFromHome = () => {
                   !date && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
+                <CalendarIcon className="mr-2 h-5 w-5" />
                 {date?.from ? (
-                  format(date.from, "LLL dd, y")
+                  format(date.from, "PPP")
                 ) : (
                   <span>Pick a date</span>
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-              />
+            <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
+              <DateForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -109,23 +99,12 @@ const ReserveFromHome = () => {
                   !date && "text-muted-foreground"
                 )}
               >
-                <MapPin className="mr-2 h-4 w-4" />
-                {date?.to ? (
-                  format(date.to, "LLL dd, y")
-                ) : (
-                  <span>Pick a date</span>
-                )}
+                <MapPin className="mr-2 h-5 w-5" />
+                {date?.to ? format(date.to, "PPP") : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.to}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-              />
+            <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
+              <DateForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -150,7 +129,7 @@ const ReserveFromHome = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5" align="start">
-              <ReserveRoomGuestsFields />
+              <CountForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -175,7 +154,7 @@ const ReserveFromHome = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5 " align="start">
-              <ReserveRoomGuestsFields />
+              <CountForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -185,4 +164,4 @@ const ReserveFromHome = () => {
     </div>
   );
 };
-export default ReserveFromHome;
+export default ReserveSelectDate;

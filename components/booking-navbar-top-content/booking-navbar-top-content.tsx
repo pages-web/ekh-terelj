@@ -7,21 +7,15 @@ import { Bed, CalendarIcon, Users } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { useAtom } from "jotai";
-import {
-  reserveDateAtom,
-  reserveGuestsAdultCountAtom,
-  reserveGuestsChildrenCountAtom,
-  reserveGuestsRoomCountAtom,
-} from "@/store/reserve";
-import ReserveRoomGuestsFields from "../reserve-room-guests-fields/reserve-room-guests-fields";
+import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
 import BackButton from "../back-button/back-button";
 import ReserveButton from "../reserve-button/reserve-button";
+import CountForm from "@/containers/reserve/count-form";
 
 const BookingNavbarTopContent = () => {
   const [date, setDate] = useAtom(reserveDateAtom);
-  const [room] = useAtom(reserveGuestsRoomCountAtom);
-  const [adults] = useAtom(reserveGuestsAdultCountAtom);
-  const [children] = useAtom(reserveGuestsChildrenCountAtom);
+  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
+  const { adults, children, room } = reserveCount || "";
 
   return (
     <div className="w-full flex gap-6 justify-between">
@@ -86,7 +80,7 @@ const BookingNavbarTopContent = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] p-5" align="start">
-            <ReserveRoomGuestsFields />
+            <CountForm />
           </PopoverContent>
         </Popover>
         <Popover>
@@ -108,7 +102,7 @@ const BookingNavbarTopContent = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] p-5 " align="start">
-            <ReserveRoomGuestsFields />
+            <CountForm />
           </PopoverContent>
         </Popover>
       </div>

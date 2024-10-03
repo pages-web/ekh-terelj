@@ -4,7 +4,4 @@ import { DateRange } from "react-day-picker";
 
 export const reserveDateAtom = atom<DateRange | undefined>();
 
-export const reserveGuestsRoomCountAtom = atom<number>(0);
-export const reserveGuestsAdultCountAtom = atom<number>(0);
-export const reserveGuestsChildrenCountAtom = atom<number>(0);
-export const reserveGuestsPetAtom = atom<boolean>(false);
+export const reserveCountAtom = atom<any>();
