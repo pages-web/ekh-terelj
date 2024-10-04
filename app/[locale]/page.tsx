@@ -1,13 +1,12 @@
 import { useTranslations } from "next-intl";
 import Image from "@/components/ui/image";
 import ReserveFromHome from "@/components/reserve-from-home/reserve-from-home";
-import Footer from "@/components/footer/footer";
-import HotelDining from "@/components/dining/dining";
-
+import Discount from "@/components/discount/discount";
 export default function HomePage() {
   const t = useTranslations("HomePage");
   return (
-    <div className="relative overflow-hidden">
+    <div className="">
+      <div className="relative overflow-hidden">
       <div className="min-h-screen flex flex-col justify-end container pt-10 pb-12">
         <div className="space-y-6 mb-[84px]">
           <h1 className="text-[64px] text-white">Find your best staycation</h1>
@@ -25,5 +24,11 @@ export default function HomePage() {
       </div>
       {/* <Footer/> */}
     </div>
+    <div>
+      {/* <Discount/> */}
+      {/* <Discover/> */}
+    </div>
+    </div>
+    
   );
 }

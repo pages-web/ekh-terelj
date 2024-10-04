@@ -33,7 +33,7 @@ export default function HotelDining() {
   return (
     <ScrollArea className="h-[100vh] w-full">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-4">Dining at Best Western</h1>
+        <h1 className="text-displaysm font-normal mb-4">Dining at Best Western</h1>
         <p className="text-gray-600 mb-8">
           Aman Tokyo is home to one of the widest selections of dining venues found in any of the city's hotels.
         </p>
@@ -97,7 +97,7 @@ export default function HotelDining() {
             </div>
           </CardContent>
         </Card>
-        <h2 className="text-2xl font-bold mb-4">Where curated cocktails meet world-class cuisine</h2>
+        <h2 className="text-textxl font-bold mb-4">Where curated cocktails meet world-class cuisine</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <p className="text-gray-600">
             Balancing storied architectural features with a contemporary design aesthetic, Capella Sydney celebrates the

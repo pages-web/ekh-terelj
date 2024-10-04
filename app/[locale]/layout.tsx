@@ -9,7 +9,13 @@ import Offer from "@/components/offers/offers";
 import Contact from "@/components/contact/contact";
 import CheckOut from "@/components/check-out/checkout";
 import ContactComponent from "@/components/contact/contact";
+import Component from "@/components/hotel-offer/hoteloffer";
 import Gallery from "@/components/gallery/gallery";
+import Discount from "@/components/discount/discount";
+import Discover from "@/components/discover/discover";
+import Trending from "@/components/trending/trending";
+import Promo from "@/components/promo/promo";
+import Location from "@/components/location/location";
 
 
 export const metadata: Metadata = {
@@ -25,22 +31,26 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const messages = await getMessages();
+
   return (
     <html lang={locale}>
       <body>
-        {/* <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages}>
           <DefaultLayout locale={locale}>{children}</DefaultLayout>
-        </NextIntlClientProvider> */}
-        <div>
-          <Gallery/>
-          {/* <HotelDining/>
-          <Offer/>
-          <ContactComponent/>
-         <CheckOut/> */}
+        </NextIntlClientProvider>
+        <div className="flex flex-col gap-16">
+          <footer>
+            <Discount />
+            <Discover />
+            <Trending/>
+            <Promo/>
+            <HotelDining/>
+            <Offer/>
+            <Gallery/>
+            <Location/>
+            <Footer />
+          </footer>
         </div>
-        <footer>
-        <Footer/>
-      </footer>
       </body>
     </html>
   );

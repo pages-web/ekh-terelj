@@ -3,10 +3,10 @@ import Image from "next/image";
 export default function Offer() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-[1600px]">
-      <h1 className="text-3xl font-bold mb-4 ">
+      <h1 className="text-displaysm font-normal mb-4 ">
         Browse offers at our premier hotel
       </h1>
-      <p className="text-lg text-muted-foreground mb-12 ">
+      <p className="text-textlg text-muted-foreground mb-12 ">
         Our beautiful hotels and resorts offer luxurious accommodation, exclusive Sydney accommodation deals, signature experiences, and memorable destinations.
       </p>
 
@@ -28,7 +28,7 @@ export default function Offer() {
               />
             </div>
             <div className="md:w-1/3 flex flex-col justify-center">
-              <h2 className="text-2xl font-semibold mb-4">{offer.title}</h2>
+              <h2 className="text-displayxs font-semibold mb-4">{offer.title}</h2>
               <p>{offer.description}</p>
             </div>
           </section>

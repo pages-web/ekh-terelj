@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="grid mt-2  grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-4 ">
             <Image src="/images/logo.png" alt="logo" width={90} height={34} />
-            <p className="text-sm text-gray-600">
+            <p className="text-textsm text-gray-600">
               Our mission is to equip modern explorers, with cutting-edge, functional and stylish bags that elevate every
               adventure.
             </p>
@@ -22,11 +22,11 @@ export default function Footer() {
           <div className="grid grid-cols-2 justify-center items-center  gap-8 sm:grid-cols-3 lg:col-span-2">
             {links.map((linkGroup) => (
               <div key={linkGroup.category}>
-                <h3 className="text-lg flex justify-center items-center font-semibold text-gray-900">{linkGroup.category}</h3>
+                <h3 className="text-textlg flex justify-center items-center font-semibold text-gray-900">{linkGroup.category}</h3>
                 <ul className="mt-4 flex flex-col justify-center items-center space-y-2">
                   {linkGroup.items.map((item) => (
                     <li key={item}>
-                      <a className="text-sm text-gray-600 hover:text-purple-600" href="#">
+                      <a className="text-textsm text-gray-600 hover:text-purple-600" href="#">
                         {item}
                       </a>
                     </li>
@@ -35,7 +35,7 @@ export default function Footer() {
               </div>
             ))}
             <div className="sm:col-span-2 lg:col-span-1">
-              <h3 className="text-lg font-semibold text-gray-900">Get Updates</h3>
+              <h3 className="text-textlg font-semibold text-gray-900">Get Updates</h3>
               <form className="mt-4">
                 <div className="flex max-w-md flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
                   <Input className="flex-grow" placeholder="Enter your email" type="email" />
@@ -73,12 +73,12 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 lg:flex lg:justify-between border-t my-1 border-gray-200 ">
-          <p className="text-center text-xs leading-5 text-gray-500">©2024 Erxes.io All rights reserved.</p>
+          <p className="text-center text-textxs leading-5 text-gray-500">©2024 Erxes.io All rights reserved.</p>
           <div className=" flex justify-center space-x-6">
-            <a className="text-xs leading-5 text-gray-300 hover:text-purple-600" href="#">
+            <a className="text-textxs leading-5 text-gray-300 hover:text-purple-600" href="#">
               Privacy Policy
             </a>
-            <a className="text-xs leading-5 text-gray-300 hover:text-purple-600" href="#">
+            <a className="text-textxs leading-5 text-gray-300 hover:text-purple-600" href="#">
               Terms of Service
             </a>
           </div>
