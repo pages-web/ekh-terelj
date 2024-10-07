@@ -3,6 +3,8 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
+import Footer from "@/components/footer/footer";
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,12 +19,18 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const messages = await getMessages();
+
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider messages={messages} locale={locale}>
+        <NextIntlClientProvider messages={messages}>
           <DefaultLayout locale={locale}>{children}</DefaultLayout>
         </NextIntlClientProvider>
+        <div>
+          <footer>
+            <Footer />
+          </footer>
+        </div>
       </body>
     </html>
   );
