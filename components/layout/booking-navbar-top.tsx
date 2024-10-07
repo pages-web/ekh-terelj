@@ -4,11 +4,6 @@ import { PropsWithChildren } from "react";
 
 const BookingNavbarTop = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
-  const isAccommodation = pathname.includes("room-detail");
-
-  if (!isAccommodation) {
-    return null;
-  }
 
   return (
     <div className="z-50 sticky top-[85px] py-3 md:shadow-md bg-background w-full">

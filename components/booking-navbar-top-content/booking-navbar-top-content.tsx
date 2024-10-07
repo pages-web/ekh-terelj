@@ -111,7 +111,7 @@ const BookingNavbarTopContent = () => {
         <span className="text-textlg text-[#33977D] font-bold">
           750.000₮/Night
         </span>
-        <ReserveButton path="/checkout" />
+        <ReserveButton path="/your-details" />
       </div>
     </div>
   );

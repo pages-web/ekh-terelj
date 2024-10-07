@@ -8,6 +8,7 @@ import {
   Wifi,
 } from "lucide-react";
 import { PropsWithChildren, ReactNode } from "react";
+import IconWithTitle from "../icon-with-title/icon-with-title";
 
 const ProductDetailDescription = () => {
   const Tab = ({ value, children }: PropsWithChildren & { value: string }) => {
@@ -20,22 +21,7 @@ const ProductDetailDescription = () => {
       </TabsTrigger>
     );
   };
-  const IconWithTitle = ({
-    icon,
-    title,
-  }: {
-    icon: ReactNode;
-    title: string;
-  }) => {
-    return (
-      <div className="flex items-center gap-3">
-        <span className="w-11 h-11 rounded-full flex justify-center items-center bg-[#F2F2F2]">
-          {icon}
-        </span>
-        <span className="text-textlg">{title}</span>
-      </div>
-    );
-  };
+
   const tabs = [
     { value: "overview", children: "Overview" },
     { value: "included", children: "What's included" },

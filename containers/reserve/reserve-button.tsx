@@ -8,7 +8,7 @@ const ReserveButton = ({ arrow, path }: { arrow?: boolean; path?: string }) => {
   const locale = useParams().locale;
   return (
     <Link
-      href={path ? path : "/accommodation"}
+      href={path ? path : "/select-room"}
       locale={locale === "en" ? "en" : "mn"}
     >
       <Button variant={"secondary"} className="font-bold" size={"lg"}>
