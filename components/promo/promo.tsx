@@ -1,9 +1,15 @@
+"use client"
 import Image from "next/image"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MapPin, Car } from "lucide-react"
 
 export default function Promo() {
+  const handleGetDirections = () => {
+    const destination = encodeURIComponent("Prime Minister Amar's street 15, Ulaanbaatar 14200, Mongolia");
+    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+    window.open(mapsUrl, "_blank");
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -62,7 +68,7 @@ export default function Promo() {
           </div>
         </CardContent>
         <CardFooter className="p-4 pt-0">
-          <Button className="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white">
+          <Button onClick={handleGetDirections} className="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white">
             Get directions
           </Button>
         </CardFooter>

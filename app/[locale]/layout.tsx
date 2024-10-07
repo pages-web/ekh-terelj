@@ -16,6 +16,8 @@ import Discover from "@/components/discover/discover";
 import Trending from "@/components/trending/trending";
 import Promo from "@/components/promo/promo";
 import Location from "@/components/location/location";
+import Trend from "@/components/trend-activities/trend";
+import AuthForm from "@/components/sign-in/sign-in";
 
 
 export const metadata: Metadata = {
@@ -38,16 +40,8 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <DefaultLayout locale={locale}>{children}</DefaultLayout>
         </NextIntlClientProvider>
-        <div className="flex flex-col gap-16">
+        <div>
           <footer>
-            <Discount />
-            <Discover />
-            <Trending/>
-            <Promo/>
-            <HotelDining/>
-            <Offer/>
-            <Gallery/>
-            <Location/>
             <Footer />
           </footer>
         </div>

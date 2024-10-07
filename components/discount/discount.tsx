@@ -63,7 +63,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
 
 export default function Discount() {
   return (
-    <div className="p-4 max-w-[1600px] mx-auto">
+    <div className="p-4 w-11/12 mx-auto max-w-[1800px] ">
       <h2 className="text-displaysm font-normal mb-4">Exclusive deals just for you!</h2>
       <div className="flex gap-8">
         {discountData.map((discount, index) => (

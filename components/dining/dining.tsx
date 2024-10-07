@@ -31,10 +31,10 @@ export default function HotelDining() {
   };
 
   return (
-    <ScrollArea className="h-[100vh] w-full">
+    <ScrollArea className="h-100% w-full">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-displaysm font-normal mb-4">Dining at Best Western</h1>
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-600 mb-8 text-muted-foreground">
           Aman Tokyo is home to one of the widest selections of dining venues found in any of the city's hotels.
         </p>
         <div className="lg:flex lg:justify-start grid grid-cols-2 justify-center items-center gap-2 space-x-2 mb-8">

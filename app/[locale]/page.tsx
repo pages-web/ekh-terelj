@@ -1,11 +1,22 @@
 import { useTranslations } from "next-intl";
 import Image from "@/components/ui/image";
 import ReserveSelectDate from "@/components/reserve-select-date/reserve-select-date";
+import HotelDining from "@/components/dining/dining";
+import Offer from "@/components/offers/offers";
+import Gallery from "@/components/gallery/gallery";
+import Discount from "@/components/discount/discount";
+import Discover from "@/components/discover/discover";
+import Trending from "@/components/trending/trending";
+import Promo from "@/components/promo/promo";
+import Location from "@/components/location/location";
+import Trend from "@/components/trend-activities/trend";
+import AuthForm from "@/components/sign-in/sign-in";
+import Rooms from "@/components/top-rooms/top-rooms";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
   return (
-    <div className="">
+    <div className="flex flex-col gap-16">
       <div className="relative overflow-hidden">
       <div className="min-h-screen flex flex-col justify-end container pt-10 pb-12">
         <div className="space-y-6 mb-[84px]">
@@ -22,13 +33,17 @@ export default function HomePage() {
           className="w-full brightness-[.8]"
         />
       </div>
-      {/* <Footer/> */}
     </div>
-    <div>
-      {/* <Discount/> */}
-      {/* <Discover/> */}
+      <Discount />
+      <Discover />
+      <Rooms/>
+      <Trending/>
+      <Promo/>
+      <HotelDining/>
+      <Trend/>
+      <Offer/>
+      <Gallery/>
+      <Location/>
     </div>
-    </div>
-    
   );
 }

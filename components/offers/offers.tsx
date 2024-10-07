@@ -6,7 +6,7 @@ export default function Offer() {
       <h1 className="text-displaysm font-normal mb-4 ">
         Browse offers at our premier hotel
       </h1>
-      <p className="text-textlg text-muted-foreground mb-12 ">
+      <p className=" text-muted-foreground mb-12 ">
         Our beautiful hotels and resorts offer luxurious accommodation, exclusive Sydney accommodation deals, signature experiences, and memorable destinations.
       </p>
 
