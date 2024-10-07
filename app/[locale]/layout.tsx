@@ -4,20 +4,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import Footer from "@/components/footer/footer";
-import HotelDining from "@/components/dining/dining";
-import Offer from "@/components/offers/offers";
-import Contact from "@/components/contact/contact";
-import CheckOut from "@/components/check-out/checkout";
-import ContactComponent from "@/components/contact/contact";
-import Component from "@/components/hotel-offer/hoteloffer";
-import Gallery from "@/components/gallery/gallery";
-import Discount from "@/components/discount/discount";
-import Discover from "@/components/discover/discover";
-import Trending from "@/components/trending/trending";
-import Promo from "@/components/promo/promo";
-import Location from "@/components/location/location";
-import Trend from "@/components/trend-activities/trend";
-import AuthForm from "@/components/sign-in/sign-in";
 
 
 export const metadata: Metadata = {
