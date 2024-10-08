@@ -31,7 +31,7 @@ export async function NavbarTop({
         <Link
           href="/"
           aria-label="SF Homepage"
-          className="h-12 w-40 text-2xl overflow-hidden"
+          className="h-12 text-2xl overflow-hidden"
         >
           <Image
             src={"/images/logo.png"}

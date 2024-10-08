@@ -3,7 +3,6 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
-import Footer from "@/components/footer/footer";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
@@ -26,11 +25,6 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <DefaultLayout locale={locale}>{children}</DefaultLayout>
         </NextIntlClientProvider>
-        <div>
-          <footer>
-            <Footer />
-          </footer>
-        </div>
         <Toaster />
       </body>
     </html>
