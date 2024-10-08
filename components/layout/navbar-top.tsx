@@ -27,7 +27,7 @@ export async function NavbarTop({
       }
       {...rest}
     >
-      <div className="flex gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">
+      <div className="flex md:flex-row gap-4 md:gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">
         <Link
           href="/"
           aria-label="SF Homepage"
@@ -44,7 +44,7 @@ export async function NavbarTop({
             className="object-contain h-12 w-auto object-left"
           />
         </Link>
-        <nav className="flex gap-4">
+        <nav className="hidden lg:flex flex-wrap gap-2 md:gap-4">
           {menuItems.map((item) => (
             <Link
               key={item.href}
