@@ -71,7 +71,7 @@ const PopupProductDetail = () => {
                     width={1000}
                     height={800}
                     quality={100}
-                    className="w-full "
+                    className="w-full"
                   />
                 </CarouselItem>
               );
@@ -95,7 +95,7 @@ const PopupProductDetail = () => {
         </div>
         <div className="px-4 space-y-4">
           <h3 className="text-displayxs">Room best facilities</h3>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-3 md:gap-6">
             {facilities.map((facility, index) => {
               return (
                 <IconWithTitle
@@ -113,7 +113,7 @@ const PopupProductDetail = () => {
         <DialogClose>
           <Button variant={"secondary"} className="w-fit">
             Close
-          </Button> 
+          </Button>
         </DialogClose>
       </div>
     </div>

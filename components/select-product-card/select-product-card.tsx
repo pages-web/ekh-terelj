@@ -43,7 +43,7 @@ const SelectProductCard = () => {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent className="no-scrollbar overflow-y-scroll h-[90%] max-w-[1000px] px-0 border-0">
+        <DialogContent className="rounded-xl no-scrollbar overflow-y-scroll w-[95%] h-[95%] md:h-[90%] md:max-w-[1000px] px-0 border-0">
           <PopupProductDetail />
         </DialogContent>
       </Dialog>

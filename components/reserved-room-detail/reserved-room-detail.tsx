@@ -34,8 +34,8 @@ const ReservedRoomDetail = () => {
   const TitleWithPrice = ({ desc, title, price, icon }: TitleWithPrice) => {
     return (
       <div className="flex justify-between">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-textlg flex gap-2">
+        <div className="flex flex-col md:gap-1">
+          <h2 className="text-textlg flex items-center gap-2">
             {title} {icon}
           </h2>
           {desc && <p className="text-textsm text-black/60">{desc}</p>}
@@ -56,8 +56,8 @@ const ReservedRoomDetail = () => {
         />
       </div>
 
-      <div className="flex justify-between">
-        <h1 className="text-textxl w-[50%] leading-6">
+      <div className="flex flex-col gap-y-2 md:flex-row justify-between">
+        <h1 className="text-textxl md:w-[50%] leading-6">
           Best Western Premier Tuushin Hotel Deluxe Twin Room
         </h1>
         <div className="flex gap-3 items-center">
@@ -81,9 +81,9 @@ const ReservedRoomDetail = () => {
         <TitleWithCheckin title="1 bed, 2 adults" checkin="Sat, Apr 20" />
       </div>
 
-      <div className="flex flex-col gap-6 mt-4">
+      <div className="flex flex-col gap-3 md:gap-6 mt-4">
         <h1 className="text-displayxs">Price details</h1>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3 md:gap-6">
           <TitleWithPrice
             title="1 room x 4 nights"
             price="1.600.000₮"

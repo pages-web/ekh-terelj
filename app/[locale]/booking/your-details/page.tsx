@@ -9,21 +9,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import BookingLayout from "../booking-layout";
 
 const YourDetails = () => {
   return (
-    <div className="container min-h-screen space-y-11 py-14">
-      <Heading title="Secure Booking" />
-      <div className="flex gap-6">
-        <div className="w-[50%] space-y-10">
+    <BookingLayout currentActive={2}>
+      <Heading title="Secure Booking" className="hidden md:block" />
+      <div className="flex flex-col-reverse md:flex-row gap-6">
+        <div className="md:w-[50%] space-y-10 border p-4 rounded-xl shadow-lg">
           <AccountPart />
           <CheckoutForm />
         </div>
-        <div className="w-[50%]">
+        <div className="md:w-[50%] border p-4 rounded-xl shadow-lg">
           <ReservedRoomDetail />
         </div>
       </div>
-    </div>
+    </BookingLayout>
   );
 };
 export default YourDetails;

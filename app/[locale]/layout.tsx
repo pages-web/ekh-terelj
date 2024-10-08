@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import Footer from "@/components/footer/footer";
-
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,6 +31,7 @@ export default async function RootLayout({
             <Footer />
           </footer>
         </div>
+        <Toaster />
       </body>
     </html>
   );

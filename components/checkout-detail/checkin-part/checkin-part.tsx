@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 const CheckinPart = ({ form }: { form: any }) => {
   return (
-    <div className="grid grid-cols-2 gap-6 px-1">
+    <div className="grid md:grid-cols-2 gap-6 px-1">
       <FormField
         control={form.control}
         name="arrivalTime"

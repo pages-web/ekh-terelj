@@ -18,32 +18,34 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-16">
       <div className="relative overflow-hidden">
-      <div className="min-h-screen flex flex-col justify-end container pt-10 pb-12">
-        <div className="space-y-6 mb-[84px]">
-          <h1 className="text-[64px] text-white">Find your best staycation</h1>
-          <ReserveSelectDate />
+        <div className="min-h-screen flex flex-col justify-end container pt-10 pb-10 md:pb-12">
+          <div className="space-y-6 md:mb-[84px]">
+            <h1 className="text-[40px] md:text-[64px] text-white">
+              Find your best staycation
+            </h1>
+            <ReserveSelectDate />
+          </div>
+        </div>
+        <div className="h-[1000px] md:min-h-screen w-full absolute -top-[84px] left-0 -z-10">
+          <Image
+            src="/images/bg.jpg"
+            width={1440}
+            height={920}
+            quality={100}
+            className="h-full md:w-full brightness-[.8]"
+          />
         </div>
       </div>
-      <div className="w-full absolute -top-[84px] left-0 -z-10">
-        <Image
-          src="/images/bg.jpg"
-          width={1440}
-          height={920}
-          quality={100}
-          className="w-full brightness-[.8]"
-        />
-      </div>
-    </div>
       <Discount />
       <Discover />
-      <Rooms/>
-      <Trending/>
-      <Promo/>
-      <HotelDining/>
-      <Trend/>
-      <Offer/>
-      <Gallery/>
-      <Location/>
+      <Rooms />
+      <Trending />
+      <Promo />
+      <HotelDining />
+      <Trend />
+      <Offer />
+      <Gallery />
+      <Location />
     </div>
   );
 }

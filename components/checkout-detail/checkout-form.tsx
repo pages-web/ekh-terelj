@@ -61,7 +61,7 @@ const CheckoutForm = () => {
                 className="border-none"
                 key={index}
               >
-                <AccordionTrigger className="text-displayxs">
+                <AccordionTrigger className="text-textlg md:text-displayxs">
                   {title.title}
                 </AccordionTrigger>
                 <AccordionContent>{title.content}</AccordionContent>

@@ -2,7 +2,7 @@ import LoginButton from "@/containers/auth/login-button";
 
 const AccountPart = () => {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center gap-3">
       <div className="space-y-3">
         <h2 className="text-textlg text-black">Have a account?</h2>
         <p className="text-textmd text-black/70">

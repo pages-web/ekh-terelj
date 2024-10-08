@@ -79,7 +79,7 @@ const SelectRateCard = () => {
             </div>
           </div>
 
-          <Link href={`/your-details`}>
+          <Link href={`/booking/your-details`}>
             <Button variant={"secondary"} className="text-[14px]" type="submit">
               Book now
             </Button>

@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 const PersonalInfoPart = ({ form }: { form: any }) => {
   return (
     <>
-      <div className="grid grid-cols-2 gap-6 px-1">
+      <div className="grid md:grid-cols-2 gap-6 px-1 mb-3">
         <FormField
           control={form.control}
           name="firstname"
@@ -52,7 +52,7 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 px-1 mb-3">
         <FormField
           control={form.control}
           name="mail"
@@ -94,7 +94,7 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
         control={form.control}
         name="description"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="px-1">
             <FormLabel className="text-textxs">
               Special requests (optional)
             </FormLabel>

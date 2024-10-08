@@ -8,7 +8,7 @@ const PaymentPart = () => {
         value={value}
         className="w-fit bg-transparent data-[state=active]:border data-[state=active]:border-blue-800 data-[state=active]:bg-transparent p-1"
       >
-        <div className="w-[50px] h-[50px] overflow-hidden rounded-md">
+        <div className="w-[40px] h-[40px] md:w-[50px] md:h-[50px] overflow-hidden rounded-md">
           <Image
             src={src || "/images/payments/golomt.png"}
             width={128}
@@ -30,22 +30,20 @@ const PaymentPart = () => {
     { value: "storepay", src: "/images/payments/storepay.png" },
   ];
   return (
-    <div>
-      <Tabs defaultValue="qpay" className="w-[400px] space-y-10">
-        <TabsList className="flex w-fit gap-4 h-fit bg-transparent">
-          {payments.map((payment, index) => {
-            return (
-              <FixedTab value={payment.value} src={payment.src} key={index} />
-            );
-          })}
-        </TabsList>
-        {/* <TabsContent value="account"> */}
-        <div className="max-w-[250px]">
-          <Image src="/images/qr.png" width={512} height={512} quality={100} />
-        </div>
-        {/* </TabsContent> */}
-      </Tabs>
-    </div>
+    <Tabs defaultValue="qpay" className="md:w-[400px] space-y-10">
+      <TabsList className="flex justify-start no-scrollbar overflow-x-scroll p-1 gap-2 md:gap-4 h-fit bg-transparent">
+        {payments.map((payment, index) => {
+          return (
+            <FixedTab value={payment.value} src={payment.src} key={index} />
+          );
+        })}
+      </TabsList>
+      {/* <TabsContent value="account"> */}
+      <div className="w-full md:max-w-[250px]">
+        <Image src="/images/qr.png" width={512} height={512} quality={100} className="w-full"/>
+      </div>
+      {/* </TabsContent> */}
+    </Tabs>
   );
 };
 export default PaymentPart;

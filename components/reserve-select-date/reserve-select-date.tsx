@@ -23,7 +23,7 @@ export const ChildrenWithTitle = ({
   title,
 }: React.PropsWithChildren & { title: string }) => {
   return (
-    <div className="w-full max-w-[200px] flex flex-col gap-3">
+    <div className="w-full md:max-w-[200px] flex flex-col gap-3">
       <h2>{title}</h2>
       {children}
     </div>
@@ -44,10 +44,10 @@ const ReserveSelectDate = () => {
   ];
 
   return (
-    <div className="flex flex-col p-6 gap-8 rounded-[12px] bg-white">
+    <div className="w-full flex flex-col p-6 gap-8 rounded-[12px] bg-white border shadow-lg">
       <div className="flex gap-6 items-center">
         <h2>Filter:</h2>
-        <div className="flex gap-3">
+        <div className="flex no-scrollbar overflow-x-scroll gap-3">
           {filters.map((filter) => {
             return (
               <Button
@@ -62,7 +62,7 @@ const ReserveSelectDate = () => {
           })}
         </div>
       </div>
-      <div className="flex justify-between items-end">
+      <div className="w-full flex flex-col md:flex-row justify-between items-end gap-6 ">
         <ChildrenWithTitle title="Check-in">
           <Popover>
             <PopoverTrigger asChild>
@@ -158,9 +158,9 @@ const ReserveSelectDate = () => {
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
-
-        <ReserveButton arrow />
+        <ReserveButton arrow className="hidden lg:block" />
       </div>
+      <ReserveButton arrow className="lg:hidden self-end" />
     </div>
   );
 };

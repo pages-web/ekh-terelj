@@ -18,20 +18,20 @@ const BookingNavbarTopContent = () => {
   const { adults, children, room } = reserveCount || "";
 
   return (
-    <div className="w-full flex gap-6 justify-between">
-      <div className="flex items-center gap-3">
+    <div className="w-full flex gap-6">
+      {/* <div className="flex items-center gap-3">
         <BackButton />
         <span>Choose date</span>
-      </div>
+      </div> */}
 
-      <div className="flex gap-6">
+      <div className="w-full grid grid-cols-2 md:flex justify-center gap-6">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id="date"
               variant={"outline"}
               className={cn(
-                "justify-start text-left font-normal",
+                "justify-start text-left font-normal col-span-2",
                 !date && "text-muted-foreground"
               )}
             >
@@ -107,12 +107,12 @@ const BookingNavbarTopContent = () => {
         </Popover>
       </div>
 
-      <div className="flex items-center gap-6">
+      {/* <div className="flex items-center gap-6">
         <span className="text-textlg text-[#33977D] font-bold">
           750.000₮/Night
         </span>
         <ReserveButton path="/your-details" />
-      </div>
+      </div> */}
     </div>
   );
 };

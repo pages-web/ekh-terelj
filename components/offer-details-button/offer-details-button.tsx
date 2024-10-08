@@ -19,7 +19,7 @@ const OfferDetailsButton = () => {
             Offer details
           </Button>
         </DialogTrigger>
-        <DialogContent className="no-scrollbar overflow-y-scroll max-w-[800px] px-0 border-0">
+        <DialogContent className="rounded-xl no-scrollbar overflow-y-scroll w-[90%] md:max-w-[800px] px-0 border-0">
           <PopupOfferDetail />
         </DialogContent>
       </Dialog>

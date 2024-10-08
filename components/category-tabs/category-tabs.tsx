@@ -5,9 +5,15 @@ type Tab = {
   path: string;
 };
 
-const CategoryTabs = ({ tabs, defaultTab }: { tabs: Tab[]; defaultTab?: Tab }) => {
+const CategoryTabs = ({
+  tabs,
+  defaultTab,
+}: {
+  tabs: Tab[];
+  defaultTab?: Tab;
+}) => {
   return (
-    <div className="flex gap-3">
+    <div className="no-scrollbar overflow-x-scroll flex gap-3">
       {tabs.map((tab, index) => {
         return <CategoryTab {...tab} key={index} />;
       })}

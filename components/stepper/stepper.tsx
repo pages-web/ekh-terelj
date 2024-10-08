@@ -1,7 +1,36 @@
-const ReserveStepper = () => {
-  const steps = ["select dates", "select room", "your details", "confirmation"];
-  return <div>
-    
-  </div>;
+import { Link } from "@/i18n/routing";
+import Step from "./step";
+
+type Steps = {
+  title: string;
+  path: string;
 };
-export default ReserveStepper;
+
+const Stepper = ({
+  steps,
+  currentActive,
+}: {
+  steps: Steps[];
+  currentActive: number;
+}) => {
+  return (
+    <div className="flex justify-center items-center relative h-[80px]">
+      <div className="w-full flex justify-between absolute top-[28px] md:top-[22px] left-0">
+        {steps.map((step, index) => {
+          return (
+            <Link href={step.path}>
+              <Step
+                title={step.title}
+                index={index + 1}
+                isDone={index < currentActive}
+              />
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="w-[80%] sm:w-[86%] md:w-[89%] border-b-2 -z-10"></div>
+    </div>
+  );
+};
+export default Stepper;
