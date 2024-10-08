@@ -10,8 +10,8 @@ import Trending from "@/components/trending/trending";
 import Promo from "@/components/promo/promo";
 import Location from "@/components/location/location";
 import Trend from "@/components/trend-activities/trend";
-import AuthForm from "@/components/sign-in/sign-in";
 import Rooms from "@/components/top-rooms/top-rooms";
+import { pageOffers } from "@/components/offers/offerData";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
@@ -39,9 +39,15 @@ export default function HomePage() {
       <Rooms/>
       <Trending/>
       <Promo/>
-      <HotelDining/>
+      <HotelDining title="Exclusive Dining Experience" description="Experience the finest dining with a view of the city skyline." buttonNames={["Gourmet", "Buffet", "Cafe", "Room Service"]} images={[
+            "/images/image 8.png",
+            "/images/image1.png",
+            "/images/image 8.png",
+            "/images/image1.png",
+          ]}/>
       <Trend/>
-      <Offer/>
+      <Offer offers={pageOffers}  title="Unforgettable experiences await"
+      description="Join us for a journey of luxury and relaxation at our stunning locations."/>
       <Gallery/>
       <Location/>
     </div>
