@@ -7,16 +7,21 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-const images = [
-  "/images/image 8.png",
-  "/images/image1.png",
-  "/images/image 8.png",
-  "/images/image1.png",
-]
+interface HotelDiningProps {
+  title: string;
+  description: string;
+  buttonNames: string[];
+  images: string[];
+}
 
-export default function HotelDining() {
+export default function HotelDining({
+  title,
+  description,
+  buttonNames,
+  images
+}: HotelDiningProps) {
   const [currentImage, setCurrentImage] = React.useState(0);
-  const [activeButton, setActiveButton] = React.useState("Restaurant");
+  const [activeButton, setActiveButton] = React.useState(buttonNames[0]);
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -33,12 +38,10 @@ export default function HotelDining() {
   return (
     <ScrollArea className="h-100% w-full">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-displaysm font-normal mb-4">Dining at Best Western</h1>
-        <p className="text-gray-600 mb-8 text-muted-foreground">
-          Aman Tokyo is home to one of the widest selections of dining venues found in any of the city's hotels.
-        </p>
+        <h1 className="text-displaysm font-normal mb-4">{title}</h1>
+        <p className="text-gray-600 mb-8 text-muted-foreground">{description}</p>
         <div className="lg:flex lg:justify-start grid grid-cols-2 justify-center items-center gap-2 space-x-2 mb-8">
-          {["Restaurant", "Bar", "Lounge", "Private dining"].map((name) => (
+          {buttonNames.map((name) => (
             <Button
               key={name}
               variant="outline"

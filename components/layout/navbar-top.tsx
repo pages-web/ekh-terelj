@@ -9,8 +9,17 @@ export async function NavbarTop({
 }: {
   children: React.ReactNode;
 }) {
-  //   const { config } = await getConfig();
-  //   const { logo } = config?.uiOptions || {};
+  const menuItems = [
+    { href: "/about", label: "About Hotel" },
+    { href: "/accommodation", label: "Accommodation" },
+    { href: "/dining", label: "Dining" },
+    { href: "/events", label: "Events" },
+    { href: "/wellness", label: "Wellness" },
+    { href: "/offer", label: "Offer" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/contact", label: "Contact" },
+  ];
+
   return (
     <header
       className={
@@ -18,7 +27,7 @@ export async function NavbarTop({
       }
       {...rest}
     >
-      <div className="flex gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">
+      <div className="flex md:flex-row gap-4 md:gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">
         <Link
           href="/"
           aria-label="SF Homepage"
@@ -35,6 +44,18 @@ export async function NavbarTop({
             className="object-contain h-12 w-auto object-left"
           />
         </Link>
+        <nav className="hidden lg:flex flex-wrap gap-2 md:gap-4">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={item.label}
+              className="text-black font-normal text-textsm px-3 py-2 hover:underline"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
         {children}
       </div>
     </header>
