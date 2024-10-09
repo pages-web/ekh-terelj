@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useDrag } from "react-use-gesture"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel"
 
 interface HotelDiningProps {
   title: string;
@@ -36,23 +36,6 @@ export default function HotelDining({
     setActiveButton(buttonName);
   };
 
-  const bind = useDrag(({
-    movement: [x],
-    direction: [dx],
-    velocity,
-  }) => {
-    const swipeThreshold = 0.5;
-    const velocityThreshold = 0.2;
-
-    if (Math.abs(dx) > swipeThreshold && Math.abs(velocity) > velocityThreshold) {
-      if (dx > 0) {
-        prevImage();
-      } else {
-        nextImage();
-      }
-    }
-  });
-
   return (
     <ScrollArea className="h-100% w-full">
       <div className="container mx-auto px-4 py-8">
@@ -72,53 +55,38 @@ export default function HotelDining({
             </Button>
           ))}
         </div>
-        <Card className="mb-8">
-          <CardContent className="p-0 relative">
-            <div className="relative h-[600px] w-full" {...bind()}>
-              <Image
-                className="rounded-3xl bg-auto"
-                src={images[currentImage]}
-                alt={`Dining area ${currentImage + 1}`}
-                layout="fill"
-                objectFit="cover"
-              />
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80"
-                onClick={prevImage}
-              >
-                <ChevronLeft className="h-4 w-4" />
-                <span className="sr-only">Previous image</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80"
-                onClick={nextImage}
-              >
-                <ChevronRight className="h-4 w-4" />
-                <span className="sr-only">Next image</span>
-              </Button>
-            </div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {images.map((_, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  className={`w-2 h-2 p-0 rounded-full ${
-                    index === currentImage ? "bg-white" : "bg-white/50"
-                  }`}
-                  onClick={() => setCurrentImage(index)}
-                >
-                  <span className="sr-only">Go to image {index + 1}</span>
-                </Button>
+        <Card className="border-none shadow-none">
+        <CardContent className="p-0">
+          <Carousel className="w-full h-[600px]">
+            <CarouselContent>
+              {images.map((src, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative">
+                    <img 
+                      src={src}
+                      alt={`Event space ${index + 1}`}
+                      className="w-full h-[600px] object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                      {images.map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-2 h-2 rounded-full ${
+                            i === index ? "bg-white" : "bg-gray-400"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </CarouselItem>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-        <h2 className="text-textxl font-bold mb-4">Where curated cocktails meet world-class cuisine</h2>
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2" />
+            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2" />
+          </Carousel>
+        </CardContent>
+      </Card>
+        <h2 className="text-textxl font-bold mb-4 mt-8">Where curated cocktails meet world-class cuisine</h2>
         <div className="grid md:grid-cols-2 gap-8">
           <p className="text-gray-600">
             Balancing storied architectural features with a contemporary design aesthetic, Capella Sydney celebrates the
