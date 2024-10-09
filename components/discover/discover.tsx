@@ -27,9 +27,9 @@ const propertyTypes = [
 export default function Discover() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col  lg:justify-between items-center mb-6">
         <h2 className="text-displaysm font-normal ">Discover our services</h2>
-        <a href="#" className="text-primary flex items-center">
+        <a href="#" className="text-primary hidden lg:flex items-center">
           See All
           <ArrowRight className="ml-1 h-4 w-4" />
         </a>

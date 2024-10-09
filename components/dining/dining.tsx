@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useDrag } from "react-use-gesture"
 
 interface HotelDiningProps {
   title: string;
@@ -35,6 +36,23 @@ export default function HotelDining({
     setActiveButton(buttonName);
   };
 
+  const bind = useDrag(({
+    movement: [x],
+    direction: [dx],
+    velocity,
+  }) => {
+    const swipeThreshold = 0.5;
+    const velocityThreshold = 0.2;
+
+    if (Math.abs(dx) > swipeThreshold && Math.abs(velocity) > velocityThreshold) {
+      if (dx > 0) {
+        prevImage();
+      } else {
+        nextImage();
+      }
+    }
+  });
+
   return (
     <ScrollArea className="h-100% w-full">
       <div className="container mx-auto px-4 py-8">
@@ -56,7 +74,7 @@ export default function HotelDining({
         </div>
         <Card className="mb-8">
           <CardContent className="p-0 relative">
-            <div className="relative h-[600px] w-full">
+            <div className="relative h-[600px] w-full" {...bind()}>
               <Image
                 className="rounded-3xl bg-auto"
                 src={images[currentImage]}

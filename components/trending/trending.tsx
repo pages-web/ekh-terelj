@@ -45,7 +45,7 @@ export default function Trending() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-displaysm font-normal">Most Visited Hotel Suites This Month</h2>
-        <Link href="#" className="text-primary flex items-center">
+        <Link href="#" className="text-primary hidden lg:flex items-center">
           See All
           <ArrowRight className="ml-1 h-4 w-4" />
         </Link>
@@ -53,6 +53,10 @@ export default function Trending() {
       <p className="text-muted-foreground mb-6">
         A masterclass of sophistication, a stay at Atlantis The Royal delivers extraordinary luxury, unlike anywhere else.
       </p>
+      <Link href="#" className="text-primary flex justify-end mb-3 lg:hidden items-center">
+          See All
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Link>
       <Link href={`/room-detail/${id}`} locale={locale === "en" ? "en" : "mn"} className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {suites.map((suite, index) => (
           <Card key={index}>
