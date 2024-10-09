@@ -51,10 +51,10 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
         >
           {validity}
         </span>
-        <h3 className="text-white text-displayxs font-semibold mt-2">{title}</h3>
+        <h3 className="text-white text-textmd lg:text-displayxs font-semibold mt-2">{title}</h3>
       </div>
       <div>
-        <span className="text-white text-displayxl font-bold">{discountPercentage}%</span>
+        <span className="text-white text-textxl lg:text-displayxl font-bold">{discountPercentage}%</span>
         <p className="text-white text-textsm">*with Terms and Condition</p>
       </div>
     </div>
@@ -64,7 +64,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
 export default function Discount() {
   return (
     <div className="p-4 w-11/12 mx-auto max-w-[1800px] ">
-      <h2 className="text-displaysm font-normal mb-4">Exclusive deals just for you!</h2>
+      <h2 className="text-displaysm  font-normal mb-4">Exclusive deals just for you!</h2>
       <div className="lg:flex flex flex-col lg:flex-row gap-8">
         {discountData.map((discount, index) => (
           <DiscountCard key={index} {...discount} />

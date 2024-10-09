@@ -10,7 +10,7 @@ export async function NavbarTop({
   children: React.ReactNode;
 }) {
   const menuItems = [
-    { href: "/about", label: "About Hotel" },
+    { href: "/", label: "About Hotel" },
     { href: "/accommodation", label: "Accommodation" },
     { href: "/dining", label: "Dining" },
     { href: "/events", label: "Events" },
@@ -44,7 +44,7 @@ export async function NavbarTop({
             className="object-contain h-12 w-auto object-left"
           />
         </Link>
-        <nav className="hidden lg:flex flex-wrap gap-2 md:gap-4">
+        <nav className="hidden xl:flex flex-wrap gap-2 md:gap-4">
           {menuItems.map((item) => (
             <Link
               key={item.href}
