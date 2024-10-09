@@ -6,9 +6,11 @@ const Step = ({
   isDone,
   title,
   className,
+  isCurrent,
 }: {
   index: number;
   isDone?: boolean;
+  isCurrent?: boolean;
   title: string;
   className?: string;
 }) => {
@@ -17,14 +19,18 @@ const Step = ({
       <Button
         size={"icon"}
         className={`w-6 h-6 md:h-9 md:w-9 text-[12px] md:text-[16px] rounded-full ${
-          isDone && "bg-secondary hover:bg-secondary/80"
+          isDone
+            ? "bg-secondary hover:bg-secondary/80"
+            : isCurrent
+            ? "bg-[#DADCE0] hover:bg-[#DADCE0]"
+            : ""
         }`}
       >
         {isDone ? <Check className="w-4 h-4 md:w-5 md:h-5" /> : index}
       </Button>
       <p
         className={`md:w-[100px] text-[10px] md:text-textsm font-bold text-center ${
-          isDone && "text-secondary"
+          isDone ? "text-secondary" : isCurrent ? "text-[#3c4043]/80" : ""
         }`}
       >
         {title}

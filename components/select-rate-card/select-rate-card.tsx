@@ -1,3 +1,5 @@
+"use client";
+
 import { CircleAlert, Utensils } from "lucide-react";
 import { Button } from "../ui/button";
 import { Label } from "@/components/ui/label";
@@ -8,16 +10,21 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useAtom } from "jotai";
-import { reserveMealTypeAtom } from "@/store/reserve";
+import { reserveMealTypeAtom, toggleSelectRateAtom } from "@/store/reserve";
 import PopupOfferDetail from "../popup-offer-detail/popup-offer-detail";
 import OfferDetailsButton from "../offer-details-button/offer-details-button";
 import { Link } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { useEffect, useState } from "react";
 
 const FormSchema = z.object({
   mealType: z.enum(["buffet", "continental"]),
 });
 
-const SelectRateCard = () => {
+const SelectRateCard = ({ className }: { className?: string }) => {
+  const isMobileLg = useMediaQuery("(min-width: 768px)");
+  const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
   const [mealType, setMealType] = useAtom(reserveMealTypeAtom);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -31,59 +38,84 @@ const SelectRateCard = () => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex justify-between items-center">
-          <h2 className="text-textxl">Standard Rate</h2>
-          <OfferDetailsButton />
-        </div>
-        <Separator className="my-4" />
-
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Utensils className="w-4 h-4" />
-            <h3 className="text-textxl">Meal type</h3>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={`border rounded-xl shadow-lg transition-[height] overflow-hidden duration-300 ${
+          toggleSelectRate
+            ? `${isMobileLg ? "h-[175px]" : "h-[285px]"}`
+            : "h-0 border-white"
+        } ${className}`}
+      >
+        <div className="p-4 space-y-8">
+          <div className="flex justify-between items-center">
+            <h2 className="text-textxl">Standard Rate</h2>
+            <OfferDetailsButton />
           </div>
 
-          <FormField
-            control={form.control}
-            name="mealType"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormControl>
-                  <RadioGroup
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                    className="w-full flex justify-between text-textsm"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="buffet" id="buffet" />
-                      <Label htmlFor="buffet">Buffet Breakfast</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="continental" id="continental" />
-                      <Label htmlFor="continental">Continental Breakfast</Label>
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-        <Separator className="my-4" />
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col">
-            <h1 className="text-displaysm font-bold">1,200,000₮ MNT</h1>
-            <div className="flex gap-1 items-center leading-none text-black/60">
-              <CircleAlert className="w-4 h-4" />
-              <span className="text-textxs">1,200,000₮ MNT per night</span>
+          <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Utensils className="w-4 h-4" />
+                <h3 className="text-textxl">Meal type</h3>
+              </div>
+              <FormField
+                control={form.control}
+                name="mealType"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormControl>
+                      <RadioGroup
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                        className="w-full text-textsm"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="buffet" id="buffet" />
+                          <Label htmlFor="buffet">Buffet Breakfast</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="continental"
+                            id="continental"
+                          />
+                          <Label htmlFor="continental">
+                            Continental Breakfast
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="flex gap-2">
+                <div className="flex gap-1 items-center leading-none text-black/60">
+                  <CircleAlert className="min-w-4 min-h-4" />
+                  <span className="text-textxs w-[70px]">
+                    140.00 USD per night
+                  </span>
+                </div>
+                <h1 className="text-textxl md:text-displaysm font-bold text-end w-full">
+                  USD 140.00
+                </h1>
+              </div>
+
+              <Link
+                href={`/booking/your-details`}
+                className="md:w-fit w-full"
+              >
+                <Button
+                  variant={"secondary"}
+                  className="text-[16px] h-full w-full md:py-4"
+                  type="submit"
+                >
+                  Book now
+                </Button>
+              </Link>
             </div>
           </div>
-
-          <Link href={`/booking/your-details`}>
-            <Button variant={"secondary"} className="text-[14px]" type="submit">
-              Book now
-            </Button>
-          </Link>
         </div>
       </form>
     </Form>

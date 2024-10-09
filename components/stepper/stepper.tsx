@@ -23,6 +23,7 @@ const Stepper = ({
                 title={step.title}
                 index={index + 1}
                 isDone={index < currentActive}
+                isCurrent={index > currentActive}
               />
             </Link>
           );

@@ -5,3 +5,5 @@ import { DateRange } from "react-day-picker";
 export const reserveDateAtom = atom<DateRange | undefined>();
 export const reserveCountAtom = atom<any>();
 export const reserveMealTypeAtom = atom<any>();
+
+export const toggleSelectRateAtom = atom<boolean>(false);
