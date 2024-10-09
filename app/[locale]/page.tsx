@@ -16,7 +16,7 @@ import { pageOffers } from "@/components/offers/offerData";
 export default function HomePage() {
   const t = useTranslations("HomePage");
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-8 lg:gap-16">
       <div className="relative overflow-hidden">
         <div className="min-h-screen flex flex-col justify-end container pt-10 pb-10 md:pb-12">
           <div className="space-y-6 md:mb-[84px]">

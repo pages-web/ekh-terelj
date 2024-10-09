@@ -10,7 +10,7 @@ export default function Trend() {
         Discover luxury from towering heights with a private theater production in our suites, a swim in the highest hotel pool in Western Europe or indulge in afternoon tea with a unique Asian twist.
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="grid grid-cols-2 lg:flex lg:flex-wrap  gap-2 mb-6">
         {["Dining Delights", "Wellness", "Experience", "Meeting & Celebration"].map((label, index) => (
           <Button key={index} variant={label === "Dining Delights" ? "default" : "outline"}>
             {label}
