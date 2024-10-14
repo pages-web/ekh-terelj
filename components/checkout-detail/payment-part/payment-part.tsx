@@ -30,7 +30,7 @@ const PaymentPart = () => {
     { value: "storepay", src: "/images/payments/storepay.png" },
   ];
   return (
-    <Tabs defaultValue="qpay" className="md:w-[400px] space-y-10">
+    <Tabs defaultValue="qpay" className="md:min-w-[400px] space-y-10">
       <TabsList className="flex justify-start no-scrollbar overflow-x-scroll p-1 gap-2 md:gap-4 h-fit bg-transparent">
         {payments.map((payment, index) => {
           return (

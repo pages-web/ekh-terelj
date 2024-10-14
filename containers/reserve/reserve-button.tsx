@@ -51,8 +51,8 @@ const ReserveButton = ({
         !reserveCount?.adults ||
         reserveCount?.room === 0 ||
         reserveCount?.adults === 0
-          ? "/booking"
-          : "/booking/select-room"
+          ? ""
+          : "/booking"
       }
       locale={locale === "en" ? "en" : "mn"}
       className={className}

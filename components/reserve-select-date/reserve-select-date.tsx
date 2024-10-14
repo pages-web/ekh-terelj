@@ -23,7 +23,7 @@ export const ChildrenWithTitle = ({
   title,
 }: React.PropsWithChildren & { title: string }) => {
   return (
-    <div className="w-full md:max-w-[200px] flex flex-col gap-3">
+    <div className="w-full lg:max-w-[250px] flex flex-col gap-3">
       <h2>{title}</h2>
       {children}
     </div>
@@ -60,9 +60,10 @@ const ReserveSelectDate = () => {
               </Button>
             );
           })}
+        <div className="flex no-scrollbar overflow
         </div>
       </div> */}
-      <div className="w-full flex flex-col md:flex-row justify-between items-end gap-6 ">
+      <div className="w-full flex flex-col lg:flex-row justify-between items-end gap-6 ">
         <ChildrenWithTitle title="Check-in">
           <Popover>
             <PopoverTrigger asChild>
@@ -74,7 +75,7 @@ const ReserveSelectDate = () => {
                   !date && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-5 w-5" />
+                <CalendarIcon className="mr-2 min-h-5 h-5 w-5 min-w-5" />
                 {date?.from ? (
                   format(date.from, "PPP")
                 ) : (
@@ -99,7 +100,7 @@ const ReserveSelectDate = () => {
                   !date && "text-muted-foreground"
                 )}
               >
-                <MapPin className="mr-2 h-5 w-5" />
+                <MapPin className="mr-2 min-h-5 min-w-5" />
                 {date?.to ? format(date.to, "PPP") : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>

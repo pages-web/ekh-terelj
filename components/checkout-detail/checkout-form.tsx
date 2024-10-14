@@ -16,6 +16,7 @@ import CheckinPart from "./checkin-part/checkin-part";
 import PaymentPart from "./payment-part/payment-part";
 
 const FormSchema = z.object({
+  speaking: z.string(),
   firstname: z.string().min(1, { message: "Firsname" }),
   lastname: z.string().min(1, { message: "Lastname" }),
   mail: z.string().email(),
@@ -29,6 +30,7 @@ const CheckoutForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      speaking: "",
       firstname: "",
       lastname: "",
       mail: "",

@@ -45,7 +45,7 @@ export default function Footer() {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white px-4 py-8 border-t"
+      className="bg-white px-4 py-8 border-t mt-40"
     >
       <div className="container mx-auto">
         <div className="flex flex-col items-center mb-8">

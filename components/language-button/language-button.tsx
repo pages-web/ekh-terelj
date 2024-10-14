@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetClose,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
@@ -32,8 +32,15 @@ const LanguageButton = ({ locale }: { locale: string }) => {
     <div className="flex justify-center items-center">
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
-          <Button className="bg-black flex xl:hidden mr-4" onClick={() => setIsMenuOpen(true)}>
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Button
+            className="bg-black flex xl:hidden"
+            onClick={() => setIsMenuOpen(true)}
+          >
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
             <span className="sr-only">Toggle menu</span>
           </Button>
         </SheetTrigger>
@@ -61,7 +68,9 @@ const LanguageButton = ({ locale }: { locale: string }) => {
           </motion.nav>
           <div className="flex flex-col lg:flex-row p-4 gap-4 mt-4">
             <Link href={pathname} locale={locale === "en" ? "mn" : "en"}>
-              <Button className="w-full" variant="default">{locale === "en" ? "MN" : "EN"}</Button>
+              <Button className="w-full" variant="default">
+                {locale === "en" ? "MN" : "EN"}
+              </Button>
             </Link>
             <Link href="/sign-in" onClick={() => setIsMenuOpen(false)}>
               <Button className="bg-white w-full text-black" variant="default">
@@ -71,7 +80,11 @@ const LanguageButton = ({ locale }: { locale: string }) => {
           </div>
         </SheetContent>
       </Sheet>
-      <div className={`fixed top-0 left-0 w-full h-full bg-black/50 z-50 ${isMenuOpen ? 'block' : 'hidden'}`} />
+      <div
+        className={`fixed top-0 left-0 w-full h-full bg-black/50 z-50 ${
+          isMenuOpen ? "block" : "hidden"
+        }`}
+      />
       {!isMenuOpen && (
         <div className="hidden xl:flex gap-6">
           <Link href={pathname} locale={locale === "en" ? "mn" : "en"}>

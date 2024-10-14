@@ -14,11 +14,16 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { DialogClose } from "../ui/dialog";
+import {
+  DotButton,
+  useDotButton,
+} from "../ui/EmblaCarouselDotButton/EmblaCarouselDotButton";
+import { EmblaCarouselType } from "embla-carousel";
 
 const PopupProductDetail = () => {
   const facilities = [
@@ -32,25 +37,33 @@ const PopupProductDetail = () => {
       icon: <CreditCard className="w-6 h-6" />,
     },
   ];
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
   const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: false }) as any
+  );
 
-  React.useEffect(() => {
+  const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay) return;
+
+    const resetOrStop =
+      autoplay.options.stopOnInteraction === false
+        ? autoplay.reset
+        : autoplay.stop;
+
+    resetOrStop();
+  }, []);
+
+  useEffect(() => {
     if (!api) {
       return;
     }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
   }, [api]);
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(
+    api as any,
+    onNavButtonClick
+  );
   return (
     <div className="flex flex-col gap-4">
       <h1 className="px-4 text-displayxs">Duxton Room twin</h1>
@@ -77,6 +90,16 @@ const PopupProductDetail = () => {
               );
             })}
         </CarouselContent>
+        <div className="w-full absolute bottom-5 flex justify-center gap-[10px]">
+          {scrollSnaps.map((_, index) => (
+            <DotButton
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              className={`w-3 h-3 rounded-full
+            ${index === selectedIndex ? " bg-white" : "bg-white/30"}`}
+            />
+          ))}
+        </div>
       </Carousel>
       <div className="space-y-8">
         <div className="px-4 space-y-4">

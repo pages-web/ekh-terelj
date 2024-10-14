@@ -10,16 +10,47 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-6 px-1 mb-3">
+      <div className="grid grid-cols-7 gap-6 px-1 mb-3">
+        <FormField
+          control={form.control}
+          name="speaking"
+          render={({ field }) => (
+            <FormItem className="flex items-end text-textsm col-span-3 xl:col-span-1 ">
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder=" " />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Mr.">Mr.</SelectItem>
+                  <SelectItem value="Ms.">Ms.</SelectItem>
+                  <SelectItem value="Mrs.">Mrs.</SelectItem>
+                  <SelectItem value="Dr.">Dr.</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="firstname"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-4 xl:col-span-6">
               <FormLabel className="text-textxs">First name</FormLabel>
               <FormControl>
                 <Input
@@ -37,7 +68,7 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           control={form.control}
           name="lastname"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-7">
               <FormLabel className="text-textxs">Last name</FormLabel>
               <FormControl>
                 <Input
@@ -52,7 +83,7 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 px-1 mb-3">
+      <div className="px-1 space-y-3">
         <FormField
           control={form.control}
           name="mail"
@@ -78,8 +109,29 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
             <FormItem>
               <FormLabel className="text-textxs">Enter your phone</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter your email"
+                <PhoneInput
+                  international
+                  className="text-textsm"
+                  placeholder="Enter your phone"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-textxs">
+                Special requests (optional)
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Limit 250 characters"
                   {...field}
                   className="text-textsm"
                 />
@@ -89,26 +141,6 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           )}
         />
       </div>
-
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem className="px-1">
-            <FormLabel className="text-textxs">
-              Special requests (optional)
-            </FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Limit 250 characters"
-                {...field}
-                className="text-textsm"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </>
   );
 };

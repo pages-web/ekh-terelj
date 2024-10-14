@@ -9,5 +9,8 @@ export const mailZod = z
   );
 export const phoneZod = z
   .string()
-  .regex(/^\d{8}$/, "Invalid Phone number")
+  .regex(
+    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+    "Invalid Phone number"
+  )
   .min(1, { message: "Phone is required" });

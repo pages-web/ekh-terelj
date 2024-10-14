@@ -1,6 +1,6 @@
 export const steps = [
-  { title: "select dates", path: "/booking" },
-  { title: "select room", path: "/booking/select-room" },
+  { title: "select dates", path: "/" },
+  { title: "select room", path: "/booking" },
   { title: "your details", path: "/booking/your-details" },
-  { title: "confirmation", path: "/booking/confirmation" },
+  { title: "confirmation", path: "" },
 ];
