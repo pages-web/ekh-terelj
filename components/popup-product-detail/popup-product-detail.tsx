@@ -24,8 +24,11 @@ import {
   useDotButton,
 } from "../ui/EmblaCarouselDotButton/EmblaCarouselDotButton";
 import { EmblaCarouselType } from "embla-carousel";
+import { IProduct } from "@/types/products";
 
-const PopupProductDetail = () => {
+const PopupProductDetail = ({ ...room }: IProduct) => {
+  const { name, description, attachment, attachmentMore } = room;
+  const images = [attachment, attachmentMore].flat();
   const facilities = [
     { title: "1 King Bed", icon: <BedDouble className="w-6 h-6" /> },
     { title: "Free WiFi", icon: <Wifi className="w-6 h-6" /> },
@@ -66,7 +69,7 @@ const PopupProductDetail = () => {
   );
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="px-4 text-displayxs">Duxton Room twin</h1>
+      <h1 className="px-4 text-displayxs">{name}</h1>
       <Carousel
         plugins={[plugin.current]}
         onMouseEnter={plugin.current.stop}
@@ -74,21 +77,20 @@ const PopupProductDetail = () => {
         setApi={setApi}
       >
         <CarouselContent>
-          {Array(3)
-            .fill(1)
-            .map(() => {
-              return (
-                <CarouselItem>
-                  <Image
-                    src="/images/product.png"
-                    width={1000}
-                    height={800}
-                    quality={100}
-                    className="w-full"
-                  />
-                </CarouselItem>
-              );
-            })}
+          {images.map((image) => {
+            return (
+              <CarouselItem>
+                <Image
+                  // src={image?.url}
+                  src="/images/product.png"
+                  width={1000}
+                  height={800}
+                  quality={100}
+                  className="w-full"
+                />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <div className="w-full absolute bottom-5 flex justify-center gap-[10px]">
           {scrollSnaps.map((_, index) => (
@@ -104,16 +106,13 @@ const PopupProductDetail = () => {
       <div className="space-y-8">
         <div className="px-4 space-y-4">
           <h3 className="text-displayxs">Overview</h3>
-          <p className="text-textsm">
-            Luxury eco-certified hotel refurbished in 2019 and located near
-            Sükhbaatar Square located close to National Academic Theatre of
-            Opera and Ballet of Mongolia and The Fine Arts Zanabazar Museum,
-            Kempinski Hotel Khan Palace provides a shopping mall on site, a hair
-            salon, and dry cleaning/laundry services. Treat yourself to
-            reflexology, a manicure/pedicure, or aromatherapy at Kempinski Aster
-            Spa, the onsite spa. Enjoy Japanese cuisine and brunch at the two
-            onsite restaurants. Stay connected with free in-room WiFi, and
-            guests can find other amenities such as a bar and a 24-hour gym.
+          <p
+            className="text-textsm"
+            // dangerouslySetInnerHTML={{ __html: description || "" }}
+          >
+            Deluxe Twin Rooms offer stunning skyline views of Ulaanbaatar. The
+            rooms are equipped with two queen size beds, lounger chair, work
+            desk, 37" Samsung HD TV and bathroom.
           </p>
         </div>
         <div className="px-4 space-y-4">

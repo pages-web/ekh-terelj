@@ -17,13 +17,16 @@ import { Separator } from "../ui/separator";
 import SelectRoomProductCard from "../select-room-product-card/select-room-product-card";
 import { useAtom } from "jotai";
 import { toggleSelectRateAtom } from "@/store/reserve";
+import { IProduct } from "@/types/products";
 
 const SelectProductCard = ({
   className,
   index,
+  room,
 }: {
   className?: string;
   index: number;
+  room: any;
 }) => {
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
 
@@ -31,10 +34,10 @@ const SelectProductCard = ({
     <div className={`space-y-4 border p-4 rounded-xl ${className}`}>
       <Dialog>
         <DialogTrigger>
-          <SelectRoomProductCard />
+          <SelectRoomProductCard {...room} />
         </DialogTrigger>
         <DialogContent className="rounded-xl no-scrollbar overflow-y-scroll w-[95%] h-[95%] md:h-[90%] md:max-w-[1000px] px-0 border-0">
-          <PopupProductDetail />
+          <PopupProductDetail {...room} />
         </DialogContent>
       </Dialog>
 

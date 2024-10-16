@@ -4,6 +4,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import { Toaster } from "@/components/ui/toaster";
+import Providers from "@/store";
+import Apollo from "./ApolloClient";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +25,9 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <DefaultLayout locale={locale}>{children}</DefaultLayout>
+          <Apollo>
+            <DefaultLayout locale={locale}>{children}</DefaultLayout>
+          </Apollo>
         </NextIntlClientProvider>
         <Toaster />
       </body>

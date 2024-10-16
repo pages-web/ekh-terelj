@@ -1,12 +1,17 @@
 import { BedDouble, CircleAlert, User } from "lucide-react";
 import Image from "../ui/image";
 import { Separator } from "../ui/separator";
+import { IProduct } from "@/types/products";
+import { useLocale } from "next-intl";
 
-const SelectRoomProductCard = () => {
+const SelectRoomProductCard = ({ ...room }: IProduct) => {
+  const locale = useLocale();
+  const { name, description, unitPrice, attachment } = room;
   return (
     <div className="text-start space-y-3 cursor-pointer group">
       <div className="h-[300px] overflow-hidden w-fit rounded-xl relative flex justify-center items-center">
         <Image
+          // src={attachment?.url}
           src="/images/product.png"
           width={1200}
           height={1200}
@@ -16,7 +21,7 @@ const SelectRoomProductCard = () => {
           Room details
         </span>
         <h3 className="text-textlg absolute bottom-0 left-0 p-2 text-white font-semibold">
-          Duxton Room Twin
+          {name}
         </h3>
       </div>
       <div className="flex items-start gap-2 border-b ">
@@ -27,16 +32,13 @@ const SelectRoomProductCard = () => {
                   4.7 (2,578 Reviews) */}
             Room(s): Size:<span className="text-black/50 "> 32(m2)</span>
           </p>
-          <p className="text-textsm line-clamp-6">
-            Luxury eco-certified hotel refurbished in 2019 and located near
-            Sükhbaatar Square located close to National Academic Theatre of
-            Opera and Ballet of Mongolia and The Fine Arts Zanabazar Museum,
-            Kempinski Hotel Khan Palace provides a shopping mall on site, a hair
-            salon, and dry cleaning/laundry services. Treat yourself to
-            reflexology, a manicure/pedicure, or aromatherapy at Kempinski Aster
-            Spa, the onsite spa. Enjoy Japanese cuisine and brunch at the two
-            onsite restaurants. Stay connected with free in-room WiFi, and
-            guests can find other amenities such as a bar and a 24-hour gym.
+          <p
+            className="text-textsm line-clamp-6 text-black/50"
+            // dangerouslySetInnerHTML={{ __html: description || "" }}
+          >
+            Deluxe Twin Rooms offer stunning skyline views of Ulaanbaatar. The
+            rooms are equipped with two queen size beds, lounger chair, work
+            desk, 37" Samsung HD TV and bathroom.
           </p>
         </div>
         <div className="flex flex-col gap-2">
@@ -57,8 +59,20 @@ const SelectRoomProductCard = () => {
       <Separator />
 
       <div className="flex justify-between">
-        <span className="text-textxs w-16">140.00USD per night</span>
-        <span className="text-textlg font-bold">USD 140.00</span>
+        <span className="text-textsm">
+          {/* {locale === "mn"
+            ? `${unitPrice}₮`
+            : `${Math.round(unitPrice / 3400)}$`}{" "} */}
+          {/* {unitPrice / 3400}$ per night */}
+          USD 140$ per night
+        </span>
+        <span className="text-textlg font-bold">
+          {/* {locale === "mn"
+            ? `${unitPrice}₮ төгрөг`
+            : `USD ${Math.round(unitPrice / 3400)}$`} */}
+          {/* USD {unitPrice / 3400}$ */}
+          USD 140$
+        </span>
       </div>
     </div>
   );
