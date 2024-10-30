@@ -27,9 +27,10 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           control={form.control}
           name="speaking"
           render={({ field }) => (
-            <FormItem className="flex items-end text-textsm col-span-3 xl:col-span-1 ">
+            <FormItem className=" col-span-3 xl:col-span-1 ">
+              <FormLabel className="text-textxs">Honorific</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
+                <FormControl className="text-textsm">
                   <SelectTrigger>
                     <SelectValue placeholder=" " />
                   </SelectTrigger>

@@ -1,9 +1,19 @@
+"use client";
+
 import { Calendar, CircleAlert, User } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "../ui/image";
 import { Separator } from "../ui/separator";
 import { ReactNode } from "react";
 import IconWithTitle from "../icon-with-title/icon-with-title";
+import { useAtom } from "jotai";
+import {
+  reserveCountAtom,
+  reserveDateAtom,
+  reserveMealTypeAtom,
+  selectedRoomAtom,
+} from "@/store/reserve";
+import { format, formatDistance } from "date-fns";
 
 type TitleWithPrice = {
   title: string;
@@ -19,7 +29,7 @@ type TitleWithIcon = {
 
 const ReservedRoomDetail = () => {
   const SelectedFieldTitle = ({ title }: { title: string }) => {
-    return <p className="text-textxs text-black/60">{title}</p>;
+    return <p className="text-textxs text-black/60 capitalize">{title}</p>;
   };
   const TitleWithIcon = ({ icon, title }: TitleWithIcon) => {
     return (
@@ -41,11 +51,21 @@ const ReservedRoomDetail = () => {
       </div>
     );
   };
+
+  const [selectedRoom] = useAtom(selectedRoomAtom);
+  const [reserveCount] = useAtom(reserveCountAtom);
+  const [date] = useAtom(reserveDateAtom);
+  const [mealType] = useAtom(reserveMealTypeAtom);
+  const dateDiff = parseInt(date?.from && formatDistance(date?.from, date?.to));
+  const totalPrice = selectedRoom.unitPrice * dateDiff;
+  const taxes = (totalPrice * 10) / 100;
+  const fee = (totalPrice * 2) / 100;
+
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-displayxs text-black">Your reservation</h1>
       <h1 className="w-[80%] text-textlg leading-6">
-        Best Western Premier Tuushin Hotel Deluxe Twin Room
+        {selectedRoom?.category?.name}
       </h1>
 
       {/* <div className="flex gap-2 items-center">
@@ -58,19 +78,21 @@ const ReservedRoomDetail = () => {
           <div className="space-y-1 w-[70%]">
             <TitleWithIcon
               icon={<User className="w-6 h-6" />}
-              title={`Adults: ${1}`}
+              title={`Adults: ${reserveCount?.adults}`}
             />
             <TitleWithIcon
-              icon={<User className="w-4 h-4" />}
-              title={`Children: ${1}`}
-            />
-            <TitleWithIcon
-              icon={<Calendar className="w-5 h-5" />}
-              title={`Check in: 10.10.2024 14:00`}
+              icon={<User className="w-5 h-4" />}
+              title={`Children: ${reserveCount?.children}`}
             />
             <TitleWithIcon
               icon={<Calendar className="w-5 h-5" />}
-              title={`Check out: 11.10.2024 12:00`}
+              title={`Check in: ${
+                date?.from && format(date?.from, "d/M/yyyy p")
+              }`}
+            />
+            <TitleWithIcon
+              icon={<Calendar className="w-5 h-5" />}
+              title={`Check out: ${date?.to && format(date?.to, "d/M/yyyy p")}`}
             />
           </div>
           <div className="h-fit w-[30%] overflow-hidden rounded-xl">
@@ -86,22 +108,27 @@ const ReservedRoomDetail = () => {
         <div className="flex flex-col gap-3 md:gap-6 mt-4">
           <div className="space-y-2">
             <SelectedFieldTitle title="Standard Rate" />
-            <SelectedFieldTitle title="Continental Breakfast" />
+            <SelectedFieldTitle title={`${mealType?.mealType} breakfast`} />
           </div>
 
           <div className="flex flex-col gap-3 md:gap-6">
-            <TitleWithPrice title="Room price" price="USD 185.00" />
+            <TitleWithPrice
+              title="Room price"
+              price={`MNT ${selectedRoom?.unitPrice}₮`}
+            />
             <div className="space-y-1">
-              <TitleWithPrice title="Sub total" price="USD 185.00" />
-              <TitleWithPrice title="Taxes" price="USD 19.00" />
-              <TitleWithPrice title="Fees" price="USD 4.00" />
+              <TitleWithPrice title="Sub total" price={`MNT ${totalPrice}₮`} />
+              <TitleWithPrice title="Taxes" price={`MNT ${taxes}₮`} />
+              <TitleWithPrice title="Fees" price={`MNT ${fee}₮`} />
             </div>
           </div>
         </div>
       </div>
       <div className="flex justify-between text-displayxs font-bold">
         <h1 className="uppercase">Total</h1>
-        <span className="text-secondary">USD 208.00</span>
+        <span className="text-secondary">{`MNT ${
+          totalPrice + taxes + fee
+        }₮`}</span>
       </div>
     </div>
   );

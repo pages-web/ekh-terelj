@@ -27,6 +27,7 @@ import { EmblaCarouselType } from "embla-carousel";
 import { IProduct } from "@/types/products";
 
 const PopupProductDetail = ({ ...room }: IProduct) => {
+  const category = room.category;
   const { name, description, attachment, attachmentMore } = room;
   const images = [attachment, attachmentMore].flat();
   const facilities = [
@@ -69,7 +70,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
   );
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="px-4 text-displayxs">{name}</h1>
+      <h1 className="px-4 text-displayxs">{category?.name}</h1>
       <Carousel
         plugins={[plugin.current]}
         onMouseEnter={plugin.current.stop}
@@ -108,12 +109,8 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
           <h3 className="text-displayxs">Overview</h3>
           <p
             className="text-textsm"
-            // dangerouslySetInnerHTML={{ __html: description || "" }}
-          >
-            Deluxe Twin Rooms offer stunning skyline views of Ulaanbaatar. The
-            rooms are equipped with two queen size beds, lounger chair, work
-            desk, 37" Samsung HD TV and bathroom.
-          </p>
+            dangerouslySetInnerHTML={{ __html: category?.description || "" }}
+          ></p>
         </div>
         <div className="px-4 space-y-4">
           <h3 className="text-displayxs">Room best facilities</h3>

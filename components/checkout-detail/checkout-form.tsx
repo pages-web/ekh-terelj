@@ -12,21 +12,48 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { Button } from "../ui/button";
-import CheckinPart from "./checkin-part/checkin-part";
 import PaymentPart from "./payment-part/payment-part";
+import ExtraServices from "./extra-services/extra-services";
+import { BookingFormT, ExtraT } from "@/lib/schema/types";
+import { formatToDate, parseDate } from "@/lib/date";
+import { addDays, formatDistance } from "date-fns";
+import { useAtom } from "jotai";
+import {
+  reserveCompletedAtom,
+  reserveCountAtom,
+  reserveDateAtom,
+  reserveExtrasAtom,
+  reserveUserAtom,
+  selectedRoomAtom,
+} from "@/store/reserve";
+import { useCreateEditDeal, useStages } from "@/sdk/queries/sales";
+import { MutationHookOptions, useMutation } from "@apollo/client";
+import { mutations } from "@/sdk/graphql/sales";
+import { IStage } from "@/types/sales";
+import useCreateCustomer from "@/sdk/mutations/customers";
+import { useEffect, useState } from "react";
+import useCustomers from "@/sdk/queries/customers";
+import { useRouter } from "@/i18n/routing";
 
 const FormSchema = z.object({
   speaking: z.string(),
-  firstname: z.string().min(1, { message: "Firsname" }),
+  firstname: z.string().min(1, { message: "Firstname" }),
   lastname: z.string().min(1, { message: "Lastname" }),
   mail: z.string().email(),
   phone: phoneZod,
   description: z.string().max(250).optional(),
-  arrivalTime: z.string().optional(),
-  departureTime: z.string().optional(),
 });
 
 const CheckoutForm = () => {
+  const router = useRouter();
+  const [selectedRoom] = useAtom(selectedRoomAtom);
+  const [date] = useAtom(reserveDateAtom);
+  const [reserveCount] = useAtom(reserveCountAtom);
+  const [reserveUser, setReserveUser] = useAtom(reserveUserAtom);
+  const [reserveExtras, setReserveExtras] = useAtom(reserveExtrasAtom);
+  const [reserveCompleted, setReserveCompleted] = useAtom(reserveCompletedAtom);
+  const [customerId, setCustomerId] = useState();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -36,20 +63,85 @@ const CheckoutForm = () => {
       mail: "",
       phone: "",
       description: "",
-      arrivalTime: "",
-      departureTime: "",
     },
   });
 
+  const [addDeal, { loading }] = useMutation(mutations.dealsAdd);
+  const { stages, loading: stagesLoading } = useStages();
+  const { createCustomer, error } = useCreateCustomer();
+  // const { getCustomers, customers } = useCustomers();
+
+  const nights = parseInt(date?.from && formatDistance(date?.from, date?.to));
+
+  const selectedRoomByMutation = {
+    productId: selectedRoom?._id,
+    startDate: date?.from,
+    endDate: date?.to,
+    unitPrice: selectedRoom?.unitPrice,
+    quantity: nights,
+    amount: selectedRoom?.unitPrice * nights,
+    uom: selectedRoom?.uom,
+    tickUsed: true,
+    information: {
+      adults: reserveCount?.adults,
+      children: reserveCount?.children,
+    },
+  };
+
+  const selectedExtrasByMutation = reserveExtras?.flatMap((extra: any) => {
+    return {
+      productId: extra?._id,
+      quantity: 1,
+      name: extra?.name,
+      unitPrice: extra?.unitPrice,
+      amount: extra?.unitPrice * 1,
+      information: {
+        parentId: selectedRoom?._id,
+      },
+    };
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    setReserveUser(data);
+
+    createCustomer({
+      variables: {
+        firstName: data.firstname,
+        lastName: data.lastname,
+        primaryEmail: data.mail,
+        primaryPhone: data.phone,
+      },
+      onCompleted: (customer) => {
+        setCustomerId(customer?.customersAdd?._id);
+      },
+    });
+
+    const variables = {
+      name: `${data.speaking} ${data.firstname} ${data.lastname}`,
+      customerIds: [customerId && customerId],
+      productsData: [selectedRoomByMutation, selectedExtrasByMutation]?.flatMap(
+        (item) => item
+      ),
+      stageId: stages?.find((st: IStage) => st.code === "future")?._id,
+      startDate: date?.from,
+      closeDate: date?.to,
+      description: data.description,
+    };
+
+    addDeal({
+      variables,
+      onCompleted: () => {
+        setReserveCompleted(true);
+        router.push("/booking/confirmation");
+      },
+    });
   }
   const titles = [
     {
       title: "Your personal information",
       content: <PersonalInfoPart form={form} />,
     },
-    { title: "When can you check in?", content: <CheckinPart form={form} /> },
+    { title: "Additional Services", content: <ExtraServices form={form} /> },
     { title: "Payment method", content: <PaymentPart /> },
   ];
   return (

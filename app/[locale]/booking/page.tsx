@@ -5,8 +5,9 @@ import SelectProductCard from "@/components/select-product-card/select-product-c
 import BookingLayout from "./booking-layout";
 import SelectRateCard from "@/components/select-rate-card/select-rate-card";
 import SelectRoomProducts from "@/components/select-room-products/select-room-products";
+import useRooms from "@/sdk/queries/rooms";
 
-const SelectRoom = () => {
+const SelectRoom = async () => {
   return (
     <BookingLayout currentActive={1}>
       <SelectRoomProducts />

@@ -20,13 +20,13 @@ const httpLink: any = new HttpLink({
 
 const authLink = setContext((_, { headers }) => {
   return {
-    headers: {
+    headers: {  
       ...headers,
       "Access-Control-Allow-Origin": (
         process.env.NEXT_PUBLIC_MAIN_API_DOMAIN || ""
       ).replace("/gateway", ""),
       "erxes-app-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOnsibmFtZSI6InhtIiwiY3JlYXRlZEF0IjoiMjAyNC0xMC0xNlQwNzoxMToyNi4xMDJaIiwidXNlckdyb3VwSWQiOiJzbldtWlhGQzNiLW1PZXE4Z2RlclgiLCJleHBpcmVEYXRlIjoiMjAyNC0xMS0xNVQxMDo1Njo1MC40NDBaIiwibm9FeHBpcmUiOnRydWUsImFsbG93QWxsUGVybWlzc2lvbiI6dHJ1ZSwiX2lkIjoiWGFfY0JRNGtLRU1GeF9uYWRtWGN3IiwiX192IjowfSwiaWF0IjoxNzI5MDc2MjE3fQ.yWsfom319r_bMe2aJ_qBhVkFprOibeLlrh1AV2V-N-8",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOnsibmFtZSI6ImFkbWluIiwiY3JlYXRlZEF0IjoiMjAyNC0xMC0yM1QxMjoyNDoyNy4wMDRaIiwidXNlckdyb3VwSWQiOiIiLCJleHBpcmVEYXRlIjoiMjAyNC0xMS0yMlQxMjo0OTowNS44NThaIiwibm9FeHBpcmUiOnRydWUsImFsbG93QWxsUGVybWlzc2lvbiI6dHJ1ZSwiX2lkIjoiUk13S0RPUGk5akozdjVVNDJweVNyIiwiX192IjowfSwiaWF0IjoxNzI5Njg3NzUyfQ.bju-7tdUywPb0wEnUkw256PYQ2cbQilfTjTX_U-prnA",
     },
   };
 });

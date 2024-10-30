@@ -14,6 +14,7 @@ export interface IProduct {
   attachment?: IAttachment;
   attachmentMore?: IAttachment[];
   description?: string;
+  category?: ICategory;
 }
 
 export interface IUom {
@@ -28,6 +29,7 @@ export interface ICategory {
   name: string;
   code: string;
   order: number;
+  description: string;
 }
 
 export type RoomType = ICategory & { rooms: IProduct[] };

@@ -16,8 +16,9 @@ import {
 import { Separator } from "../ui/separator";
 import SelectRoomProductCard from "../select-room-product-card/select-room-product-card";
 import { useAtom } from "jotai";
-import { toggleSelectRateAtom } from "@/store/reserve";
+import { selectedRoomAtom } from "@/store/reserve";
 import { IProduct } from "@/types/products";
+import { toggleSelectRateAtom } from "@/store/other";
 
 const SelectProductCard = ({
   className,
@@ -26,9 +27,10 @@ const SelectProductCard = ({
 }: {
   className?: string;
   index: number;
-  room: any;
+  room: IProduct;
 }) => {
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
+  const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
 
   return (
     <div className={`space-y-4 border p-4 rounded-xl ${className}`}>
@@ -44,7 +46,8 @@ const SelectProductCard = ({
       <Button
         className="w-full"
         onClick={() => {
-          setToggleSelectRate(!toggleSelectRate);
+          setToggleSelectRate(true);
+          setSelectedRoom(room);
         }}
       >
         Select rate

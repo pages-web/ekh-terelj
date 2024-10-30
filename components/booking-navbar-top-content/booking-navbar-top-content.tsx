@@ -18,7 +18,7 @@ import { Link } from "@/i18n/routing";
 const BookingNavbarTopContent = () => {
   const [date, setDate] = useAtom(reserveDateAtom);
   const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
-  const { adults, children, room } = reserveCount || "";
+  const { adults, children, room } = reserveCount;
 
   return (
     <div className="w-full flex xl:flex-row flex-col justify-center items-center gap-6">

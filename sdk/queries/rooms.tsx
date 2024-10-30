@@ -5,6 +5,8 @@ import {
 } from "@apollo/client";
 import { ICategory, IProduct } from "@/types/products";
 import { queries } from "../graphql/rooms";
+import { useAtom } from "jotai";
+import { reserveDateAtom } from "@/store/reserve";
 
 const useRooms = (
   options?: OperationVariables
@@ -32,55 +34,41 @@ export const useRoomCategories = (options?: OperationVariables) => {
 };
 
 type CheckRoomsResult = {
-  roomCategories: (ICategory & {
-    rooms: (IProduct & { available: boolean })[];
-  })[];
+  roomCategoriesByProduct: IProduct[];
   loading: boolean;
   rooms: IProduct[];
+  refetch: any;
 };
 
 export const useCheckRooms = (
   options?: OperationVariables
 ): CheckRoomsResult => {
-  const { rooms, loading: loadingRooms } = useRooms({
+  const { loading: loadingRooms } = useRooms({
     onCompleted({ products }: { products: IProduct[] }) {
       checkRooms({
         variables: {
           pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID,
           ids: products.map((product) => product._id),
           ...options?.variables,
-          startDate: "2024-10-15T16:00:00.000Z",
-          endDate: "2024-10-16T16:00:00.000Z",
         },
       });
     },
   });
 
-  const { roomCategories, loading: loadingRoomCategories } =
-    useRoomCategories();
+  const [checkRooms, { loading: loadingCheckRooms, data, refetch }] =
+    useLazyQuery(queries.checkRooms, options);
 
-  const [checkRooms, { loading: loadingCheckRooms, data }] = useLazyQuery(
-    queries.checkRooms,
-    options
+  const availableRooms: IProduct[] = data?.pmsCheckRooms;
+  const availableCategoriesByProduct = availableRooms?.filter(
+    (room, index, self) =>
+      index === self.findIndex((r) => r.categoryId === room.categoryId)
   );
 
-  const availableRoomIds =
-    data?.pmsCheckRooms.map((room: { _id: string }) => room._id) || [];
-
-  const mappedRoomCategories = roomCategories?.map((category: ICategory) => ({
-    ...category,
-    rooms: rooms
-      ?.filter((room: IProduct) => room.categoryId === category._id)
-      .map((room: IProduct) => ({
-        ...room,
-        available: availableRoomIds.includes(room._id),
-      })),
-  }));
-
   return {
-    rooms,
-    roomCategories: mappedRoomCategories,
-    loading: loadingRooms || loadingCheckRooms || loadingRoomCategories,
+    rooms: availableRooms,
+    roomCategoriesByProduct: availableCategoriesByProduct,
+    loading: loadingRooms || loadingCheckRooms,
+    refetch,
   };
 };
 

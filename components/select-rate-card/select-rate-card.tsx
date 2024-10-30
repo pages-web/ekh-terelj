@@ -10,22 +10,37 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useAtom } from "jotai";
-import { reserveMealTypeAtom, toggleSelectRateAtom } from "@/store/reserve";
+import { reserveMealTypeAtom, selectedRoomAtom } from "@/store/reserve";
 import PopupOfferDetail from "../popup-offer-detail/popup-offer-detail";
 import OfferDetailsButton from "../offer-details-button/offer-details-button";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useEffect, useState } from "react";
+import { IProduct } from "@/types/products";
+import { toggleSelectRateAtom } from "@/store/other";
 
 const FormSchema = z.object({
   mealType: z.enum(["buffet", "continental"]),
 });
 
-const SelectRateCard = ({ className }: { className?: string }) => {
-  const isMobileLg = useMediaQuery("(min-width: 768px)");
+const SelectRateCard = ({
+  className,
+  room,
+  index,
+}: {
+  className?: string;
+  room: IProduct;
+  index: number;
+}) => {
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
   const [mealType, setMealType] = useAtom(reserveMealTypeAtom);
+  const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
+
+  const router = useRouter();
+
+  const isMobileLg = useMediaQuery("(min-width: 768px)");
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -34,7 +49,7 @@ const SelectRateCard = ({ className }: { className?: string }) => {
   });
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setMealType(data);
-    console.log(mealType);
+    router.push("/booking/your-details");
   }
   return (
     <Form {...form}>
@@ -94,26 +109,21 @@ const SelectRateCard = ({ className }: { className?: string }) => {
                 <div className="flex gap-1 items-center leading-none text-black/60">
                   <CircleAlert className="min-w-4 min-h-4" />
                   <span className="text-textxs w-[70px]">
-                    140.00 USD per night
+                    {`${selectedRoom?.unitPrice}₮ MNT per night`}
                   </span>
                 </div>
                 <h1 className="text-textxl md:text-displaysm font-bold text-end w-full">
-                  USD 140.00
+                  {`MNT ${selectedRoom?.unitPrice}₮`}
                 </h1>
               </div>
 
-              <Link
-                href={`/booking/your-details`}
-                className="md:w-fit w-full"
+              <Button
+                variant={"secondary"}
+                className="text-[16px] h-full md:py-4 md:w-fit w-full"
+                type="submit"
               >
-                <Button
-                  variant={"secondary"}
-                  className="text-[16px] h-full w-full md:py-4"
-                  type="submit"
-                >
-                  Book now
-                </Button>
-              </Link>
+                Book now
+              </Button>
             </div>
           </div>
         </div>

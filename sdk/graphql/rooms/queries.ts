@@ -22,6 +22,13 @@ const rooms = gql`
       status
       unitPrice
       categoryId
+      category {
+        _id
+        code
+        name
+        order
+        description
+      }
       uom
       description
       attachment {
@@ -47,6 +54,7 @@ const roomCategories = gql`
       code
       name
       order
+      description
     }
   }
 `;
@@ -65,6 +73,33 @@ const checkRooms = gql`
       ids: $ids
     ) {
       _id
+      name
+      type
+      code
+      status
+      unitPrice
+      categoryId
+      uom
+      description
+      attachment {
+        url
+        name
+        size
+        type
+      }
+      attachmentMore {
+        url
+        name
+        size
+        type
+      }
+      category {
+        _id
+        code
+        name
+        order
+        description
+      }
     }
   }
 `;

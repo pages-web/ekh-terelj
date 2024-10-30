@@ -1,12 +1,12 @@
 import { BedDouble, CircleAlert, User } from "lucide-react";
 import Image from "../ui/image";
 import { Separator } from "../ui/separator";
-import { IProduct } from "@/types/products";
+import { ICategory, IProduct } from "@/types/products";
 import { useLocale } from "next-intl";
 
 const SelectRoomProductCard = ({ ...room }: IProduct) => {
   const locale = useLocale();
-  const { name, description, unitPrice, attachment } = room;
+  const category = room.category;
   return (
     <div className="text-start space-y-3 cursor-pointer group">
       <div className="h-[300px] overflow-hidden w-fit rounded-xl relative flex justify-center items-center">
@@ -21,7 +21,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
           Room details
         </span>
         <h3 className="text-textlg absolute bottom-0 left-0 p-2 text-white font-semibold">
-          {name}
+          {category?.name}
         </h3>
       </div>
       <div className="flex items-start gap-2 border-b ">
@@ -33,13 +33,9 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
             Room(s): Size:<span className="text-black/50 "> 32(m2)</span>
           </p>
           <p
-            className="text-textsm line-clamp-6 text-black/50"
-            // dangerouslySetInnerHTML={{ __html: description || "" }}
-          >
-            Deluxe Twin Rooms offer stunning skyline views of Ulaanbaatar. The
-            rooms are equipped with two queen size beds, lounger chair, work
-            desk, 37" Samsung HD TV and bathroom.
-          </p>
+            className="h-[126px] text-textsm line-clamp-6 text-black/50"
+            dangerouslySetInnerHTML={{ __html: category?.description || "" }}
+          ></p>
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="text-textxs text-black/50">Accommodation</h3>
@@ -60,18 +56,10 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
 
       <div className="flex justify-between">
         <span className="text-textsm">
-          {/* {locale === "mn"
-            ? `${unitPrice}₮`
-            : `${Math.round(unitPrice / 3400)}$`}{" "} */}
-          {/* {unitPrice / 3400}$ per night */}
-          USD 140$ per night
+          {`MNT ${room.unitPrice}₮ per night`}
         </span>
         <span className="text-textlg font-bold">
-          {/* {locale === "mn"
-            ? `${unitPrice}₮ төгрөг`
-            : `USD ${Math.round(unitPrice / 3400)}$`} */}
-          {/* USD {unitPrice / 3400}$ */}
-          USD 140$
+          {`MNT ${room.unitPrice}₮`}
         </span>
       </div>
     </div>
