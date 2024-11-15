@@ -13,6 +13,8 @@ import BookingLayout from "../booking-layout";
 import { Button } from "@/components/ui/button";
 import { LockKeyhole } from "lucide-react";
 import SecuredConnection from "@/components/checkout-detail/secured-connection";
+import { useQuery } from "@apollo/client";
+import { queries } from "@/sdk/graphql/customers";
 
 const YourDetails = () => {
   return (

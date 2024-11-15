@@ -10,9 +10,9 @@ const YourDetails = () => {
 
   const [reserveCompleted, setReserveCompleted] = useAtom(reserveCompletedAtom);
 
-  if (!reserveCompleted) {
-    router.push("/booking");
-  }
+  // if (!reserveCompleted) {
+  //   router.push("/booking");
+  // }
 
   useEffect(() => {
     const handleBeforeUnload = (event: any) => {

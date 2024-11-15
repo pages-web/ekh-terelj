@@ -19,6 +19,7 @@ import { formatToDate, parseDate } from "@/lib/date";
 import { addDays, formatDistance } from "date-fns";
 import { useAtom } from "jotai";
 import {
+  dealIdAtom,
   reserveCompletedAtom,
   reserveCountAtom,
   reserveDateAtom,
@@ -27,13 +28,23 @@ import {
   selectedRoomAtom,
 } from "@/store/reserve";
 import { useCreateEditDeal, useStages } from "@/sdk/queries/sales";
-import { MutationHookOptions, useMutation } from "@apollo/client";
+import { MutationHookOptions, useMutation, useQuery } from "@apollo/client";
 import { mutations } from "@/sdk/graphql/sales";
 import { IStage } from "@/types/sales";
 import useCreateCustomer from "@/sdk/mutations/customers";
 import { useEffect, useState } from "react";
 import useCustomers from "@/sdk/queries/customers";
 import { useRouter } from "@/i18n/routing";
+import { queries } from "@/sdk/graphql/payments";
+import { queries as salesQueries } from "@/sdk/graphql/sales";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const FormSchema = z.object({
   speaking: z.string(),
@@ -52,21 +63,29 @@ const CheckoutForm = () => {
   const [reserveUser, setReserveUser] = useAtom(reserveUserAtom);
   const [reserveExtras, setReserveExtras] = useAtom(reserveExtrasAtom);
   const [reserveCompleted, setReserveCompleted] = useAtom(reserveCompletedAtom);
+  const [dealId, setDealId] = useAtom(dealIdAtom);
   const [customerId, setCustomerId] = useState();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      speaking: "",
-      firstname: "",
-      lastname: "",
-      mail: "",
-      phone: "",
-      description: "",
+      speaking: reserveUser.speaking,
+      firstname: reserveUser.firstname,
+      lastname: reserveUser.lastname,
+      mail: reserveUser.mail,
+      phone: reserveUser.phone,
+      description: reserveUser.description,
     },
   });
 
   const [addDeal, { loading }] = useMutation(mutations.dealsAdd);
+  const [editDeal] = useMutation(mutations.dealsEdit, {
+    variables: { id: dealId },
+  });
+  const { data: currentDeal } = useQuery(salesQueries.dealDetail, {
+    variables: { id: dealId },
+  });
+  const { data } = useQuery(queries.payments);
   const { stages, loading: stagesLoading } = useStages();
   const { createCustomer, error } = useCreateCustomer();
   // const { getCustomers, customers } = useCustomers();
@@ -122,19 +141,28 @@ const CheckoutForm = () => {
       productsData: [selectedRoomByMutation, selectedExtrasByMutation]?.flatMap(
         (item) => item
       ),
-      stageId: stages?.find((st: IStage) => st.code === "future")?._id,
+      stageId: stages?.find((st: IStage) => st.code === "unconfirmed")?._id,
       startDate: date?.from,
       closeDate: date?.to,
       description: data.description,
     };
 
-    addDeal({
-      variables,
-      onCompleted: () => {
-        setReserveCompleted(true);
-        router.push("/booking/confirmation");
-      },
-    });
+    if (!currentDeal?.dealDetail) {
+      addDeal({
+        variables,
+        onCompleted: (deal) => {
+          setReserveCompleted(true);
+          setDealId(deal?.dealsAdd?._id);
+        },
+      });
+    } else {
+      editDeal({
+        variables,
+        onCompleted: () => {
+          setReserveCompleted(true);
+        },
+      });
+    }
   }
   const titles = [
     {
@@ -142,7 +170,6 @@ const CheckoutForm = () => {
       content: <PersonalInfoPart form={form} />,
     },
     { title: "Additional Services", content: <ExtraServices form={form} /> },
-    { title: "Payment method", content: <PaymentPart /> },
   ];
   return (
     <Form {...form}>
@@ -192,6 +219,20 @@ const CheckoutForm = () => {
         <Button size={"lg"} className="w-full" type="submit">
           Confirm Booking
         </Button>
+        <Dialog
+          onOpenChange={setReserveCompleted}
+          open={reserveCompleted ? true : false}
+          // defaultOpen
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-destructive">
+                Don't close until pay
+              </DialogTitle>
+            </DialogHeader>
+            <PaymentPart paymentsData={data?.payments} />
+          </DialogContent>
+        </Dialog>
       </form>
     </Form>
   );

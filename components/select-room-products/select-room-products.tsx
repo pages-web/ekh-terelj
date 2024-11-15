@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 const SelectRoomProducts = () => {
   const [date] = useAtom(reserveDateAtom);
-  const { roomCategoriesByProduct, refetch, rooms } = useCheckRooms({
+  const { roomCategoriesByProduct, refetch, rooms, loading } = useCheckRooms({
     variables: { startDate: date?.from, endDate: date?.to },
   });
 
@@ -43,6 +43,14 @@ const SelectRoomProducts = () => {
       setDenominator(3);
     }
   }, [isMd, isLg]);
+
+  if (loading) {
+    return (
+      <div className="w-full pt-40 flex justify-center font-bold">
+        loading...
+      </div>
+    );
+  }
 
   if (!roomCategoriesByProduct) {
     return (

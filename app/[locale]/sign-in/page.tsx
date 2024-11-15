@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function AuthForm() {
   const [isSignIn, setIsSignIn] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPass , setShowConfirmPass] = useState(false)
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const toggleForm = () => {
     setIsSignIn(!isSignIn);
@@ -18,7 +18,7 @@ export default function AuthForm() {
   };
   const toggleConfirmPassVisibility = () => {
     setShowConfirmPass(!showConfirmPass);
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -41,7 +41,10 @@ export default function AuthForm() {
         <form className="space-y-4">
           {!isSignIn && (
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 First Name
               </label>
               <Input
@@ -54,7 +57,10 @@ export default function AuthForm() {
           )}
           {!isSignIn && (
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Last Name
               </label>
               <Input
@@ -66,7 +72,10 @@ export default function AuthForm() {
             </div>
           )}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <Input
@@ -77,7 +86,10 @@ export default function AuthForm() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <div className="relative">
@@ -99,27 +111,33 @@ export default function AuthForm() {
           {!isSignIn && (
             <>
               <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
-            </label>
-            <div className="relative">
-              <Input
-                type={showConfirmPass ? "text" : "password"}
-                id="confirmPassword"
-                placeholder="••••••••••"
-                required
-              />
-              <Button
-                type="button"
-                className="absolute inset-y-0 right-0 px-3 text-white text-sm "
-                onClick={toggleConfirmPassVisibility}
-              >
-                {showConfirmPass ? "Hide" : "Show"}
-              </Button>
-            </div>
-          </div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Input
+                    type={showConfirmPass ? "text" : "password"}
+                    id="confirmPassword"
+                    placeholder="••••••••••"
+                    required
+                  />
+                  <Button
+                    type="button"
+                    className="absolute inset-y-0 right-0 px-3 text-white text-sm "
+                    onClick={toggleConfirmPassVisibility}
+                  >
+                    {showConfirmPass ? "Hide" : "Show"}
+                  </Button>
+                </div>
+              </div>
               <div>
-                <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Phone
                 </label>
                 <Input
@@ -132,7 +150,7 @@ export default function AuthForm() {
             </>
           )}
           <Button type="submit" className="w-full bg-green-800 text-white">
-            {isSignIn ? 'Sign In' : 'Sign Up'}
+            {isSignIn ? "Sign In" : "Sign Up"}
           </Button>
         </form>
       </div>

@@ -18,8 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PhoneInput } from "@/components/ui/phone-input";
+import { useAtomValue } from "jotai";
+import { reserveUserAtom } from "@/store/reserve";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {
+  const reserveUser = useAtomValue(reserveUserAtom);
   return (
     <>
       <div className="grid grid-cols-7 gap-6 px-1 mb-3">

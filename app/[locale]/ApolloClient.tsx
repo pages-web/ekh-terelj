@@ -19,14 +19,15 @@ const httpLink: any = new HttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
+  const token = process.env.NEXT_PUBLIC_ERXES_APP_TOKEN;
   return {
-    headers: {  
+    headers: {
       ...headers,
       "Access-Control-Allow-Origin": (
         process.env.NEXT_PUBLIC_MAIN_API_DOMAIN || ""
       ).replace("/gateway", ""),
-      "erxes-app-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOnsibmFtZSI6ImFkbWluIiwiY3JlYXRlZEF0IjoiMjAyNC0xMC0yM1QxMjoyNDoyNy4wMDRaIiwidXNlckdyb3VwSWQiOiIiLCJleHBpcmVEYXRlIjoiMjAyNC0xMS0yMlQxMjo0OTowNS44NThaIiwibm9FeHBpcmUiOnRydWUsImFsbG93QWxsUGVybWlzc2lvbiI6dHJ1ZSwiX2lkIjoiUk13S0RPUGk5akozdjVVNDJweVNyIiwiX192IjowfSwiaWF0IjoxNzI5Njg3NzUyfQ.bju-7tdUywPb0wEnUkw256PYQ2cbQilfTjTX_U-prnA",
+      "erxes-app-token": token || "",
+      Authorization: token ? `Bearer ${token}` : "",
     },
   };
 });

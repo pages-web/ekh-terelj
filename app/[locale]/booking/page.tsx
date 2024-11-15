@@ -1,3 +1,4 @@
+"use client";
 import CategoryTabs from "@/components/category-tabs/category-tabs";
 import Heading from "@/components/heading/heading";
 import ProductCard from "@/components/product-card/product-card";
@@ -6,8 +7,9 @@ import BookingLayout from "./booking-layout";
 import SelectRateCard from "@/components/select-rate-card/select-rate-card";
 import SelectRoomProducts from "@/components/select-room-products/select-room-products";
 import useRooms from "@/sdk/queries/rooms";
+import { useQuery } from "@apollo/client";
 
-const SelectRoom = async () => {
+const SelectRoom = () => {
   return (
     <BookingLayout currentActive={1}>
       <SelectRoomProducts />
