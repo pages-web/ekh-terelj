@@ -1,4 +1,6 @@
+import { ApolloError } from "@apollo/client";
 import { clsx, type ClassValue } from "clsx";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,3 +21,6 @@ export const readFile = (url: string = "") => {
   }
   return url;
 };
+
+export const onError = (error: ApolloError) =>
+  toast.error("Алдаа гарлаа!", { description: error.message });

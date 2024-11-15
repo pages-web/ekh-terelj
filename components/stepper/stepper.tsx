@@ -23,7 +23,8 @@ const Stepper = ({
                 title={step.title}
                 index={index + 1}
                 isDone={index < currentActive}
-                isCurrent={index > currentActive}
+                isCurrent={index === currentActive}
+                isNext={index === currentActive + 1}
               />
             </Link>
           );

@@ -15,15 +15,16 @@ import { DateRange } from "react-day-picker";
 import ReserveButton from "../../containers/reserve/reserve-button";
 import { useAtom } from "jotai";
 import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
-import CountForm from "@/containers/reserve/count-form";
 import DateForm from "@/containers/reserve/date-form";
+import RoomForm from "@/containers/reserve/room-form";
+import GuestForm from "@/containers/reserve/guest-form";
 
 export const ChildrenWithTitle = ({
   children,
   title,
 }: React.PropsWithChildren & { title: string }) => {
   return (
-    <div className="w-full lg:max-w-[250px] flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-3">
       <h2>{title}</h2>
       {children}
     </div>
@@ -35,13 +36,6 @@ const ReserveSelectDate = () => {
   const [reserveCount] = useAtom(reserveCountAtom);
   const [active, setActive] = useState(0);
   const { adults, children, room } = reserveCount || "";
-
-  const filters = [
-    { name: "Hotels", id: 0 },
-    { name: "Villas", id: 1 },
-    { name: "Apartments", id: 2 },
-    { name: "Resort", id: 3 },
-  ];
 
   return (
     <div className="w-full flex flex-col p-6 gap-8 rounded-[12px] bg-white border shadow-lg">
@@ -76,8 +70,8 @@ const ReserveSelectDate = () => {
                 )}
               >
                 <CalendarIcon className="mr-2 min-h-5 h-5 w-5 min-w-5" />
-                {date?.from ? (
-                  format(date.from, "PPP")
+                {date?.from && date?.to ? (
+                  format(date.from, "PPP") + ` - ` + format(date.to, "PPP")
                 ) : (
                   <span>Pick a date</span>
                 )}
@@ -88,7 +82,7 @@ const ReserveSelectDate = () => {
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
-
+        {/* 
         <ChildrenWithTitle title="Check-out">
           <Popover>
             <PopoverTrigger asChild>
@@ -108,7 +102,7 @@ const ReserveSelectDate = () => {
               <DateForm />
             </PopoverContent>
           </Popover>
-        </ChildrenWithTitle>
+        </ChildrenWithTitle> */}
 
         <ChildrenWithTitle title="Room">
           <Popover>
@@ -130,7 +124,7 @@ const ReserveSelectDate = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5" align="start">
-              <CountForm />
+              <RoomForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -155,7 +149,7 @@ const ReserveSelectDate = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5 " align="start">
-              <CountForm />
+              <GuestForm />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>

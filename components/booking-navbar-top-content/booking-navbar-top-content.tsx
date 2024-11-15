@@ -10,10 +10,11 @@ import { useAtom } from "jotai";
 import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
 import BackButton from "../back-button/back-button";
 import ReserveButton from "../../containers/reserve/reserve-button";
-import CountForm from "@/containers/reserve/count-form";
 import DateForm from "@/containers/reserve/date-form";
 import Image from "../ui/image";
 import { Link } from "@/i18n/routing";
+import RoomForm from "@/containers/reserve/room-form";
+import GuestForm from "@/containers/reserve/guest-form";
 
 const BookingNavbarTopContent = () => {
   const [date, setDate] = useAtom(reserveDateAtom);
@@ -39,7 +40,11 @@ const BookingNavbarTopContent = () => {
               )}
             >
               <CalendarIcon className="mr-2 min-h-5 h-5 w-5 min-w-5" />
-              {date?.from ? format(date.from, "PPP") : <span>Pick a date</span>}
+              {date?.from && date?.to ? (
+                format(date.from, "PPP") + ` - ` + format(date.to, "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
@@ -47,7 +52,7 @@ const BookingNavbarTopContent = () => {
           </PopoverContent>
         </Popover>
 
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger asChild>
             <Button
               id="date"
@@ -64,7 +69,7 @@ const BookingNavbarTopContent = () => {
           <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
             <DateForm />
           </PopoverContent>
-        </Popover>
+        </Popover> */}
 
         <Popover>
           <PopoverTrigger asChild>
@@ -85,7 +90,7 @@ const BookingNavbarTopContent = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] p-5" align="start">
-            <CountForm />
+            <RoomForm />
           </PopoverContent>
         </Popover>
 
@@ -108,7 +113,7 @@ const BookingNavbarTopContent = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] p-5 " align="start">
-            <CountForm />
+            <GuestForm />
           </PopoverContent>
         </Popover>
       </div>

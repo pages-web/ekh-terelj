@@ -19,14 +19,14 @@ const httpLink: any = new HttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = process.env.NEXT_PUBLIC_ERXES_APP_TOKEN;
+  const token = sessionStorage.getItem("token") || "";
   return {
     headers: {
       ...headers,
       "Access-Control-Allow-Origin": (
         process.env.NEXT_PUBLIC_MAIN_API_DOMAIN || ""
       ).replace("/gateway", ""),
-      "erxes-app-token": token || "",
+      "erxes-app-token": process.env.NEXT_PUBLIC_ERXES_APP_TOKEN || "",
       Authorization: token ? `Bearer ${token}` : "",
     },
   };

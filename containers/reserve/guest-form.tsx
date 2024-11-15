@@ -25,7 +25,7 @@ const FormSchema = z.object({
   children: z.number().min(0),
 });
 
-const CountForm = () => {
+const GuestForm = () => {
   const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -40,7 +40,6 @@ const CountForm = () => {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setReserveCount(data);
-    console.log(reserveCount);
   }
 
   return (
@@ -49,17 +48,6 @@ const CountForm = () => {
         <div className="flex flex-col gap-6 ">
           <div className="flex flex-col gap-3">
             <h2 className="text-textxl">Guests</h2>
-            <FormField
-              control={form.control}
-              name="room"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <CountField title="Room" field={field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="adults"
@@ -115,4 +103,4 @@ const CountForm = () => {
     </Form>
   );
 };
-export default CountForm;
+export default GuestForm;

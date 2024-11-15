@@ -12,7 +12,8 @@ import { BookingFormT } from "@/lib/schema/types";
 import { formatToDate, parseDate } from "@/lib/date";
 import useRooms from "./rooms";
 import { useTableDate } from "@/store/tableView.store";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 const useDeals = () => {
   const middleDate = startOfDay(useTableDate().date);

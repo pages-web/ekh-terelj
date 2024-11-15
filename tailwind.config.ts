@@ -20,6 +20,11 @@ const config: Config = {
       textmd: "16px",
       textsm: "14px",
       textxs: "12px",
+      xl: "20px",
+      lg: "18px",
+      md: "16px",
+      sm: "14px",
+      xs: "12px",
     },
     container: {
       center: true,

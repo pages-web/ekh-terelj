@@ -72,10 +72,8 @@ const LanguageButton = ({ locale }: { locale: string }) => {
                 {locale === "en" ? "MN" : "EN"}
               </Button>
             </Link>
-            <Link href="/sign-in" onClick={() => setIsMenuOpen(false)}>
-              <Button className="bg-white w-full text-black" variant="default">
-                Sign In
-              </Button>
+            <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+              <Button className="">Log In</Button>
             </Link>
           </div>
         </SheetContent>
@@ -90,9 +88,9 @@ const LanguageButton = ({ locale }: { locale: string }) => {
           <Link href={pathname} locale={locale === "en" ? "mn" : "en"}>
             <Button variant="default">{locale === "en" ? "MN" : "EN"}</Button>
           </Link>
-          <Link href="/sign-in">
-            <Button className="bg-white text-black" variant="default">
-              Sign In
+          <Link href="/login">
+            <Button variant={"outline"} className="text-black">
+              Log in
             </Button>
           </Link>
         </div>
