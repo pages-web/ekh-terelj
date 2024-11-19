@@ -165,11 +165,11 @@ const CheckoutForm = () => {
     }
   }
   const titles = [
+    // { title: "Additional Services", content: <ExtraServices form={form} /> },
     {
       title: "Your personal information",
       content: <PersonalInfoPart form={form} />,
     },
-    { title: "Additional Services", content: <ExtraServices form={form} /> },
   ];
   return (
     <Form {...form}>

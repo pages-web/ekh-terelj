@@ -11,27 +11,26 @@ import { Input } from "@/components/ui/input";
 import { useGetCategories, useGetProducts } from "@/sdk/queries/extras";
 import { selectedExtras } from "@/store/reserve";
 import { IProduct } from "@/types/products";
-import { useWatch } from "react-hook-form";
 
-const ExtraServices = ({ form }: { form: any }) => {
-  const name = useWatch({
-    name: "name",
-    defaultValue: "",
-  });
-  const categoryId = useWatch({
-    name: "categoryId",
-    defaultValue: process.env.NEXT_PUBLIC_EXTRAS_ID,
-  });
+const ExtraServices = () => {
+  // const name = useWatch({
+  //   name: "name",
+  //   defaultValue: "",
+  // });
+  // const categoryId = useWatch({
+  //   name: "categoryId",
+  //   defaultValue: process.env.NEXT_PUBLIC_EXTRAS_ID,
+  // });
 
   const { products, loading } = useGetProducts({
     variables: {
-      searchValue: name,
       perPage: 10,
-      categoryId,
+      categoryId: process.env.NEXT_PUBLIC_EXTRAS_ID,
     },
   });
+
   return (
-    <div className="grid md:grid-cols-2 gap-6 px-1">
+    <div className="flex flex-col gap-3 px-1">
       {products.map((product: IProduct, index: number) => (
         <ReserveDetailExtra
           product={product}

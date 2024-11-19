@@ -33,3 +33,8 @@ export interface ICategory {
 }
 
 export type RoomType = ICategory & { rooms: IProduct[] };
+
+export interface IReserveRoomFullDetail {
+  room: IProduct;
+  extras: IProduct[];
+}

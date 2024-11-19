@@ -7,12 +7,12 @@ const Step = ({
   title,
   className,
   isCurrent,
-  isNext,
-}: {
+}: // isNext,
+{
   index: number;
   isDone?: boolean;
   isCurrent?: boolean;
-  isNext?: boolean;
+  // isNext?: boolean;
   title: string;
   className?: string;
 }) => {
@@ -25,9 +25,9 @@ const Step = ({
             ? "bg-secondary hover:bg-secondary/80"
             : isCurrent
             ? "bg-secondary hover:bg-secondary/80"
-            : isNext
-            ? ""
-            : "bg-[#DADCE0] hover:bg-[#DADCE0]"
+            : // : isNext
+              // ? ""
+              "bg-[#DADCE0] hover:bg-[#DADCE0]"
         }`}
       >
         {isDone ? <Check className="w-4 h-4 md:w-5 md:h-5" /> : index}
@@ -38,9 +38,9 @@ const Step = ({
             ? "text-secondary"
             : isCurrent
             ? "text-secondary"
-            : isNext
-            ? "text-primary"
-            : "text-[#3c4043]/80"
+            : // : isNext
+              // ? "text-primary"
+              "text-[#3c4043]/80"
         }`}
       >
         {title}

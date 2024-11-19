@@ -3,6 +3,6 @@ export type IReserveUser = {
   firstname?: string;
   lastname?: string;
   mail?: string;
-  phone?: string;
+  phone?: any;
   description?: string;
 };

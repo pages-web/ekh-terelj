@@ -21,8 +21,8 @@ const YourDetails = () => {
     <BookingLayout currentActive={2}>
       <div className="flex flex-col-reverse md:flex-row justify-center gap-6">
         <div className="md:w-[50%] space-y-10 border p-4 rounded-xl shadow-lg relative">
-          <SecuredConnection />
-          <AccountPart />
+          {/* <SecuredConnection /> */}
+          {/* <AccountPart /> */}
           <CheckoutForm />
         </div>
         <div className="md:sticky top-24 h-fit md:w-[30%] border p-4 rounded-xl shadow-lg">

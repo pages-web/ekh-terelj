@@ -2,8 +2,13 @@
 import { IProduct } from "@/types/products";
 import { Button } from "../ui/button";
 import { useAtom } from "jotai";
-import { reserveExtrasAtom } from "@/store/reserve";
+import {
+  reserveExtrasAtom,
+  selectedRoomAtom,
+  selectedRoomsAtom,
+} from "@/store/reserve";
 import { useState } from "react";
+import { RESET } from "jotai/utils";
 
 const ReserveDetailExtra = ({
   product,
@@ -16,24 +21,33 @@ const ReserveDetailExtra = ({
 }) => {
   const [isAdd, setIsAdd] = useState<boolean>(true);
   const [reserveExtras, setReserveExtras] = useAtom(reserveExtrasAtom);
+  const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
+  // setSelectedRoom(RESET);
   return (
-    <div className="flex justify-between items-center gap-4">
+    <div className="flex justify-between items-center gap-4 border rounded-lg p-4">
       <span>{product.name}</span>
-      <div
-        className={`cursor-pointer text-textsm border px-4 py-2 rounded-lg hover:bg-accent duration-200 ${
-          isAdd
-            ? "text-accent-foreground"
-            : "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-        }`}
+      <Button
+        className={`cursor-pointer text-textsm border px-4 py-2 rounded-lg`}
+        variant={isAdd ? "outline" : "destructive"}
         onClick={() => {
           setIsAdd(!isAdd);
           isAdd
-            ? setReserveExtras([...reserveExtras, product])
-            : setReserveExtras(reserveExtras.splice(index, 1));
+            ? setSelectedRoom({
+                room: selectedRoom.room,
+                extras: selectedRoom.extras
+                  ? [...selectedRoom.extras, product]
+                  : [product],
+              })
+            : setSelectedRoom({
+                room: selectedRoom.room,
+                extras: selectedRoom.extra.filter(
+                  (item: IProduct) => item._id !== product._id
+                ),
+              });
         }}
       >
         {isAdd ? "Add" : "Remove"}
-      </div>
+      </Button>
     </div>
   );
 };

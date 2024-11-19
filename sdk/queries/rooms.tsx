@@ -6,7 +6,7 @@ import {
 import { ICategory, IProduct } from "@/types/products";
 import { queries } from "../graphql/rooms";
 import { useAtom } from "jotai";
-import { reserveDateAtom } from "@/store/reserve";
+import { reserveDateAtom, selectedRoomsAtom } from "@/store/reserve";
 
 const useRooms = (
   options?: OperationVariables
@@ -54,11 +54,15 @@ export const useCheckRooms = (
       });
     },
   });
+  const [selectedRooms] = useAtom(selectedRoomsAtom);
 
   const [checkRooms, { loading: loadingCheckRooms, data, refetch }] =
     useLazyQuery(queries.checkRooms, options);
 
-  const availableRooms: IProduct[] = data?.pmsCheckRooms;
+  const availableRooms: IProduct[] = data?.pmsCheckRooms.filter(
+    (room: IProduct) => !selectedRooms.some((r) => r.room?._id === room._id)
+  );
+
   const availableCategoriesByProduct = availableRooms?.filter(
     (room, index, self) =>
       index === self.findIndex((r) => r.categoryId === room.categoryId)

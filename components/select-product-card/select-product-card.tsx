@@ -2,7 +2,14 @@
 
 import { BedDouble, CircleAlert, Star, User } from "lucide-react";
 import Image from "../ui/image";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import PopupProductDetail from "../popup-product-detail/popup-product-detail";
 import { Button } from "../ui/button";
 import { useCallback, useEffect, useState } from "react";
@@ -15,10 +22,18 @@ import {
 } from "../ui/custom-ui/custom-accordion";
 import { Separator } from "../ui/separator";
 import SelectRoomProductCard from "../select-room-product-card/select-room-product-card";
-import { useAtom } from "jotai";
-import { selectedRoomAtom } from "@/store/reserve";
+import { useAtom, useSetAtom } from "jotai";
+import {
+  addSelectedRoomAtom,
+  reserveCountAtom,
+  selectedRoomAtom,
+  selectedRoomsAtom,
+} from "@/store/reserve";
 import { IProduct } from "@/types/products";
 import { toggleSelectRateAtom } from "@/store/other";
+import ExtraServices from "../checkout-detail/extra-services/extra-services";
+import { useToast } from "@/hooks/use-toast";
+import { RESET } from "jotai/utils";
 
 const SelectProductCard = ({
   className,
@@ -31,9 +46,14 @@ const SelectProductCard = ({
 }) => {
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
   const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
+  const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
+  const [reserveCount] = useAtom(reserveCountAtom);
+  const [, addSelectedRoom] = useAtom(addSelectedRoomAtom);
+
+  const { toast } = useToast();
 
   return (
-    <div className={`space-y-4 border p-4 rounded-xl ${className}`}>
+    <div className={`h-fit space-y-4 border p-4 rounded-xl ${className}`}>
       <Dialog>
         <DialogTrigger>
           <SelectRoomProductCard {...room} />
@@ -43,15 +63,48 @@ const SelectProductCard = ({
         </DialogContent>
       </Dialog>
 
-      <Button
-        className="w-full"
-        onClick={() => {
-          setToggleSelectRate(true);
-          setSelectedRoom(room);
-        }}
-      >
-        Select rate
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            className="w-full"
+            onClick={() => {
+              // setToggleSelectRate(true);
+            }}
+          >
+            Select room
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle className="text-textlg flex-row items-center gap-2">
+            Select additional services{" "}
+            <span className="text-textxs">(optional)</span>
+          </DialogTitle>
+
+          <Separator />
+          <ExtraServices />
+
+          <DialogClose asChild>
+            <Button
+              onClick={() => {
+                setSelectedRoom({
+                  ...selectedRoom,
+                  room: room,
+                });
+                addSelectedRoom(reserveCount.room);
+                setSelectedRoom(RESET);
+                selectedRooms.length >= reserveCount.room &&
+                  toast({
+                    variant: "destructive",
+                    title: "It's full",
+                    description: "You can't add more rooms",
+                  });
+              }}
+            >
+              Done
+            </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
