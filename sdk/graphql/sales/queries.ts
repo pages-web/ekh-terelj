@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const deals = gql`
+const pmsRooms = gql`
   query PmsRooms(
     $pipelineId: String!
     $endDate1: Date
@@ -21,6 +21,84 @@ const deals = gql`
       stage {
         code
       }
+    }
+  }
+`;
+
+const deals = gql`
+  query Deals(
+    $initialStageId: String
+    $stageId: String
+    $limit: Int
+    $ids: [String]
+    $parentId: String
+    $pipelineId: String
+    $pipelineIds: [String]
+    $customerIds: [String]
+    $companyIds: [String]
+    $productIds: [String]
+    $search: String
+    $startDate: String
+    $endDate: String
+  ) {
+    deals(
+      initialStageId: $initialStageId
+      stageId: $stageId
+      limit: $limit
+      _ids: $ids
+      parentId: $parentId
+      pipelineId: $pipelineId
+      pipelineIds: $pipelineIds
+      customerIds: $customerIds
+      companyIds: $companyIds
+      productIds: $productIds
+      search: $search
+      startDate: $startDate
+      endDate: $endDate
+    ) {
+      products
+      unUsedAmount
+      amount
+      customFieldsData
+      _id
+      name
+      companies
+      customers
+      stage
+      labels
+      isComplete
+      startDate
+      closeDate
+      createdAt
+      modifiedAt
+      score
+      number
+      stageChangedDate
+      tagIds
+      customProperties
+      status
+      branchIds
+      branches {
+        _id
+        title
+        parentId
+        supervisorId
+        code
+        order
+        userIds
+        userCount
+        status
+        address
+        radius
+        workhours
+        phoneNumber
+        email
+        links
+      }
+      departmentIds
+      assignedUserIds
+      order
+      createdUserId
     }
   }
 `;
@@ -108,6 +186,7 @@ const paymentTypes = gql`
 `;
 
 const queries = {
+  pmsRooms,
   deals,
   salesPipelineLabels,
   stages,

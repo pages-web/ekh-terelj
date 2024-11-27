@@ -23,7 +23,6 @@ const SelectedRoomCard = () => {
   const nights = parseInt(
     date?.from && date?.to && formatDistance(date?.from, date?.to)
   );
-  console.log(selectedRooms);
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-displayxs text-black">Your reservation</h1>

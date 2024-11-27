@@ -41,7 +41,6 @@ const RoomForm = () => {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setReserveCount(data);
   }
-  console.log(reserveCount);
 
   return (
     <Form {...form}>

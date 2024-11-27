@@ -6,6 +6,7 @@ export const openMethodsAtom = atom<boolean>(true);
 export const openDetailAtom = atom<boolean>(false);
 export const showSuccessAtom = atom<boolean>(false);
 export const selectedMethodAtom = atom<string>("");
+export const selecteddMethodAtom = atom<any>({});
 export const invoiceDetailAtom = atom<IInvoice | null>(null);
 
 export const handleMethodAtom = atom(
@@ -21,3 +22,5 @@ export const handleMethodAtom = atom(
     }
   }
 );
+
+export const paymentTypeAtom = atom<string>("full");

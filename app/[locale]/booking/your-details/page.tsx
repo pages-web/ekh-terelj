@@ -15,6 +15,8 @@ import { LockKeyhole } from "lucide-react";
 import SecuredConnection from "@/components/checkout-detail/secured-connection";
 import { useQuery } from "@apollo/client";
 import { queries } from "@/sdk/graphql/customers";
+import PaymentPart from "@/components/checkout-detail/payment-part/payment-part";
+import StripePayment from "@/containers/payments/stripe/stripe";
 
 const YourDetails = () => {
   return (

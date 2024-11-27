@@ -40,7 +40,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
             <span className="text-black/50 "> 32(m2)</span>
           </p> */}
           <p
-            className="h-[126px] text-textsm line-clamp-6 text-black/50"
+            className="h-[106px] text-textsm line-clamp-5 text-black/50"
             dangerouslySetInnerHTML={{ __html: category?.description || "" }}
           ></p>
         </div>

@@ -1,0 +1,10 @@
+[lcl-host]
+realm-apid = 'development'
+
+[org]
+apid = 'test-5bc892'
+
+[service]
+apid = 'test'
+category = 'javascript'
+cert-style = 'acme'

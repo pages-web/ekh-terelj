@@ -2,9 +2,10 @@ import { useState } from "react";
 import Image from "../ui/image";
 import { useAtom } from "jotai";
 import { selectedMethodCardAtom } from "@/store/other";
+import { CreditCard } from "lucide-react";
 
 type Props = {
-  title?: string;
+  title: string;
   description?: string;
   methodName?: string;
   imgSrc?: string;
@@ -19,35 +20,32 @@ const PaymentMethodCard = ({
   const [selectedMethodCard, setSelectedMethodCard] = useAtom(
     selectedMethodCardAtom
   );
+  console.log(selectedMethodCard);
   return (
-    <div
-      className={`flex justify-between gap-4 border rounded-lg p-3 cursor-pointer ${
-        selectedMethodCard === title
-          ? "border-secondary shadow-md border-2"
-          : "border-black/10"
-      }`}
-      onClick={() => setSelectedMethodCard(title)}
-    >
-      <div className="space-y-4">
-        <div>
-          <h2 className="font-bold">{title}</h2>
-          <p className="text-black/50 text-textsm">{description}</p>
-        </div>
-        <h3 className="text-secondary font-bold">{methodName}</h3>
-      </div>
+    <div className="w-[120px] flex flex-col gap-2 items-center">
       <div
-        className={` overflow-hidden border  rounded-lg box-content ${
-          title === "Global Payment" ? "py-2 px-1 h-[22px]" : "p-2 h-[32px]"
+        className={`hover:bg-black/20 shadow-md duration-200 h-[80px] w-full flex items-center justify-center gap-4 border rounded-lg px-6 py-3 cursor-pointer  ${
+          selectedMethodCard === title
+            ? "border-secondary shadow-md border-2"
+            : "border-black/10"
         }`}
+        onClick={() => setSelectedMethodCard(title)}
       >
-        <Image
-          width={128}
-          height={128}
-          className="w-full h-full"
-          src={imgSrc || "/images/payments/qpay.png"}
-          quality={100}
-        />
+        <div className={`h-full max-h-[40px]`}>
+          {title === "Qpay" ? (
+            <Image
+              width={128}
+              height={128}
+              className="h-full w-full"
+              src={imgSrc || "/images/payments/qpay.png"}
+              quality={100}
+            />
+          ) : (
+            <CreditCard className="w-full h-full" color="#012D5E" />
+          )}
+        </div>
       </div>
+      <p>{title}</p>
     </div>
   );
 };

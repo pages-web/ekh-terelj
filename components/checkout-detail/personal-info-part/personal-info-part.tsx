@@ -20,13 +20,14 @@ import {
 import { PhoneInput } from "@/components/ui/phone-input";
 import { useAtomValue } from "jotai";
 import { reserveUserAtom } from "@/store/reserve";
+import { useCurrentUser } from "@/sdk/queries/auth";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {
-  const reserveUser = useAtomValue(reserveUserAtom);
+  const { currentUser } = useCurrentUser();
   return (
-    <>
-      <div className="grid grid-cols-7 gap-6 px-1 mb-3">
-        <FormField
+    <div>
+      <div className="grid grid-cols-6 gap-6 px-1 mb-3">
+        {/* <FormField
           control={form.control}
           name="speaking"
           render={({ field }) => (
@@ -48,13 +49,13 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <FormField
           control={form.control}
           name="firstname"
           render={({ field }) => (
-            <FormItem className="col-span-4 xl:col-span-6">
+            <FormItem className="col-span-3">
               <FormLabel className="text-textxs">First name</FormLabel>
               <FormControl>
                 <Input
@@ -72,7 +73,7 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           control={form.control}
           name="lastname"
           render={({ field }) => (
-            <FormItem className="col-span-7">
+            <FormItem className="col-span-3">
               <FormLabel className="text-textxs">Last name</FormLabel>
               <FormControl>
                 <Input
@@ -111,21 +112,26 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-textxs">Enter your phone</FormLabel>
+              <FormLabel className="text-textxs">Phone number</FormLabel>
               <FormControl>
-                <PhoneInput
+                <Input
+                  placeholder="Enter your phone"
+                  {...field}
+                  autoComplete="tel-national"
+                />
+                {/* <PhoneInput
                   international
                   className="text-textsm"
                   placeholder="Enter your phone"
                   {...field}
-                />
+                /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="description"
           render={({ field }) => (
@@ -143,9 +149,9 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
       </div>
-    </>
+    </div>
   );
 };
 export default PersonalInfoPart;

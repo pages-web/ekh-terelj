@@ -34,7 +34,13 @@ export interface ICategory {
 
 export type RoomType = ICategory & { rooms: IProduct[] };
 
+export interface ISelectedExtras extends IProduct {
+  information: {
+    parentId: string;
+  };
+}
+
 export interface IReserveRoomFullDetail {
   room: IProduct;
-  extras: IProduct[];
+  extras: ISelectedExtras[];
 }

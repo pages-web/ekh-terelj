@@ -18,7 +18,7 @@ import { useRouter } from "@/i18n/routing";
 const useDeals = () => {
   const middleDate = startOfDay(useTableDate().date);
 
-  const { data, loading } = useQuery(queries.deals, {
+  const { data, loading } = useQuery(queries.pmsRooms, {
     variables: {
       pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID,
       startDateStartDate: subDays(middleDate, 15),

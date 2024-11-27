@@ -6,14 +6,18 @@ import Image from "../ui/image";
 import { Separator } from "../ui/separator";
 import { ReactNode } from "react";
 import IconWithTitle from "../icon-with-title/icon-with-title";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import {
+  removeSelectedRoomAtom,
   reserveCountAtom,
   reserveDateAtom,
   reserveMealTypeAtom,
   selectedRoomAtom,
+  selectedRoomsAtom,
 } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
+import { useRouter } from "@/i18n/routing";
+import { paymentTypeAtom } from "@/store/payments";
 
 type TitleWithPrice = {
   title: string;
@@ -28,107 +32,120 @@ type TitleWithIcon = {
 };
 
 const ReservedRoomDetail = () => {
-  const SelectedFieldTitle = ({ title }: { title: string }) => {
-    return <p className="text-textxs text-black/60 capitalize">{title}</p>;
-  };
-  const TitleWithIcon = ({ icon, title }: TitleWithIcon) => {
-    return (
-      <p className="flex gap-2 items-center text-textsm text-black/60">
-        {icon} {title}
-      </p>
-    );
-  };
-  const TitleWithPrice = ({ desc, title, price, icon }: TitleWithPrice) => {
-    return (
-      <div className="flex justify-between">
-        <div className="flex flex-col md:gap-1">
-          <h2 className="text-textmd flex items-center gap-2">
-            {title} {icon}
-          </h2>
-          {desc && <p className="text-textsm text-black/60">{desc}</p>}
-        </div>
-        <h2 className="text-textmd">{price}</h2>
-      </div>
-    );
-  };
-
-  const [selectedRoom] = useAtom(selectedRoomAtom);
+  const router = useRouter();
+  const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveCount] = useAtom(reserveCountAtom);
-  const [date] = useAtom(reserveDateAtom);
+  const [date, setDate] = useAtom(reserveDateAtom);
+  const [, removeRoom] = useAtom(removeSelectedRoomAtom);
+  const [selectedRoom] = useAtom(selectedRoomAtom);
+  const paymentType = useAtomValue(paymentTypeAtom);
   const [mealType] = useAtom(reserveMealTypeAtom);
   const dateDiff = parseInt(date?.from && formatDistance(date?.from, date?.to));
   const totalPrice = selectedRoom.unitPrice * dateDiff;
   const taxes = (totalPrice * 10) / 100;
   const fee = (totalPrice * 2) / 100;
 
+  const paymentTypeDivider = paymentType === "full" ? 1 : 2;
+
+  const nights = parseInt(
+    date?.from && date?.to && formatDistance(date?.from, date?.to)
+  );
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-displayxs text-black">Your reservation</h1>
-      <h1 className="w-[80%] text-textlg leading-6">
-        {selectedRoom?.category?.name}
-      </h1>
+      {/* <div className="border p-3 rounded-xl">
+      <div className="flex flex-col lg:flex-row justify-between gap-2"></div>
+      
+      <div className="flex flex-col gap-3 md:gap-6 mt-4"></div>
+    </div> */}
 
-      {/* <div className="flex gap-2 items-center">
-        <CircleAlert className="w-4 h-4" />
-        <span className="text-textxs">Non-refundable</span>
-      </div> */}
-
-      <div className="border p-3 rounded-xl">
-        <div className="flex flex-col lg:flex-row justify-between gap-2">
-          <div className="space-y-1 w-[70%]">
-            <TitleWithIcon
-              icon={<User className="w-6 h-6" />}
-              title={`Adults: ${reserveCount?.adults}`}
-            />
-            <TitleWithIcon
-              icon={<User className="w-5 h-4" />}
-              title={`Children: ${reserveCount?.children}`}
-            />
-            <TitleWithIcon
-              icon={<Calendar className="w-5 h-5" />}
-              title={`Check in: ${
-                date?.from && format(date?.from, "d/M/yyyy p")
-              }`}
-            />
-            <TitleWithIcon
-              icon={<Calendar className="w-5 h-5" />}
-              title={`Check out: ${date?.to && format(date?.to, "d/M/yyyy p")}`}
-            />
+      <div className="flex flex-col gap-4">
+        <div className="border rounded-lg shadow-sm p-4 text-textsm">
+          <h1 className="text-textmd mb-3">Your booking details</h1>
+          <div className="flex gap-1 ">
+            <h2>Adults:</h2>
+            <p>{reserveCount.adults}</p>
           </div>
-          <div className="h-fit w-[30%] overflow-hidden rounded-xl">
-            <Image
-              src="/images/product.png"
-              width={600}
-              height={600}
-              className="w-full"
-            />
+          <div className="flex gap-1">
+            <h2>Children:</h2>
+            <p>{reserveCount.children}</p>
+          </div>
+          <div className="flex gap-1">
+            <h2>Check-in:</h2>
+            <p>{date?.from && format(date?.from, "PPP")}</p>
+          </div>
+          <div className="flex gap-1">
+            <h2>Check-out:</h2>
+            <p>{date?.to && format(date?.to, "PPP")}</p>
           </div>
         </div>
+        {selectedRooms.map((product, index) => (
+          <div
+            key={index}
+            className="space-y-3 p-4 border rounded-lg shadow-sm"
+          >
+            <div className="flex gap-4">
+              <h1 className="w-20 text-textsm">Room {index + 1}:</h1>
+              <div className="w-full flex justify-between">
+                <div>
+                  <h2>{product.room?.category?.name}</h2>
+                  <span className="text-textsm text-black/60">
+                    {product.room?.unitPrice}₮ x {nights} nights
+                  </span>
+                </div>
+                <h2>{product.room?.unitPrice * nights}₮</h2>
+              </div>
+            </div>
 
-        <div className="flex flex-col gap-3 md:gap-6 mt-4">
-          <div className="space-y-2">
-            <SelectedFieldTitle title="Standard Rate" />
-            <SelectedFieldTitle title={`${mealType?.mealType} breakfast`} />
-          </div>
+            {product.extras && (
+              <div className="flex gap-4 text-textsm">
+                <h1 className="w-20 text-textsm">Extras:</h1>
+                <div className="w-full flex justify-between">
+                  <div className="w-full space-y-2">
+                    {product.extras?.map((extra, index) => (
+                      <div key={index} className="w-full flex justify-between">
+                        <h2>{extra.name}</h2>
+                        <span>{extra.unitPrice}₮</span>
+                      </div>
+                    ))}
+                    {/* <h2>{product.room?.category?.name}</h2>
+                          <span className="text-textsm text-black/60">
+                            {product.room?.unitPrice}₮ x {nights} nights
+                          </span> */}
+                  </div>
+                </div>
+              </div>
+            )}
 
-          <div className="flex flex-col gap-3 md:gap-6">
-            <TitleWithPrice
-              title="Room price"
-              price={`MNT ${selectedRoom?.unitPrice}₮`}
-            />
-            <div className="space-y-1">
-              <TitleWithPrice title="Sub total" price={`MNT ${totalPrice}₮`} />
-              <TitleWithPrice title="Taxes" price={`MNT ${taxes}₮`} />
-              <TitleWithPrice title="Fees" price={`MNT ${fee}₮`} />
+            <Separator />
+
+            <div className="flex justify-end gap-1">
+              <h2>Total: </h2>
+              <h2 className="justify-self-end">
+                {product.extras
+                  ? product.room.unitPrice * nights +
+                    product.extras.reduce(
+                      (acc, extra) => acc + extra.unitPrice,
+                      0
+                    )
+                  : product.room.unitPrice * nights}
+                ₮
+              </h2>
             </div>
           </div>
-        </div>
+        ))}
       </div>
+
+      <Separator />
       <div className="flex justify-between text-displayxs font-bold">
-        <h1 className="uppercase">Total</h1>
-        <span className="text-secondary">{`MNT ${
-          totalPrice + taxes + fee
-        }₮`}</span>
+        <h1 className="uppercase">Total: </h1>
+        <h1>
+          {selectedRooms.reduce(
+            (acc, product) => acc + product.room?.unitPrice * nights,
+            0
+          ) / paymentTypeDivider}
+          ₮
+        </h1>
       </div>
     </div>
   );

@@ -35,8 +35,19 @@ const ReserveDetailExtra = ({
             ? setSelectedRoom({
                 room: selectedRoom.room,
                 extras: selectedRoom.extras
-                  ? [...selectedRoom.extras, product]
-                  : [product],
+                  ? [
+                      ...selectedRoom.extras,
+                      {
+                        ...product,
+                        information: { parentId: selectedRoom.room?._id },
+                      },
+                    ]
+                  : [
+                      {
+                        ...product,
+                        information: { parentId: selectedRoom.room?._id },
+                      },
+                    ],
               })
             : setSelectedRoom({
                 room: selectedRoom.room,
