@@ -4,7 +4,7 @@ import { Calendar, CircleAlert, User } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "../ui/image";
 import { Separator } from "../ui/separator";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import IconWithTitle from "../icon-with-title/icon-with-title";
 import { useAtom, useAtomValue } from "jotai";
 import {
@@ -14,10 +14,13 @@ import {
   reserveMealTypeAtom,
   selectedRoomAtom,
   selectedRoomsAtom,
+  totalAmountAtom,
 } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
 import { useRouter } from "@/i18n/routing";
 import { paymentTypeAtom } from "@/store/payments";
+import { useStripeCheckout } from "@/hooks/use-stripe";
+import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 type TitleWithPrice = {
   title: string;
@@ -40,16 +43,26 @@ const ReservedRoomDetail = () => {
   const [selectedRoom] = useAtom(selectedRoomAtom);
   const paymentType = useAtomValue(paymentTypeAtom);
   const [mealType] = useAtom(reserveMealTypeAtom);
-  const dateDiff = parseInt(date?.from && formatDistance(date?.from, date?.to));
-  const totalPrice = selectedRoom.unitPrice * dateDiff;
-  const taxes = (totalPrice * 10) / 100;
-  const fee = (totalPrice * 2) / 100;
+  const [totalAmount, setTotalAmount] = useAtom(totalAmountAtom);
+  // const totalPrice = selectedRoom.unitPrice * dateDiff;
+  // const taxes = (totalPrice * 10) / 100;
+  // const fee = (totalPrice * 2) / 100;
 
   const paymentTypeDivider = paymentType === "full" ? 1 : 2;
 
   const nights = parseInt(
     date?.from && date?.to && formatDistance(date?.from, date?.to)
   );
+
+  useEffect(() => {
+    setTotalAmount(
+      selectedRooms.reduce(
+        (acc, product) => acc + product.room?.unitPrice * nights,
+        0
+      ) / paymentTypeDivider
+    );
+  }, [selectedRooms]);
+
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-displayxs text-black">Your reservation</h1>
@@ -90,10 +103,13 @@ const ReservedRoomDetail = () => {
                 <div>
                   <h2>{product.room?.category?.name}</h2>
                   <span className="text-textsm text-black/60">
-                    {product.room?.unitPrice}₮ x {nights} nights
+                    {formatNumberWithCommas(product.room?.unitPrice)}₮ x{" "}
+                    {nights} nights
                   </span>
                 </div>
-                <h2>{product.room?.unitPrice * nights}₮</h2>
+                <h2>
+                  {formatNumberWithCommas(product.room?.unitPrice * nights)}₮
+                </h2>
               </div>
             </div>
 
@@ -105,7 +121,7 @@ const ReservedRoomDetail = () => {
                     {product.extras?.map((extra, index) => (
                       <div key={index} className="w-full flex justify-between">
                         <h2>{extra.name}</h2>
-                        <span>{extra.unitPrice}₮</span>
+                        <span>{formatNumberWithCommas(extra.unitPrice)}₮</span>
                       </div>
                     ))}
                     {/* <h2>{product.room?.category?.name}</h2>
@@ -123,12 +139,14 @@ const ReservedRoomDetail = () => {
               <h2>Total: </h2>
               <h2 className="justify-self-end">
                 {product.extras
-                  ? product.room.unitPrice * nights +
-                    product.extras.reduce(
-                      (acc, extra) => acc + extra.unitPrice,
-                      0
+                  ? formatNumberWithCommas(
+                      product.room.unitPrice * nights +
+                        product.extras.reduce(
+                          (acc, extra) => acc + extra.unitPrice,
+                          0
+                        )
                     )
-                  : product.room.unitPrice * nights}
+                  : formatNumberWithCommas(product.room.unitPrice * nights)}
                 ₮
               </h2>
             </div>
@@ -140,10 +158,12 @@ const ReservedRoomDetail = () => {
       <div className="flex justify-between text-displayxs font-bold">
         <h1 className="uppercase">Total: </h1>
         <h1>
-          {selectedRooms.reduce(
-            (acc, product) => acc + product.room?.unitPrice * nights,
-            0
-          ) / paymentTypeDivider}
+          {formatNumberWithCommas(
+            selectedRooms.reduce(
+              (acc, product) => acc + product.room?.unitPrice * nights,
+              0
+            ) / paymentTypeDivider
+          )}
           ₮
         </h1>
       </div>

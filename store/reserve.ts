@@ -7,7 +7,7 @@ import { DateRange } from "react-day-picker";
 
 export const reserveCountAtom = atomWithStorage<IReserveCount | any>(
   "reserveCount",
-  {}
+  { pet: false, room: 0, adults: 0, children: 0 }
 );
 export const reserveMealTypeAtom = atomWithStorage<any>(
   "reserveMealType",
@@ -46,10 +46,10 @@ export const removeSelectedRoomAtom = atom(
   }
 );
 
-export const reserveDateAtom = atomWithStorage<DateRange | any>(
-  "reserveDate",
-  {}
-);
+export const reserveDateAtom = atomWithStorage<DateRange | any>("reserveDate", {
+  to: null,
+  from: null,
+});
 
 export const reserveUserAtom = atomWithStorage<IReserveUser>("reserveUser", {
   speaking: "",
@@ -65,3 +65,5 @@ export const reserveCompletedAtom = atom<boolean>(false);
 
 export const selectedExtras: any = [];
 export const dealIdAtom = atomWithStorage<string>("dealId", "");
+
+export const totalAmountAtom = atomWithStorage<number>("totalAmount", 0);

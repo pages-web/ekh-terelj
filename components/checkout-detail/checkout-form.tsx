@@ -25,7 +25,7 @@ import ExtraServices from "./extra-services/extra-services";
 import { BookingFormT, ExtraT } from "@/lib/schema/types";
 import { formatToDate, parseDate } from "@/lib/date";
 import { addDays, formatDistance } from "date-fns";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   dealIdAtom,
   reserveCompletedAtom,
@@ -35,10 +35,12 @@ import {
   reserveUserAtom,
   selectedRoomAtom,
   selectedRoomsAtom,
+  totalAmountAtom,
 } from "@/store/reserve";
 import { useCreateEditDeal, useStages } from "@/sdk/queries/sales";
 import { MutationHookOptions, useMutation, useQuery } from "@apollo/client";
 import { mutations } from "@/sdk/graphql/sales";
+import { mutations as paymentMutations } from "@/sdk/graphql/payments";
 import { IStage } from "@/types/sales";
 import useCreateCustomer from "@/sdk/mutations/customers";
 import { useEffect, useState } from "react";
@@ -66,6 +68,15 @@ import { currentUserAtom } from "@/store/auth";
 import { IProduct } from "@/types/products";
 import QpayPayment from "./qpay-payment/qpay-payment";
 import CheckBookingDetail from "./check-booking-detail/check-booking-detail";
+import { paymentTypeAtom } from "@/store/payments";
+import { selectedMethodCardAtom } from "@/store/other";
+import { useStripeCheckout } from "@/hooks/use-stripe";
+import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import convertToSubcurrency from "@/lib/convertToSubcurrency";
+import { useLocale } from "next-intl";
+import Image from "../ui/image";
+import { RESET } from "jotai/utils";
 
 export const termsContent = `              
                   Introduction and Scope of Services Updated: December 15th,
@@ -438,9 +449,9 @@ const FormSchema = z.object({
 const CheckoutForm = () => {
   const router = useRouter();
   const [selectedRoom] = useAtom(selectedRoomAtom);
-  const [date] = useAtom(reserveDateAtom);
-  const [selectedRooms] = useAtom(selectedRoomsAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
+  const [date, setDate] = useAtom(reserveDateAtom);
+  const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
+  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
   const [reserveUser, setReserveUser] = useAtom(reserveUserAtom);
   const [reserveExtras, setReserveExtras] = useAtom(reserveExtrasAtom);
   const [reserveCompleted, setReserveCompleted] = useAtom(reserveCompletedAtom);
@@ -449,9 +460,17 @@ const CheckoutForm = () => {
   const [isMyself, setIsMyself] = useState(true);
   const [terms, setTerms] = useState(true); //must be false
   const [confirmBookingView, setConfirmBookingView] = useState("confirm");
+  const [selectedMethodCard] = useAtom(selectedMethodCardAtom);
   const { firstName, lastName, email, phone } =
     useAtomValue(currentUserAtom) || {};
   const { loading: currentUserLoading, currentUser } = useCurrentUser();
+  const [totalAmount] = useAtom(totalAmountAtom);
+
+  const stripe = useStripe();
+  const elements = useElements();
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [clientSecret, setClientSecret] = useState("");
+  const locale = useLocale();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -473,9 +492,18 @@ const CheckoutForm = () => {
   //   variables: { id: dealId },
   // });
   const { data } = useQuery(queries.payments);
+  const paymentsData = data?.payments;
   const { stages, loading: stagesLoading } = useStages();
   const { createCustomer, error } = useCreateCustomer();
   // const { getCustomers, customers } = useCustomers();
+
+  const [createInvoice, { data: invoiceData }] = useMutation(
+    paymentMutations.invoiceCreate
+  );
+  const [transactionAdd, { data: transactionData }] = useMutation(
+    paymentMutations.transactionsAdd
+  );
+  const [checkInvoice] = useMutation(paymentMutations.checkInvoice);
 
   const nights = parseInt(date?.from && formatDistance(date?.from, date?.to));
 
@@ -502,7 +530,7 @@ const CheckoutForm = () => {
       unitPrice: extra?.unitPrice,
       amount: extra?.unitPrice * 1,
       information: {
-        parentId: selectedRoom?._id,
+        parentId: room?._id,
       },
     }))
   );
@@ -513,10 +541,28 @@ const CheckoutForm = () => {
     }
   }, [confirmBookingView]);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    setReserveUser(data);
-    setReserveCompleted(!reserveCompleted);
+  useEffect(() => {
+    fetch("/api/create-payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ amount: convertToSubcurrency(totalAmount) }),
+    })
+      .then((res) => res.json())
+      .then((data) => setClientSecret(data.clientSecret));
+  }, [totalAmount]);
 
+  const handlePaymentAndReservation = async (
+    event: React.FormEvent<HTMLFormElement>,
+    data: z.infer<typeof FormSchema>
+  ) => {
+    event.preventDefault();
+
+    // Set reservation data
+    setReserveUser(data);
+
+    // Define reservation variables
     const variables = {
       name: `${data.firstname} ${data.lastname}`,
       customerIds: [currentUser?.erxesCustomerId],
@@ -527,26 +573,37 @@ const CheckoutForm = () => {
       description: data.description,
     };
 
-    // if (!currentDeal?.dealDetail) {
-    // addDeal({
-    //   variables,
-    //   onCompleted: (deal) => {
-    //     setReserveCompleted(true);
-    //     // setDealId(deal?.dealsAdd?._id);
-    //     router.push(`/profile/orders/${deal.dealsAdd?._id}`);
-    //   },
-    // });
-    // }
-    // else {
-    //   editDeal({
-    //     variables,
-    //     onCompleted: () => {
-    //       setReserveCompleted(true);
-    //       router.push(`/profile/orders/${dealId}`);
-    //     },
-    //   });
-    // }
-  }
+    // Handle Stripe payment
+    if (!stripe || !elements) {
+      setErrorMessage("Stripe has not been properly initialized.");
+      return;
+    }
+
+    const { error: submitError } = await elements.submit();
+
+    if (submitError) {
+      setErrorMessage(submitError.message);
+      return;
+    }
+
+    if (error) {
+      setErrorMessage(error.message);
+      return;
+    }
+
+    setReserveCompleted(!reserveCompleted);
+
+    // Handle deal creation or editing after payment succeeds
+    addDeal({
+      variables,
+      onCompleted: (deal) => {
+        setReserveCompleted(true);
+        setDealId(deal.dealsAdd?._id);
+        // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
+      },
+    });
+  };
+
   const titles = [
     {
       title: "Your personal information",
@@ -696,12 +753,18 @@ const CheckoutForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="px-1 space-y-6">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit((data) => handlePaymentAndReservation(e, data))();
+        }}
+        className="px-1 space-y-6"
+      >
         <h1 className="text-displayxs">Check-in guest information</h1>
         <Accordion
           type={"multiple"}
           className="w-full"
-          defaultValue={["item-0"]}
+          defaultValue={["item-0", "item-2"]}
         >
           {titles.map((title, index) => {
             return (
@@ -789,29 +852,92 @@ const CheckoutForm = () => {
         </Button>
         <Dialog
           onOpenChange={setReserveCompleted}
-          // open={reserveCompleted ? true : false}
-          defaultOpen
+          open={reserveCompleted}
+          // defaultOpen
         >
-          <DialogContent>
+          <DialogContent className="max-w-[60vh] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Check your booking</DialogTitle>
             </DialogHeader>
             <Separator />
             {confirmBookingView === "confirm" ? (
               <CheckBookingDetail />
-            ) : confirmBookingView === "payment" ? (
-              <QpayPayment />
+            ) : confirmBookingView === "payment" &&
+              selectedMethodCard === "Qpay" ? (
+              <div className="flex justify-center">
+                {!!transactionData && (
+                  <Image
+                    src={
+                      transactionData?.paymentTransactionsAdd.response.qrData
+                    }
+                    width={300}
+                    height={300}
+                    quality={100}
+                  />
+                )}
+              </div>
             ) : (
               <div>Your booking confirmed.</div>
             )}
 
-            
             {confirmBookingView === "confirm" ? (
-              <Button onClick={() => setConfirmBookingView("payment")}>
+              <Button
+                onClick={async () => {
+                  setConfirmBookingView("payment");
+                  selectedMethodCard === "Card"
+                    ? stripe &&
+                      elements &&
+                      (await stripe.confirmPayment({
+                        elements,
+                        clientSecret,
+                        confirmParams: {
+                          return_url: `http://127.0.0.1:3001/${locale}/booking/confirmation/${dealId}`,
+                        },
+                      }))
+                    : createInvoice({
+                        variables: {
+                          amount: totalAmount,
+                          customerId: paymentsData[0]._id,
+                          customerType: "customer",
+                          contentType: "deal",
+                          contentTypeId: dealId,
+                          description: `Bayangol hotel`,
+                          paymentIds: [paymentsData[0]._id],
+                          phone: reserveUser.phone,
+                        },
+                        onCompleted: (invoice) => {
+                          transactionAdd({
+                            variables: {
+                              invoiceId: invoice.invoiceCreate._id,
+                              paymentId: paymentsData[0]?._id,
+                              amount: totalAmount,
+                            },
+                            // onCompleted: () => {
+                            //   setSelectedPayment(paymentsData[0]._id);
+                            // },
+                          });
+                        },
+                      });
+                }}
+              >
                 Confirm my booking
               </Button>
-            ) : confirmBookingView === "payment" ? (
-              <Button onClick={() => setConfirmBookingView("confirmed")}>
+            ) : confirmBookingView === "payment" &&
+              selectedMethodCard === "Qpay" ? (
+              <Button
+                onClick={() => {
+                  checkInvoice({
+                    variables: {
+                      id: invoiceData?.invoiceCreate._id,
+                    },
+                    onCompleted: (data) => {
+                      if (data.invoicesCheck !== "pending") {
+                        setConfirmBookingView("confirmed");
+                      }
+                    },
+                  });
+                }}
+              >
                 Check payment
               </Button>
             ) : (

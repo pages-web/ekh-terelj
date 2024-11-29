@@ -6,10 +6,13 @@ import ChangePhone from "@/components/profile/profile-edit/change-phone";
 import ChangeEmail from "@/components/profile/profile-edit/change-email";
 import ChangePassword from "@/components/profile/profile-edit/change-password";
 import Email from "@/components/profile/profile-edit/email";
+import { Separator } from "@/components/ui/separator";
 
 const Profile = () => {
   return (
-    <ProfileLayout title="Personal information" description="Edit your personal info">
+    <div className="w-[80%] min-h-screen space-y-3 md:space-y-6 pt-6 md:pt-10 flex-auto items-center container">
+      <h1 className="text-displaysm font-bold">Profile</h1>
+      <Separator />
       <Tabs defaultValue="info" className="w-full">
         <ProfileTabsList />
         <TabsContent value="info">
@@ -25,7 +28,7 @@ const Profile = () => {
           <Email />
         </TabsContent>
       </Tabs>
-    </ProfileLayout>
+    </div>
   );
 };
 

@@ -16,6 +16,7 @@ import {
   reserveCountAtom,
   reserveDateAtom,
   selectedRoomAtom,
+  totalAmountAtom,
 } from "@/store/reserve";
 import { IStage } from "@/types/sales";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
@@ -27,6 +28,7 @@ import { useRouter } from "@/i18n/routing";
 import StripePayment from "@/containers/payments/stripe/stripe";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import CheckoutPage from "@/containers/payments/stripe/checkoutPage";
 
 const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
   const payments = [
@@ -53,6 +55,7 @@ const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
   const [selectedPayment, setSelectedPayment] = useAtom(selecteddMethodAtom);
   const [paymentSuccess, setPaymentSuccess] = useAtom(paymentSuccessAtom);
   const [dealId, setDealId] = useAtom(dealIdAtom);
+  const [totalAmount] = useAtom(totalAmountAtom);
 
   const [isPaid, setIsPaid] = useState(false);
 
@@ -136,44 +139,9 @@ const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
       ) : (
         <div className="space-y-2">
           <h2 className="font-bold text-[16px]">Card</h2>
-          <StripePayment />
+          <CheckoutPage amount={totalAmount} />
         </div>
       )}
-      {/* {!data && !loading && (
-        <div
-          className="flex justify-center bg-secondary text-white p-2 rounded-lg cursor-pointer hover:bg-secondary/90 duration-150"
-          onClick={() =>
-            selectedMethodCard === "Local Payment"
-              ? createInvoice({
-                  variables: {
-                    amount: 1,
-                    customerId: paymentsData[1]._id,
-                    customerType: "visitor",
-                    contentType: "deal",
-                    contentTypeId: dealId,
-                    description: `test1`,
-                    paymentIds: [paymentsData[1]._id],
-                    phone: "1234567890",
-                  },
-                  onCompleted: (invoice) => {
-                    transactionAdd({
-                      variables: {
-                        invoiceId: invoice.invoiceCreate._id,
-                        paymentId: paymentsData[1]?._id,
-                        amount: 1,
-                      },
-                      onCompleted: () => {
-                        setSelectedPayment(paymentsData[1]._id);
-                      },
-                    });
-                  },
-                })
-              : alert("Not found")
-          }
-        >
-          Select
-        </div>
-      )} */}
       {data && paymentSuccess && <div>Payment success!</div>}
 
       {data && (

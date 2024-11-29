@@ -51,6 +51,7 @@ const SelectProductCard = ({
   const [, addSelectedRoom] = useAtom(addSelectedRoomAtom);
 
   const { toast } = useToast();
+  console.log(selectedRooms)
 
   return (
     <div className={`h-fit space-y-4 border p-4 rounded-xl ${className}`}>

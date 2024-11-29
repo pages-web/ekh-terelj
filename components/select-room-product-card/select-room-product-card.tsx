@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 const SelectRoomProductCard = ({ ...room }: IProduct) => {
   const locale = useLocale();
@@ -77,10 +78,10 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
 
       <div className="flex justify-between">
         <span className="text-textsm">
-          {`MNT ${room.unitPrice}₮ per night`}
+          {`MNT ${formatNumberWithCommas(room.unitPrice)}₮ per night`}
         </span>
         <span className="text-textlg font-bold">
-          {`MNT ${room.unitPrice}₮`}
+          {`MNT ${formatNumberWithCommas(room.unitPrice)}₮`}
         </span>
       </div>
     </div>

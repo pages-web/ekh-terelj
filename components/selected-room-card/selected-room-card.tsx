@@ -13,6 +13,7 @@ import { RESET } from "jotai/utils";
 import { formatDistance } from "date-fns";
 import { X } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
+import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 const SelectedRoomCard = () => {
   const router = useRouter();
@@ -45,10 +46,13 @@ const SelectedRoomCard = () => {
                 <div>
                   <h2>{product.room?.category?.name}</h2>
                   <span className="text-textsm text-black/60">
-                    {product.room?.unitPrice}₮ x {nights} nights
+                    {formatNumberWithCommas(product.room?.unitPrice)}₮ x{" "}
+                    {nights} nights
                   </span>
                 </div>
-                <h2>{product.room?.unitPrice * nights}₮</h2>
+                <h2>
+                  {formatNumberWithCommas(product.room?.unitPrice * nights)}₮
+                </h2>
               </div>
             </div>
 
@@ -60,7 +64,7 @@ const SelectedRoomCard = () => {
                     {product.extras?.map((extra, index) => (
                       <div key={index} className="w-full flex justify-between">
                         <h2>{extra.name}</h2>
-                        <span>{extra.unitPrice}₮</span>
+                        <span>{formatNumberWithCommas(extra.unitPrice)}₮</span>
                       </div>
                     ))}
                     {/* <h2>{product.room?.category?.name}</h2>
@@ -78,12 +82,14 @@ const SelectedRoomCard = () => {
               <h2>Total: </h2>
               <h2 className="justify-self-end">
                 {product.extras
-                  ? product.room.unitPrice * nights +
-                    product.extras.reduce(
-                      (acc, extra) => acc + extra.unitPrice,
-                      0
+                  ? formatNumberWithCommas(
+                      product.room.unitPrice * nights +
+                        product.extras.reduce(
+                          (acc, extra) => acc + extra.unitPrice,
+                          0
+                        )
                     )
-                  : product.room.unitPrice * nights}
+                  : formatNumberWithCommas(product.room.unitPrice * nights)}
                 ₮
               </h2>
             </div>
@@ -95,9 +101,11 @@ const SelectedRoomCard = () => {
       <div className="flex justify-between text-displayxs font-bold">
         <h1 className="uppercase">Total: </h1>
         <h1>
-          {selectedRooms.reduce(
-            (acc, product) => acc + product.room?.unitPrice * nights,
-            0
+          {formatNumberWithCommas(
+            selectedRooms.reduce(
+              (acc, product) => acc + product.room?.unitPrice * nights,
+              0
+            )
           )}
           ₮
         </h1>

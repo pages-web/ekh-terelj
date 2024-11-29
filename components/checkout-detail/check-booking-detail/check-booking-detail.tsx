@@ -45,7 +45,6 @@ const CheckBookingDetail = () => {
       </div>
 
       <Separator />
-
       {selectedRooms.map((product, index) => (
         <div key={index} className="space-y-3">
           <div className="flex gap-4">
@@ -81,7 +80,7 @@ const CheckBookingDetail = () => {
 
       <Separator />
 
-      <div>
+      <div className="">
         <div className="flex justify-between font-bold">
           <span>Price</span>
           <span>

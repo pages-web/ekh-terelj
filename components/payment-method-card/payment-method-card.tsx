@@ -11,12 +11,7 @@ type Props = {
   imgSrc?: string;
 };
 
-const PaymentMethodCard = ({
-  title,
-  description,
-  methodName,
-  imgSrc,
-}: Props) => {
+const PaymentMethodCard = ({ title, imgSrc }: Props) => {
   const [selectedMethodCard, setSelectedMethodCard] = useAtom(
     selectedMethodCardAtom
   );
