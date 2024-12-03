@@ -31,9 +31,10 @@ const dealsAdd = gql`
 `;
 
 const dealsEdit = gql`
-  mutation DealsEdit($id: String!, ${commonFields}) {
+  mutation DealsEdit($id: String!, ${commonFields}, $tagIds: [String]) {
     dealsEdit(
       _id: $id
+      tagIds: $tagIds
       ${commonParams}
     ) {
       _id

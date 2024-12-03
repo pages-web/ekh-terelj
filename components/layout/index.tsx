@@ -8,6 +8,7 @@ import BookingNavbarTopContent from "../booking-navbar-top-content/booking-navba
 import Menu from "../menu/menu";
 import Footer from "../footer/footer";
 import CurrentUser from "@/containers/auth/current-user";
+import CheckDealDuration from "./checkDealDuration";
 
 const DefaultLayout = ({
   children,
@@ -22,6 +23,7 @@ const DefaultLayout = ({
       <BookingNavbarTop>
         <BookingNavbarTopContent />
       </BookingNavbarTop>
+      <CheckDealDuration />
       {children}
       <Footer />
     </>

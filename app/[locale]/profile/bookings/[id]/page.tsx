@@ -12,7 +12,6 @@ import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 const OrderDetail = () => {
   const params = useParams();
-  console.log(params);
   const { currentUser } = useCurrentUser();
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
     variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
@@ -24,7 +23,6 @@ const OrderDetail = () => {
   });
   const categories = categoriesData?.productCategories;
   const deal = data?.dealDetail;
-  console.log(deal);
 
   const nights = parseInt(
     deal?.products[0].startDate &&

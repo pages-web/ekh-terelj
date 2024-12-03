@@ -185,6 +185,41 @@ const paymentTypes = gql`
   }
 `;
 
+const tags = gql`
+  query Tags(
+    $type: String
+    $searchValue: String
+    $tagIds: [String]
+    $parentId: String
+    $ids: [String]
+    $excludeIds: Boolean
+    $page: Int
+    $perPage: Int
+  ) {
+    tags(
+      type: $type
+      searchValue: $searchValue
+      tagIds: $tagIds
+      parentId: $parentId
+      ids: $ids
+      excludeIds: $excludeIds
+      page: $page
+      perPage: $perPage
+    ) {
+      _id
+      name
+      type
+      colorCode
+      createdAt
+      objectCount
+      totalObjectCount
+      parentId
+      order
+      relatedIds
+    }
+  }
+`;
+
 const queries = {
   pmsRooms,
   deals,
@@ -194,5 +229,6 @@ const queries = {
   dealFullDetail,
   paymentTypes,
   dealPreview,
+  tags,
 };
 export default queries;

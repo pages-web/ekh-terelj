@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, CircleAlert, User } from "lucide-react";
+import { Bed, Calendar, CircleAlert, User } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "../ui/image";
 import { Separator } from "../ui/separator";
@@ -48,6 +48,7 @@ const ReservedRoomDetail = () => {
   // const taxes = (totalPrice * 10) / 100;
   // const fee = (totalPrice * 2) / 100;
 
+
   const paymentTypeDivider = paymentType === "full" ? 1 : 2;
 
   const nights = parseInt(
@@ -61,7 +62,7 @@ const ReservedRoomDetail = () => {
         0
       ) / paymentTypeDivider
     );
-  }, [selectedRooms]);
+  }, [selectedRooms, paymentType]);
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -74,22 +75,40 @@ const ReservedRoomDetail = () => {
 
       <div className="flex flex-col gap-4">
         <div className="border rounded-lg shadow-sm p-4 text-textsm">
-          <h1 className="text-textmd mb-3">Your booking details</h1>
-          <div className="flex gap-1 ">
-            <h2>Adults:</h2>
-            <p>{reserveCount.adults}</p>
-          </div>
-          <div className="flex gap-1">
-            <h2>Children:</h2>
-            <p>{reserveCount.children}</p>
-          </div>
-          <div className="flex gap-1">
-            <h2>Check-in:</h2>
-            <p>{date?.from && format(date?.from, "PPP")}</p>
-          </div>
-          <div className="flex gap-1">
-            <h2>Check-out:</h2>
-            <p>{date?.to && format(date?.to, "PPP")}</p>
+          <div className="space-y-4">
+            <div className="grid grid-cols-5">
+              <div className="col-span-2">
+                <h2 className="text-textsm">Check-in</h2>
+                <p className="font-bold">
+                  {date?.from && format(date?.from, "PPPP")}
+                </p>
+                <p className="text-black/60 text-textsm">From 15:00</p>
+              </div>
+              <div className="flex justify-center">
+                <Separator orientation="vertical" />
+              </div>
+              <div className="col-span-2">
+                <h2 className="text-textsm">Check-out</h2>
+                <p className="font-bold">
+                  {date?.to && format(date?.to, "PPPP")}
+                </p>
+                <p className="text-black/60 text-textsm">Until 11:00</p>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div>
+              <p className="font-bold text-textsm flex gap-1">
+                Stays: {nights} night
+                {nights > 1 && "s"}
+              </p>
+              <p className="font-bold text-textsm">
+                Guests: {reserveCount.adults} adult
+                {reserveCount.adults > 1 && "s"}, {reserveCount.children} child
+                {reserveCount.adults > 1 && "ren"}
+              </p>
+            </div>
           </div>
         </div>
         {selectedRooms.map((product, index) => (
@@ -158,13 +177,13 @@ const ReservedRoomDetail = () => {
       <div className="flex justify-between text-displayxs font-bold">
         <h1 className="uppercase">Total: </h1>
         <h1>
-          {formatNumberWithCommas(
+          {/* {formatNumberWithCommas(
             selectedRooms.reduce(
               (acc, product) => acc + product.room?.unitPrice * nights,
               0
             ) / paymentTypeDivider
-          )}
-          ₮
+          )} */}
+          {totalAmount}₮
         </h1>
       </div>
     </div>

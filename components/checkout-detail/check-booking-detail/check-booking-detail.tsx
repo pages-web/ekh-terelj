@@ -3,6 +3,7 @@ import {
   reserveCountAtom,
   reserveDateAtom,
   selectedRoomsAtom,
+  totalAmountAtom,
 } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
 import { useAtom } from "jotai";
@@ -10,6 +11,7 @@ import { useAtom } from "jotai";
 const CheckBookingDetail = () => {
   const [selectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveCount] = useAtom(reserveCountAtom);
+  const [totalAmount] = useAtom(totalAmountAtom);
   const [date] = useAtom(reserveDateAtom);
   const nights = parseInt(
     date?.from && date?.to && formatDistance(date?.from, date?.to)
@@ -83,13 +85,7 @@ const CheckBookingDetail = () => {
       <div className="">
         <div className="flex justify-between font-bold">
           <span>Price</span>
-          <span>
-            {selectedRooms.reduce(
-              (acc, product) => acc + product.room?.unitPrice * nights,
-              0
-            )}
-            ₮
-          </span>
+          <span>{totalAmount}₮</span>
         </div>
       </div>
     </div>

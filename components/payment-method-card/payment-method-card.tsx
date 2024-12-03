@@ -15,7 +15,6 @@ const PaymentMethodCard = ({ title, imgSrc }: Props) => {
   const [selectedMethodCard, setSelectedMethodCard] = useAtom(
     selectedMethodCardAtom
   );
-  console.log(selectedMethodCard);
   return (
     <div className="w-[120px] flex flex-col gap-2 items-center">
       <div

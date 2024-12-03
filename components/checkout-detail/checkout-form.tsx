@@ -77,6 +77,8 @@ import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import { useLocale } from "next-intl";
 import Image from "../ui/image";
 import { RESET } from "jotai/utils";
+import { Loading } from "../ui/loading";
+import { Check, CircleCheck, CircleX } from "lucide-react";
 
 export const termsContent = `              
                   Introduction and Scope of Services Updated: December 15th,
@@ -458,13 +460,14 @@ const CheckoutForm = () => {
   const [dealId, setDealId] = useAtom(dealIdAtom);
   const [customerId, setCustomerId] = useState();
   const [isMyself, setIsMyself] = useState(true);
-  const [terms, setTerms] = useState(true); //must be false
+  const [terms, setTerms] = useState(false); //must be false
   const [confirmBookingView, setConfirmBookingView] = useState("confirm");
   const [selectedMethodCard] = useAtom(selectedMethodCardAtom);
   const { firstName, lastName, email, phone } =
     useAtomValue(currentUserAtom) || {};
   const { loading: currentUserLoading, currentUser } = useCurrentUser();
   const [totalAmount] = useAtom(totalAmountAtom);
+  const paymentType = useAtomValue(paymentTypeAtom);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -485,30 +488,31 @@ const CheckoutForm = () => {
   });
 
   const [addDeal, { loading }] = useMutation(mutations.dealsAdd);
-  // const [editDeal] = useMutation(mutations.dealsEdit, {
-  //   variables: { id: dealId },
-  // });
+  const [editDeal] = useMutation(mutations.dealsEdit);
+  const [addPayment] = useMutation(mutations.addPayment);
   // const { data: currentDeal } = useQuery(salesQueries.dealDetail, {
   //   variables: { id: dealId },
   // });
   const { data } = useQuery(queries.payments);
+  const { data: tagsData } = useQuery(salesQueries.tags);
   const paymentsData = data?.payments;
   const { stages, loading: stagesLoading } = useStages();
   const { createCustomer, error } = useCreateCustomer();
   // const { getCustomers, customers } = useCustomers();
 
-  const [createInvoice, { data: invoiceData }] = useMutation(
-    paymentMutations.invoiceCreate
-  );
-  const [transactionAdd, { data: transactionData }] = useMutation(
-    paymentMutations.transactionsAdd
-  );
+  const [createInvoice, { data: invoiceData, loading: invoiceLoading }] =
+    useMutation(paymentMutations.invoiceCreate);
+  const [
+    transactionAdd,
+    { data: transactionData, loading: transactionLoading },
+  ] = useMutation(paymentMutations.transactionsAdd);
   const [checkInvoice] = useMutation(paymentMutations.checkInvoice);
 
   const nights = parseInt(date?.from && formatDistance(date?.from, date?.to));
 
   const selectedRoomsByMutation = selectedRooms.map(({ room }) => ({
     productId: room?._id,
+    name: room?.name,
     startDate: date?.from,
     endDate: date?.to,
     unitPrice: room?.unitPrice,
@@ -536,12 +540,6 @@ const CheckoutForm = () => {
   );
 
   useEffect(() => {
-    if (confirmBookingView === "confirmed") {
-      router.push("/booking/confirmation");
-    }
-  }, [confirmBookingView]);
-
-  useEffect(() => {
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
@@ -552,6 +550,16 @@ const CheckoutForm = () => {
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
   }, [totalAmount]);
+
+  useEffect(() => {
+    if (!reserveCompleted && confirmBookingView === "unconfirmed") {
+      const timeoutId = setTimeout(() => {
+        setConfirmBookingView("confirm");
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [reserveCompleted, confirmBookingView]);
 
   const handlePaymentAndReservation = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -570,7 +578,12 @@ const CheckoutForm = () => {
       stageId: stages?.find((st: IStage) => st.code === "unconfirmed")?._id,
       startDate: date?.from,
       closeDate: date?.to,
-      description: data.description,
+      description: `${data.description}`,
+      labelIds: [
+        paymentType === "full"
+          ? "6ouWONHOg0NXt8i9i4vjL"
+          : "-HZ7qjcGU2-po7eD40RfJ",
+      ],
     };
 
     // Handle Stripe payment
@@ -594,14 +607,125 @@ const CheckoutForm = () => {
     setReserveCompleted(!reserveCompleted);
 
     // Handle deal creation or editing after payment succeeds
-    addDeal({
-      variables,
-      onCompleted: (deal) => {
-        setReserveCompleted(true);
-        setDealId(deal.dealsAdd?._id);
-        // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
-      },
-    });
+    if (!!dealId) {
+      editDeal({
+        variables: {
+          id: dealId,
+          stageId: stages?.find((st: IStage) => st.code === "canceled")?._id,
+        },
+        onCompleted: () =>
+          addDeal({
+            variables,
+            onCompleted: (deal) => {
+              setReserveCompleted(true);
+              setDealId(deal.dealsAdd?._id);
+              // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
+            },
+          }),
+      });
+    } else {
+      addDeal({
+        variables,
+        onCompleted: (deal) => {
+          setReserveCompleted(true);
+          setDealId(deal.dealsAdd?._id);
+          // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
+        },
+      });
+    }
+  };
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleButtonClick = () => {
+    setIsLoading(true);
+
+    // Simulate a delay for loading
+    setTimeout(async () => {
+      selectedMethodCard === "Card"
+        ? stripe &&
+          elements &&
+          (await stripe
+            .confirmPayment({
+              elements,
+              clientSecret,
+              confirmParams: {
+                // return_url: `http://localhost:3001/${locale}/booking/confirmation/${dealId}`,
+              },
+              redirect: "if_required",
+            })
+            .then((result) => {
+              if (result.error) {
+                // Inform the customer that there was an error.
+                setIsLoading(false);
+                setConfirmBookingView("unconfirmed");
+                console.log(result.error);
+              } else {
+                setIsLoading(false);
+                setConfirmBookingView("confirmed");
+                editDeal({
+                  variables: {
+                    id: dealId,
+                    stageId: stages?.find((st: IStage) => st.code === "future")
+                      ?._id,
+                    tagIds: tagsData?.tags.find(
+                      (tag: any) => tag.name === "card"
+                    )?._id,
+                  },
+                }),
+                  addPayment({
+                    variables: {
+                      id: dealId,
+                      paymentsData: {
+                        card: {
+                          amount: totalAmount,
+                          currency: "MNT",
+                          info: [
+                            {
+                              date: new Date(),
+                              amount: totalAmount,
+                              paidBy: currentUser?.erxesCustomerId,
+                              method: "card",
+                              room: "all",
+                            },
+                          ],
+                        },
+                      },
+                      processId: Math.random().toString(),
+                    },
+                    onCompleted: () =>
+                      router.push(
+                        `http://localhost:3001/${locale}/booking/confirmation/${dealId}`
+                      ),
+                  });
+              }
+            }))
+        : setIsLoading(false);
+      createInvoice({
+        variables: {
+          amount: totalAmount,
+          customerId: paymentsData[0]._id,
+          customerType: "customer",
+          contentType: "deal",
+          contentTypeId: dealId,
+          description: `Room reservation - ${reserveUser.mail}`,
+          paymentIds: [paymentsData[0]._id],
+          phone: reserveUser.phone,
+        },
+        onCompleted: (invoice) => {
+          transactionAdd({
+            variables: {
+              invoiceId: invoice.invoiceCreate._id,
+              paymentId: paymentsData[0]?._id,
+              amount: totalAmount,
+            },
+            // onCompleted: () => {
+            //   setSelectedPayment(paymentsData[0]._id);
+            // },
+          });
+        },
+      });
+    }, 3000);
   };
 
   const titles = [
@@ -857,82 +981,135 @@ const CheckoutForm = () => {
         >
           <DialogContent className="max-w-[60vh] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Check your booking</DialogTitle>
+              <DialogTitle>
+                {confirmBookingView === "confirm" ? (
+                  "Check your booking"
+                ) : confirmBookingView === "payment" &&
+                  selectedMethodCard === "Qpay" &&
+                  !transactionLoading &&
+                  !invoiceLoading &&
+                  !isLoading ? (
+                  <div className="text-destructive">Don't close until pay</div>
+                ) : confirmBookingView === "confirmed" && !isLoading ? (
+                  <div className="flex gap-2">
+                    <div className=" w-fit rounded-lg bg-[#dcf6df] border-[#46cb53] text-[#46cb53] flex items-center gap-2 px-5 py-[6px]">
+                      <CircleCheck className="h-4 w-4" color="#46cb53" />
+                      <p className="w-fit text-[#46cb53] text-textsm">
+                        Your booking is confirmed.
+                      </p>
+                    </div>
+                  </div>
+                ) : confirmBookingView === "unconfirmed" && !isLoading ? (
+                  <div className="flex gap-2">
+                    <div className=" w-fit rounded-lg bg-[#f6dcdc] border-[#cb4646] text-[#cb4646] flex items-center gap-2 px-5 py-[6px]">
+                      <CircleX className="h-4 w-4" color="#cb4646" />
+                      <p className="w-fit text-[#cb4646] text-textsm">
+                        Your booking is failed.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </DialogTitle>
             </DialogHeader>
-            <Separator />
+
+            {confirmBookingView !== "unconfirmed" && !isLoading && (
+              <Separator />
+            )}
+
             {confirmBookingView === "confirm" ? (
               <CheckBookingDetail />
-            ) : confirmBookingView === "payment" &&
-              selectedMethodCard === "Qpay" ? (
-              <div className="flex justify-center">
-                {!!transactionData && (
-                  <Image
-                    src={
-                      transactionData?.paymentTransactionsAdd.response.qrData
-                    }
-                    width={300}
-                    height={300}
-                    quality={100}
-                  />
-                )}
+            ) : confirmBookingView === "payment" && isLoading ? (
+              <Loading />
+            ) : selectedMethodCard === "Qpay" &&
+              confirmBookingView === "payment" ? (
+              transactionLoading && invoiceLoading && isLoading ? (
+                <Loading />
+              ) : (
+                <div className="flex justify-center">
+                  {!!transactionData && (
+                    <Image
+                      src={
+                        transactionData?.paymentTransactionsAdd.response.qrData
+                      }
+                      width={300}
+                      height={300}
+                      quality={100}
+                    />
+                  )}
+                </div>
+              )
+            ) : confirmBookingView === "confirmed" && !isLoading ? (
+              <div className="flex text-textsm">
+                We will direct you confirmation page.
               </div>
+            ) : isLoading ? (
+              <Loading />
             ) : (
-              <div>Your booking confirmed.</div>
+              ""
             )}
 
             {confirmBookingView === "confirm" ? (
               <Button
-                onClick={async () => {
+                onClick={() => {
+                  selectedMethodCard === "Qpay";
                   setConfirmBookingView("payment");
-                  selectedMethodCard === "Card"
-                    ? stripe &&
-                      elements &&
-                      (await stripe.confirmPayment({
-                        elements,
-                        clientSecret,
-                        confirmParams: {
-                          return_url: `http://127.0.0.1:3001/${locale}/booking/confirmation/${dealId}`,
-                        },
-                      }))
-                    : createInvoice({
-                        variables: {
-                          amount: totalAmount,
-                          customerId: paymentsData[0]._id,
-                          customerType: "customer",
-                          contentType: "deal",
-                          contentTypeId: dealId,
-                          description: `Bayangol hotel`,
-                          paymentIds: [paymentsData[0]._id],
-                          phone: reserveUser.phone,
-                        },
-                        onCompleted: (invoice) => {
-                          transactionAdd({
-                            variables: {
-                              invoiceId: invoice.invoiceCreate._id,
-                              paymentId: paymentsData[0]?._id,
-                              amount: totalAmount,
-                            },
-                            // onCompleted: () => {
-                            //   setSelectedPayment(paymentsData[0]._id);
-                            // },
-                          });
-                        },
-                      });
+                  handleButtonClick();
                 }}
               >
                 Confirm my booking
               </Button>
             ) : confirmBookingView === "payment" &&
-              selectedMethodCard === "Qpay" ? (
+              selectedMethodCard === "Qpay" &&
+              !transactionLoading &&
+              !invoiceLoading &&
+              !isLoading ? (
               <Button
                 onClick={() => {
                   checkInvoice({
                     variables: {
                       id: invoiceData?.invoiceCreate._id,
                     },
+
                     onCompleted: (data) => {
                       if (data.invoicesCheck !== "pending") {
                         setConfirmBookingView("confirmed");
+                        editDeal({
+                          variables: {
+                            id: dealId,
+                            stageId: stages?.find(
+                              (st: IStage) => st.code === "future"
+                            )?._id,
+                            tagIds: tagsData?.tags.find(
+                              (tag: any) => tag.name === "qpay"
+                            )?._id,
+                          },
+                        });
+                        addPayment({
+                          variables: {
+                            id: dealId,
+                            paymentsData: {
+                              qpay: {
+                                amount: totalAmount,
+                                currency: "MNT",
+                                info: [
+                                  {
+                                    date: new Date(),
+                                    amount: totalAmount,
+                                    paidBy: currentUser?.erxesCustomerId,
+                                    method: "qpay",
+                                    room: "all",
+                                  },
+                                ],
+                              },
+                            },
+                            processId: Math.random().toString(),
+                          },
+                        });
+                        router.push(
+                          `http://localhost:3001/${locale}/booking/confirmation/${dealId}`
+                        );
                       }
                     },
                   });
@@ -941,7 +1118,8 @@ const CheckoutForm = () => {
                 Check payment
               </Button>
             ) : (
-              <Button>Close</Button>
+              <div></div>
+              // <Button>Close</Button>
             )}
           </DialogContent>
         </Dialog>

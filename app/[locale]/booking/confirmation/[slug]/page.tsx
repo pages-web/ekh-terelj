@@ -3,6 +3,7 @@ import BookingLayout from "../../booking-layout";
 import { useRouter } from "@/i18n/routing";
 import { useAtom, useSetAtom } from "jotai";
 import {
+  dealIdAtom,
   reserveCompletedAtom,
   reserveCountAtom,
   reserveDateAtom,
@@ -29,6 +30,7 @@ const YourDetails = () => {
   const setSelectedRooms = useSetAtom(selectedRoomsAtom);
   const setReserveCompleted = useSetAtom(reserveCompletedAtom);
   const setDate = useSetAtom(reserveDateAtom);
+  const setDealId = useSetAtom(dealIdAtom);
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
     variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
   });
@@ -39,7 +41,6 @@ const YourDetails = () => {
   });
   const categories = categoriesData?.productCategories;
   const deal = data?.dealDetail;
-  console.log(deal);
 
   const nights = parseInt(
     deal?.products[0].startDate &&
@@ -58,6 +59,7 @@ const YourDetails = () => {
     setSelectedRooms(RESET);
     setReserveCount(RESET);
     setDate(RESET);
+    setDealId(RESET);
   }, []);
 
   return (
@@ -71,11 +73,11 @@ const YourDetails = () => {
                   <CircleCheck className="h-4 w-4" color="#46cb53" />
                   <p className="w-fit text-[#46cb53] text-textsm">Confirmed</p>
                 </div>
-                <div className="flex items-center gap-1 pl-2 text-textxs text-black/60">
+                {/* <div className="flex items-center gap-1 pl-2 text-textxs text-black/60">
                   <Check className="h-4 w-4" color="#46cb53" />
                   <span>We sent your confirmation to </span>
                   <span className="font-bold">{currentUser?.email}</span>
-                </div>
+                </div> */}
               </div>
 
               <div>
@@ -87,17 +89,17 @@ const YourDetails = () => {
               <div>
                 <div className="flex gap-2 text-textsm">
                   <span>Your confirmation code: </span>
-                  <span className="font-bold">{params.slug.slice(-9)}</span>
+                  <span className="font-bold">{params.slug}</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <Button variant={"secondary"}>Print full version</Button>
-              {/* <Button variant={"secondary"}>
+              <Button variant={"secondary"}>
                 Save your confirmation to phone
-              </Button> */}
-            </div>
+              </Button>
+            </div> */}
           </div>
 
           <div className="w-full flex flex-col gap-6 border rounded-lg p-6 shadow-md">

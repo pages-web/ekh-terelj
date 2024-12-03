@@ -77,7 +77,6 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       </div>
     );
   }
-  console.log(elements, "elements");
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">

@@ -55,7 +55,8 @@ export type StageCode =
   | "future"
   | "inhouse"
   | "checkout"
-  | "incomplete";
+  | "incomplete"
+  | "canceled";
 
 export interface IStage {
   _id: string;

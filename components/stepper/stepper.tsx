@@ -18,15 +18,15 @@ const Stepper = ({
       <div className="w-full flex justify-between absolute top-[28px] md:top-[22px] left-0">
         {steps.map((step, index) => {
           return (
-            <Link href={step.path} key={index}>
-              <Step
-                title={step.title}
-                index={index + 1}
-                isDone={index < currentActive}
-                isCurrent={index === currentActive}
-                // isNext={index === currentActive + 1}
-              />
-            </Link>
+            // <Link href={step.path} key={index}>
+            <Step
+              title={step.title}
+              index={index + 1}
+              isDone={index < currentActive}
+              isCurrent={index === currentActive}
+              // isNext={index === currentActive + 1}
+            />
+            // </Link>
           );
         })}
       </div>

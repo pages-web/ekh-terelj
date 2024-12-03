@@ -46,7 +46,7 @@ export const useStripeCheckout = () => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://127.0.0.1:3001/${locale}/payment-success?amount=${totalAmount}`,
+        return_url: `http://localhost:3001/${locale}/payment-success?amount=${totalAmount}`,
       },
     });
 

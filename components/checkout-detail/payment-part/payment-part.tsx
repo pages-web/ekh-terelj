@@ -55,12 +55,11 @@ const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
   const [selectedPayment, setSelectedPayment] = useAtom(selecteddMethodAtom);
   const [paymentSuccess, setPaymentSuccess] = useAtom(paymentSuccessAtom);
   const [dealId, setDealId] = useAtom(dealIdAtom);
-  const [totalAmount] = useAtom(totalAmountAtom);
+  const [totalAmount, setTotalAmount] = useAtom(totalAmountAtom);
 
   const [isPaid, setIsPaid] = useState(false);
 
   const [selectedMethodCard] = useAtom(selectedMethodCardAtom);
-  console.log(paymentsData);
 
   const nights = parseInt(date?.from && formatDistance(date?.from, date?.to));
 

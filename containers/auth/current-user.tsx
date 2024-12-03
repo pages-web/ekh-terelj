@@ -14,9 +14,11 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { useLogout } from "@/sdk/mutations/auth";
 
 const CurrentUser = () => {
   const { currentUser, setLoading, loading } = useCurrentUser();
+  const { logout } = useLogout();
 
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
@@ -60,7 +62,7 @@ const CurrentUser = () => {
                 </MenubarItem>
               </Link>
 
-              <MenubarItem className="gap-4">
+              <MenubarItem className="gap-4" onClick={() => logout()}>
                 <LogOut className="w-5 h-5" /> Log out
               </MenubarItem>
             </MenubarContent>

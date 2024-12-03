@@ -15,6 +15,7 @@ import {
 import { ICategory, IProduct } from "@/types/products";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { Loading } from "../ui/loading";
 
 const SelectRoomProducts = ({ className }: { className?: string }) => {
   const [date] = useAtom(reserveDateAtom);
@@ -55,7 +56,7 @@ const SelectRoomProducts = ({ className }: { className?: string }) => {
   if (loading) {
     return (
       <div className="w-full pt-40 flex justify-center font-bold">
-        loading...
+        <Loading />
       </div>
     );
   }

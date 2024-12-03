@@ -26,18 +26,17 @@ const BookingLayout = ({
   const totalAmount = useAtomValue(totalAmountAtom);
   const router = useRouter();
   const pathname = usePathname();
-  useEffect(() => {
-    if (
-      !date?.to &&
-      !date?.from &&
-      reserveCount?.adults === 0 &&
-      reserveCount?.room === 0 &&
-      !pathname.includes("confirmation")
-    ) {
-      router.push("/");
-    }
-  }, [date, selectedRooms, reserveCount]);
-  console.log(reserveCount);
+  // useEffect(() => {
+  //   if (
+  //     !date?.to &&
+  //     !date?.from &&
+  //     reserveCount?.adults === 0 &&
+  //     reserveCount?.room === 0 &&
+  //     !pathname.includes("confirmation")
+  //   ) {
+  //     router.push("/");
+  //   }
+  // }, [date, selectedRooms, reserveCount]);
 
   return (
     <div className="min-h-screen container space-y-4 md:space-y-10 py-4 md:py-10">
