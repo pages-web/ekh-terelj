@@ -6,7 +6,7 @@ import {
 import { ICategory, IProduct } from "@/types/products";
 import { queries } from "../graphql/rooms";
 import { useAtom } from "jotai";
-import { reserveDateAtom, selectedRoomsAtom } from "@/store/reserve";
+import { selectedRoomsAtom } from "@/store/rooms";
 
 const useRooms = (
   options?: OperationVariables

@@ -12,8 +12,8 @@ import {
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 const SelectRoomProductCard = ({ ...room }: IProduct) => {
-  const locale = useLocale();
   const category = room.category;
+
   return (
     <div className="text-start space-y-3 cursor-pointer group">
       <div className="h-[300px] overflow-hidden w-fit rounded-xl relative flex justify-center items-center">

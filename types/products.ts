@@ -17,6 +17,9 @@ export interface IProduct {
   category?: ICategory;
 }
 
+export interface IExtra extends IProduct {}
+export interface IRoom extends IProduct {}
+
 export interface IUom {
   _id: string;
   name: string;

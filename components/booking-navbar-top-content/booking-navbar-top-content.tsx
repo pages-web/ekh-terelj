@@ -7,7 +7,7 @@ import { Bed, CalendarIcon, MapPin, Users } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { useAtom } from "jotai";
-import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import BackButton from "../back-button/back-button";
 import ReserveButton from "../../containers/reserve/reserve-button";
 import DateForm from "@/containers/reserve/date-form";
@@ -18,8 +18,10 @@ import GuestForm from "@/containers/reserve/guest-form";
 
 const BookingNavbarTopContent = () => {
   const [date, setDate] = useAtom(reserveDateAtom);
-  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
-  const { adults, children, room } = reserveCount;
+  const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(
+    reserveGuestAndRoomAtom
+  );
+  const { adults, children, room } = reserveGuestAndRoom;
 
   return (
     <div className="w-full flex xl:flex-row flex-col justify-center items-center gap-6">

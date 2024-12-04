@@ -1,49 +1,16 @@
-import { IReserveCount } from "@/types";
-import { IProduct, IReserveRoomFullDetail } from "@/types/products";
-import { IReserveUser } from "@/types/reserve";
+import {
+  IReserveGuestAndRoom,
+  IReserveInfo,
+  IReserveUser,
+} from "@/types/reserve";
+import { formatDistance } from "date-fns";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { DateRange } from "react-day-picker";
 
-export const reserveCountAtom = atomWithStorage<IReserveCount | any>(
-  "reserveCount",
+export const reserveGuestAndRoomAtom = atomWithStorage<IReserveGuestAndRoom>(
+  "reserveGuestAndRoomAtom",
   { pet: false, room: 0, adults: 0, children: 0 }
-);
-export const reserveMealTypeAtom = atomWithStorage<any>(
-  "reserveMealType",
-  null
-);
-
-export const selectedRoomAtom = atomWithStorage<IReserveRoomFullDetail | any>(
-  "selectedRoom",
-  {}
-);
-export const selectedRoomsAtom = atomWithStorage<IReserveRoomFullDetail[]>(
-  "selectedRooms",
-  []
-);
-
-export const addSelectedRoomAtom = atom(
-  () => "",
-  (get, set, limit: number) => {
-    if (limit <= get(selectedRoomsAtom).length) return console.log("it's full");
-    if (!get(selectedRoomsAtom)) {
-      set(selectedRoomsAtom, () => [get(selectedRoomAtom)]);
-    } else {
-      set(selectedRoomsAtom, () => [
-        ...get(selectedRoomsAtom),
-        get(selectedRoomAtom),
-      ]);
-    }
-  }
-);
-export const removeSelectedRoomAtom = atom(
-  () => "",
-  (get, set, id: string) => {
-    set(selectedRoomsAtom, () =>
-      get(selectedRoomsAtom).filter((product) => product.room._id !== id)
-    );
-  }
 );
 
 export const reserveDateAtom = atomWithStorage<DateRange | any>("reserveDate", {
@@ -60,11 +27,19 @@ export const reserveUserAtom = atomWithStorage<IReserveUser>("reserveUser", {
   description: "",
 });
 
-export const reserveExtrasAtom = atom<any>([]);
 export const reserveCompletedAtom = atom<boolean>(false);
+export const confirmBookingViewAtom = atom<string>("confirm");
 
-export const selectedExtras: any = [];
-export const dealIdAtom = atomWithStorage<string>("dealId", "");
+export const nightsAtom = atom((get) => {
+  const date = get(reserveDateAtom);
+  return parseInt(
+    date?.from && date?.to && formatDistance(date?.from, date?.to)
+  );
+});
 
-export const totalAmountAtom = atomWithStorage<number>("totalAmount", 0);
-export const dealDurationAtom = atom<number>(1800);
+export const reserveInfoAtom = atom<IReserveInfo>((get) => {
+  const date = get(reserveDateAtom);
+  const guests = get(reserveGuestAndRoomAtom);
+  const nights = get(nightsAtom);
+  return { ...date, ...guests, nights: nights };
+});

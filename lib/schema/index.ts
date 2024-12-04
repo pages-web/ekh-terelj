@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { phoneZod } from "../zod";
 
 export const dateSchema = z.string({ required_error: "" }).date("Буруу огноо");
 
@@ -69,4 +70,16 @@ export const addPaymentSchema = z.object({
   paidBy: z.string().optional(),
   description: z.string().optional(),
   room: z.string().min(1),
+});
+
+export const reserveDetailSchema = z.object({
+  forWho: z.string(),
+  firstname: z.string().min(1, { message: "Firstname" }),
+  lastname: z.string().min(1, { message: "Lastname" }),
+  mail: z.string().email(),
+  phone: phoneZod,
+  description: z.string().max(250).optional(),
+  guestFirstname: z.string().optional(),
+  guestLastname: z.string().optional(),
+  guestMail: z.string().email().optional(),
 });

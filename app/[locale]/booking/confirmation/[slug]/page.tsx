@@ -3,11 +3,9 @@ import BookingLayout from "../../booking-layout";
 import { useRouter } from "@/i18n/routing";
 import { useAtom, useSetAtom } from "jotai";
 import {
-  dealIdAtom,
   reserveCompletedAtom,
-  reserveCountAtom,
   reserveDateAtom,
-  selectedRoomsAtom,
+  reserveGuestAndRoomAtom,
 } from "@/store/reserve";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,11 +20,11 @@ import { format, formatDistance } from "date-fns";
 import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import { RESET } from "jotai/utils";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
+import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
 
 const YourDetails = () => {
   const params = useParams();
-  const { currentUser } = useCurrentUser();
-  const setReserveCount = useSetAtom(reserveCountAtom);
+  const setReserveGuestAndRoom = useSetAtom(reserveGuestAndRoomAtom);
   const setSelectedRooms = useSetAtom(selectedRoomsAtom);
   const setReserveCompleted = useSetAtom(reserveCompletedAtom);
   const setDate = useSetAtom(reserveDateAtom);
@@ -57,7 +55,7 @@ const YourDetails = () => {
   useEffect(() => {
     setReserveCompleted(false);
     setSelectedRooms(RESET);
-    setReserveCount(RESET);
+    setReserveGuestAndRoom(RESET);
     setDate(RESET);
     setDealId(RESET);
   }, []);

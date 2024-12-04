@@ -1,7 +1,7 @@
 "use client";
 import { mutations } from "@/sdk/graphql/sales";
 import { useStages } from "@/sdk/queries/sales";
-import { dealDurationAtom, dealIdAtom } from "@/store/reserve";
+import { dealDurationAtom, dealIdAtom } from "@/store/rooms";
 import { IStage } from "@/types/sales";
 import { useMutation } from "@apollo/client";
 import { useAtom, useAtomValue } from "jotai";

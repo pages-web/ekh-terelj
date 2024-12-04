@@ -5,8 +5,8 @@ import { Button } from "../../components/ui/button";
 import { useParams } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { useAtom } from "jotai";
-import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
-import { useToast } from "@/hooks/use-toast";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
+import { useToast } from "@/hooks/others/use-toast";
 
 const ReserveButton = ({
   arrow,
@@ -19,7 +19,7 @@ const ReserveButton = ({
 }) => {
   const locale = useParams().locale;
   const [date] = useAtom(reserveDateAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
+  const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const { toast } = useToast();
   const ToastHandler = () => {
     if (!date?.to || !date.from) {
@@ -28,13 +28,13 @@ const ReserveButton = ({
         title: "Pick a date",
       });
     }
-    if (!reserveCount?.room || reserveCount?.room === 0) {
+    if (!reserveGuestAndRoom?.room || reserveGuestAndRoom?.room === 0) {
       return toast({
         variant: "destructive",
         title: "Add a room",
       });
     }
-    if (!reserveCount?.adults || reserveCount?.adults === 0) {
+    if (!reserveGuestAndRoom?.adults || reserveGuestAndRoom?.adults === 0) {
       return toast({
         variant: "destructive",
         title: "Add a guests",
@@ -47,10 +47,10 @@ const ReserveButton = ({
       href={
         !date?.from ||
         !date?.to ||
-        !reserveCount?.room ||
-        !reserveCount?.adults ||
-        reserveCount?.room === 0 ||
-        reserveCount?.adults === 0
+        !reserveGuestAndRoom?.room ||
+        !reserveGuestAndRoom?.adults ||
+        reserveGuestAndRoom?.room === 0 ||
+        reserveGuestAndRoom?.adults === 0
           ? ""
           : "/booking"
       }

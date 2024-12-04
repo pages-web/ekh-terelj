@@ -7,20 +7,13 @@ import { Separator } from "../ui/separator";
 import { ReactNode, useEffect } from "react";
 import IconWithTitle from "../icon-with-title/icon-with-title";
 import { useAtom, useAtomValue } from "jotai";
-import {
-  removeSelectedRoomAtom,
-  reserveCountAtom,
-  reserveDateAtom,
-  reserveMealTypeAtom,
-  selectedRoomAtom,
-  selectedRoomsAtom,
-  totalAmountAtom,
-} from "@/store/reserve";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
 import { useRouter } from "@/i18n/routing";
-import { paymentTypeAtom } from "@/store/payments";
-import { useStripeCheckout } from "@/hooks/use-stripe";
+import { paymentTypeAtom, totalAmountAtom } from "@/store/payments";
+import { useStripeCheckout } from "@/hooks/others/use-stripe";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
+import { selectedRoomsAtom } from "@/store/rooms";
 
 type TitleWithPrice = {
   title: string;
@@ -37,17 +30,13 @@ type TitleWithIcon = {
 const ReservedRoomDetail = () => {
   const router = useRouter();
   const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
+  const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [date, setDate] = useAtom(reserveDateAtom);
-  const [, removeRoom] = useAtom(removeSelectedRoomAtom);
-  const [selectedRoom] = useAtom(selectedRoomAtom);
   const paymentType = useAtomValue(paymentTypeAtom);
-  const [mealType] = useAtom(reserveMealTypeAtom);
   const [totalAmount, setTotalAmount] = useAtom(totalAmountAtom);
   // const totalPrice = selectedRoom.unitPrice * dateDiff;
   // const taxes = (totalPrice * 10) / 100;
   // const fee = (totalPrice * 2) / 100;
-
 
   const paymentTypeDivider = paymentType === "full" ? 1 : 2;
 
@@ -104,9 +93,10 @@ const ReservedRoomDetail = () => {
                 {nights > 1 && "s"}
               </p>
               <p className="font-bold text-textsm">
-                Guests: {reserveCount.adults} adult
-                {reserveCount.adults > 1 && "s"}, {reserveCount.children} child
-                {reserveCount.adults > 1 && "ren"}
+                Guests: {reserveGuestAndRoom.adults} adult
+                {reserveGuestAndRoom.adults > 1 && "s"},{" "}
+                {reserveGuestAndRoom.children} child
+                {reserveGuestAndRoom.adults > 1 && "ren"}
               </p>
             </div>
           </div>

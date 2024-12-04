@@ -1,16 +1,13 @@
 import { Separator } from "@/components/ui/separator";
-import {
-  reserveCountAtom,
-  reserveDateAtom,
-  selectedRoomsAtom,
-  totalAmountAtom,
-} from "@/store/reserve";
+import { totalAmountAtom } from "@/store/payments";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
+import { selectedRoomsAtom } from "@/store/rooms";
 import { format, formatDistance } from "date-fns";
 import { useAtom } from "jotai";
 
 const CheckBookingDetail = () => {
   const [selectedRooms] = useAtom(selectedRoomsAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
+  const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [totalAmount] = useAtom(totalAmountAtom);
   const [date] = useAtom(reserveDateAtom);
   const nights = parseInt(
@@ -23,8 +20,10 @@ const CheckBookingDetail = () => {
           Stays: {nights} night{nights > 1 && "s"}
         </p>
         <p className="font-bold text-textsm">
-          Guests: {reserveCount.adults} adult{reserveCount.adults > 1 && "s"},{" "}
-          {reserveCount.children} child{reserveCount.adults > 1 && "ren"}
+          Guests: {reserveGuestAndRoom.adults} adult
+          {reserveGuestAndRoom.adults > 1 && "s"},{" "}
+          {reserveGuestAndRoom.children} child
+          {reserveGuestAndRoom.adults > 1 && "ren"}
         </p>
       </div>
 

@@ -1,7 +1,8 @@
 "use client";
 import { useAtom } from "jotai";
-import { reserveDateAtom, selectedRoomsAtom } from "@/store/reserve";
+import { reserveDateAtom } from "@/store/reserve";
 import { Calendar } from "@/components/ui/calendar";
+import { selectedRoomsAtom } from "@/store/rooms";
 
 const DateForm = () => {
   const [date, setDate] = useAtom(reserveDateAtom);

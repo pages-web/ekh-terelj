@@ -9,9 +9,4 @@ export interface CommonParams {
   variables?: QueryOptions["variables"];
 }
 
-export interface IReserveCount {
-  adults: number;
-  children: number;
-  room: number;
-  pet?: boolean;
-}
+

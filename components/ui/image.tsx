@@ -5,7 +5,7 @@ import NextImage, { ImageProps as NextImageProps } from "next/image";
 import { cn, readFile } from "@/lib/utils";
 import cloudflareLoader from "@/lib/image-loader";
 import { useState } from "react";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { useMediaQuery } from "@/hooks/others/use-media-query";
 
 const PLACEHOLDER = "/images/placeholder-1.png";
 

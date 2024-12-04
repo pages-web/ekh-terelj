@@ -9,20 +9,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useGetCategories, useGetProducts } from "@/sdk/queries/extras";
-import { selectedExtras } from "@/store/reserve";
+import { selectedExtras } from "@/store/rooms";
 import { IProduct } from "@/types/products";
 
 const ExtraServices = () => {
-  // const name = useWatch({
-  //   name: "name",
-  //   defaultValue: "",
-  // });
-  // const categoryId = useWatch({
-  //   name: "categoryId",
-  //   defaultValue: process.env.NEXT_PUBLIC_EXTRAS_ID,
-  // });
-
-  const { products, loading } = useGetProducts({
+  const { products: extras } = useGetProducts({
     variables: {
       perPage: 10,
       categoryId: process.env.NEXT_PUBLIC_EXTRAS_ID,
@@ -31,13 +22,8 @@ const ExtraServices = () => {
 
   return (
     <div className="flex flex-col gap-3 px-1">
-      {products.map((product: IProduct, index: number) => (
-        <ReserveDetailExtra
-          product={product}
-          key={index}
-          array={selectedExtras}
-          index={index}
-        />
+      {extras.map((extra: IProduct, index: number) => (
+        <ReserveDetailExtra {...extra} key={index} />
       ))}
     </div>
   );

@@ -15,7 +15,7 @@ import PopupOfferDetail from "../popup-offer-detail/popup-offer-detail";
 import OfferDetailsButton from "../offer-details-button/offer-details-button";
 import { Link, useRouter } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { useMediaQuery } from "@/hooks/others/use-media-query";
 import { useEffect, useState } from "react";
 import { IProduct } from "@/types/products";
 import { toggleSelectRateAtom } from "@/store/other";

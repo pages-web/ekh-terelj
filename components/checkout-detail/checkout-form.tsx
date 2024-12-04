@@ -6,7 +6,6 @@ import { z } from "zod";
 import {
   FormLabel,
   Form,
-  FormDescription,
   FormField,
   FormItem,
   FormControl,
@@ -21,38 +20,27 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import PaymentPart from "./payment-part/payment-part";
-import ExtraServices from "./extra-services/extra-services";
-import { BookingFormT, ExtraT } from "@/lib/schema/types";
-import { formatToDate, parseDate } from "@/lib/date";
-import { addDays, formatDistance } from "date-fns";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { formatDistance } from "date-fns";
+import { useAtom, useAtomValue } from "jotai";
 import {
-  dealIdAtom,
+  confirmBookingViewAtom,
   reserveCompletedAtom,
-  reserveCountAtom,
   reserveDateAtom,
-  reserveExtrasAtom,
+  reserveGuestAndRoomAtom,
   reserveUserAtom,
-  selectedRoomAtom,
-  selectedRoomsAtom,
-  totalAmountAtom,
 } from "@/store/reserve";
-import { useCreateEditDeal, useStages } from "@/sdk/queries/sales";
-import { MutationHookOptions, useMutation, useQuery } from "@apollo/client";
+import { useStages } from "@/sdk/queries/sales";
+import { useMutation, useQuery } from "@apollo/client";
 import { mutations } from "@/sdk/graphql/sales";
 import { mutations as paymentMutations } from "@/sdk/graphql/payments";
 import { IStage } from "@/types/sales";
-import useCreateCustomer from "@/sdk/mutations/customers";
 import { useEffect, useState } from "react";
-import useCustomers from "@/sdk/queries/customers";
 import { useRouter } from "@/i18n/routing";
 import { queries } from "@/sdk/graphql/payments";
 import { queries as salesQueries } from "@/sdk/graphql/sales";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -65,20 +53,21 @@ import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { Checkbox } from "../ui/checkbox";
 import { currentUserAtom } from "@/store/auth";
-import { IProduct } from "@/types/products";
-import QpayPayment from "./qpay-payment/qpay-payment";
 import CheckBookingDetail from "./check-booking-detail/check-booking-detail";
-import { paymentTypeAtom } from "@/store/payments";
-import { selectedMethodCardAtom } from "@/store/other";
-import { useStripeCheckout } from "@/hooks/use-stripe";
-import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import {
+  paymentTypeAtom,
+  selectedMethodCardAtom,
+  totalAmountAtom,
+} from "@/store/payments";
+import { useElements, useStripe } from "@stripe/react-stripe-js";
 import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import { useLocale } from "next-intl";
 import Image from "../ui/image";
-import { RESET } from "jotai/utils";
 import { Loading } from "../ui/loading";
-import { Check, CircleCheck, CircleX } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
+import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
+import { reserveDetailSchema } from "@/lib/schema";
+import { useAddDeal } from "@/sdk/mutations/sales";
 
 export const termsContent = `              
                   Introduction and Scope of Services Updated: December 15th,
@@ -436,32 +425,19 @@ export const termsContent = `
                   the country in which he is domiciled.
                 `;
 
-const FormSchema = z.object({
-  forWho: z.string(),
-  firstname: z.string().min(1, { message: "Firstname" }),
-  lastname: z.string().min(1, { message: "Lastname" }),
-  mail: z.string().email(),
-  phone: phoneZod,
-  description: z.string().max(250).optional(),
-  guestFirstname: z.string().optional(),
-  guestLastname: z.string().optional(),
-  guestMail: z.string().email().optional(),
-});
-
 const CheckoutForm = () => {
+  const { handleAddDeal } = useAddDeal();
+  //----------------------------------
   const router = useRouter();
-  const [selectedRoom] = useAtom(selectedRoomAtom);
-  const [date, setDate] = useAtom(reserveDateAtom);
-  const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
-  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
+  const [date] = useAtom(reserveDateAtom);
   const [reserveUser, setReserveUser] = useAtom(reserveUserAtom);
-  const [reserveExtras, setReserveExtras] = useAtom(reserveExtrasAtom);
   const [reserveCompleted, setReserveCompleted] = useAtom(reserveCompletedAtom);
-  const [dealId, setDealId] = useAtom(dealIdAtom);
-  const [customerId, setCustomerId] = useState();
+  const [dealId] = useAtom(dealIdAtom);
   const [isMyself, setIsMyself] = useState(true);
   const [terms, setTerms] = useState(false); //must be false
-  const [confirmBookingView, setConfirmBookingView] = useState("confirm");
+  const [confirmBookingView, setConfirmBookingView] = useAtom(
+    confirmBookingViewAtom
+  );
   const [selectedMethodCard] = useAtom(selectedMethodCardAtom);
   const { firstName, lastName, email, phone } =
     useAtomValue(currentUserAtom) || {};
@@ -475,8 +451,8 @@ const CheckoutForm = () => {
   const [clientSecret, setClientSecret] = useState("");
   const locale = useLocale();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof reserveDetailSchema>>({
+    resolver: zodResolver(reserveDetailSchema),
     defaultValues: {
       forWho: "myself",
       firstname: firstName,
@@ -487,18 +463,12 @@ const CheckoutForm = () => {
     },
   });
 
-  const [addDeal, { loading }] = useMutation(mutations.dealsAdd);
   const [editDeal] = useMutation(mutations.dealsEdit);
   const [addPayment] = useMutation(mutations.addPayment);
-  // const { data: currentDeal } = useQuery(salesQueries.dealDetail, {
-  //   variables: { id: dealId },
-  // });
   const { data } = useQuery(queries.payments);
   const { data: tagsData } = useQuery(salesQueries.tags);
   const paymentsData = data?.payments;
-  const { stages, loading: stagesLoading } = useStages();
-  const { createCustomer, error } = useCreateCustomer();
-  // const { getCustomers, customers } = useCustomers();
+  const { stages } = useStages();
 
   const [createInvoice, { data: invoiceData, loading: invoiceLoading }] =
     useMutation(paymentMutations.invoiceCreate);
@@ -507,37 +477,6 @@ const CheckoutForm = () => {
     { data: transactionData, loading: transactionLoading },
   ] = useMutation(paymentMutations.transactionsAdd);
   const [checkInvoice] = useMutation(paymentMutations.checkInvoice);
-
-  const nights = parseInt(date?.from && formatDistance(date?.from, date?.to));
-
-  const selectedRoomsByMutation = selectedRooms.map(({ room }) => ({
-    productId: room?._id,
-    name: room?.name,
-    startDate: date?.from,
-    endDate: date?.to,
-    unitPrice: room?.unitPrice,
-    quantity: nights,
-    amount: room?.unitPrice * nights,
-    uom: room?.uom,
-    tickUsed: true,
-    information: {
-      adults: reserveCount?.adults,
-      children: reserveCount?.children,
-    },
-  }));
-
-  const selectedExtrasByMutation = selectedRooms.flatMap(({ extras, room }) =>
-    extras?.map((extra) => ({
-      productId: extra?._id,
-      quantity: 1,
-      name: extra?.name,
-      unitPrice: extra?.unitPrice,
-      amount: extra?.unitPrice * 1,
-      information: {
-        parentId: room?._id,
-      },
-    }))
-  );
 
   useEffect(() => {
     fetch("/api/create-payment-intent", {
@@ -563,28 +502,12 @@ const CheckoutForm = () => {
 
   const handlePaymentAndReservation = async (
     event: React.FormEvent<HTMLFormElement>,
-    data: z.infer<typeof FormSchema>
+    data: z.infer<typeof reserveDetailSchema>
   ) => {
     event.preventDefault();
 
     // Set reservation data
     setReserveUser(data);
-
-    // Define reservation variables
-    const variables = {
-      name: `${data.firstname} ${data.lastname}`,
-      customerIds: [currentUser?.erxesCustomerId],
-      productsData: [...selectedRoomsByMutation, ...selectedExtrasByMutation],
-      stageId: stages?.find((st: IStage) => st.code === "unconfirmed")?._id,
-      startDate: date?.from,
-      closeDate: date?.to,
-      description: `${data.description}`,
-      labelIds: [
-        paymentType === "full"
-          ? "6ouWONHOg0NXt8i9i4vjL"
-          : "-HZ7qjcGU2-po7eD40RfJ",
-      ],
-    };
 
     // Handle Stripe payment
     if (!stripe || !elements) {
@@ -599,11 +522,6 @@ const CheckoutForm = () => {
       return;
     }
 
-    if (error) {
-      setErrorMessage(error.message);
-      return;
-    }
-
     setReserveCompleted(!reserveCompleted);
 
     // Handle deal creation or editing after payment succeeds
@@ -613,25 +531,10 @@ const CheckoutForm = () => {
           id: dealId,
           stageId: stages?.find((st: IStage) => st.code === "canceled")?._id,
         },
-        onCompleted: () =>
-          addDeal({
-            variables,
-            onCompleted: (deal) => {
-              setReserveCompleted(true);
-              setDealId(deal.dealsAdd?._id);
-              // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
-            },
-          }),
+        onCompleted: () => handleAddDeal({ description: data.description }),
       });
     } else {
-      addDeal({
-        variables,
-        onCompleted: (deal) => {
-          setReserveCompleted(true);
-          setDealId(deal.dealsAdd?._id);
-          // router.push(`/profile/orders/${deal.dealsAdd?._id}`);
-        },
-      });
+      handleAddDeal({ description: data.description });
     }
   };
 

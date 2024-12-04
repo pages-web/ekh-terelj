@@ -3,7 +3,6 @@ import { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
 import { useAtom } from "jotai";
-import { reserveCountAtom } from "@/store/reserve";
 import CountField from "@/components/count-field/count-field";
 import { PopoverClose } from "@/components/ui/popover";
 import { z } from "zod";
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { reserveGuestAndRoomAtom } from "@/store/reserve";
 const FormSchema = z.object({
   pet: z.boolean().default(false),
   room: z.number().min(0),
@@ -26,20 +26,20 @@ const FormSchema = z.object({
 });
 
 const GuestForm = () => {
-  const [reserveCount, setReserveCount] = useAtom(reserveCountAtom);
+  const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      pet: reserveCount?.pet || false,
-      room: reserveCount?.room || 0,
-      adults: reserveCount?.adults || 0,
-      children: reserveCount?.children || 0,
+      pet: reserveGuestAndRoom?.pet || false,
+      room: reserveGuestAndRoom?.room || 0,
+      adults: reserveGuestAndRoom?.adults || 0,
+      children: reserveGuestAndRoom?.children || 0,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setReserveCount(data);
+    setReserveGuestAndRoom(data);
   }
 
   return (

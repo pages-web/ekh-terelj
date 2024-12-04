@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
 import ReserveButton from "../../containers/reserve/reserve-button";
 import { useAtom } from "jotai";
-import { reserveCountAtom, reserveDateAtom } from "@/store/reserve";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import DateForm from "@/containers/reserve/date-form";
 import RoomForm from "@/containers/reserve/room-form";
 import GuestForm from "@/containers/reserve/guest-form";
@@ -33,9 +33,9 @@ export const ChildrenWithTitle = ({
 
 const ReserveSelectDate = () => {
   const [date] = useAtom(reserveDateAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
+  const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [active, setActive] = useState(0);
-  const { adults, children, room } = reserveCount || "";
+  const { adults, children, room } = reserveGuestAndRoom || "";
 
   return (
     <div className="w-full flex flex-col p-6 gap-8 rounded-[12px] bg-white border shadow-lg">

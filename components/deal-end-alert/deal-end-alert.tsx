@@ -1,4 +1,4 @@
-import { dealDurationAtom, dealIdAtom } from "@/store/reserve";
+import { dealDurationAtom, dealIdAtom } from "@/store/rooms";
 import { intervalToDuration } from "date-fns";
 import { useAtom, useAtomValue } from "jotai";
 import { AlarmClock } from "lucide-react";

@@ -4,20 +4,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mutations, queries } from "@/sdk/graphql/payments";
 import { mutations as salesMutations } from "@/sdk/graphql/sales";
 import { useStages } from "@/sdk/queries/sales";
-import { selectedMethodCardAtom } from "@/store/other";
 import {
   handleMethodAtom,
   paymentSuccessAtom,
   paymentTypeAtom,
   selecteddMethodAtom,
-} from "@/store/payments";
-import {
-  dealIdAtom,
-  reserveCountAtom,
-  reserveDateAtom,
-  selectedRoomAtom,
+  selectedMethodCardAtom,
   totalAmountAtom,
-} from "@/store/reserve";
+} from "@/store/payments";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { IStage } from "@/types/sales";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { formatDistance } from "date-fns";
@@ -29,6 +24,7 @@ import StripePayment from "@/containers/payments/stripe/stripe";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import CheckoutPage from "@/containers/payments/stripe/checkoutPage";
+import { dealIdAtom } from "@/store/rooms";
 
 const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
   const payments = [
@@ -49,8 +45,6 @@ const PaymentPart = ({ paymentsData }: { paymentsData: any }) => {
   const router = useRouter();
   const [paymentType, setPaymentType] = useAtom(paymentTypeAtom);
   const [date] = useAtom(reserveDateAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
-  const [selectedRoom] = useAtom(selectedRoomAtom);
   // const [selectedPayment, setSelectedPayment] = useAtom(handleMethodAtom);
   const [selectedPayment, setSelectedPayment] = useAtom(selecteddMethodAtom);
   const [paymentSuccess, setPaymentSuccess] = useAtom(paymentSuccessAtom);

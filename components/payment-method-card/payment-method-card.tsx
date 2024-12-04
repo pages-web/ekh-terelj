@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Image from "../ui/image";
 import { useAtom } from "jotai";
-import { selectedMethodCardAtom } from "@/store/other";
 import { CreditCard } from "lucide-react";
+import { selectedMethodCardAtom } from "@/store/payments";
 
 type Props = {
   title: string;

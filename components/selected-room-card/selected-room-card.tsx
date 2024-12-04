@@ -1,37 +1,21 @@
 import { useAtom, useAtomValue } from "jotai";
-import Image from "../ui/image";
 import { Separator } from "../ui/separator";
-import {
-  removeSelectedRoomAtom,
-  reserveCountAtom,
-  reserveDateAtom,
-  selectedRoomAtom,
-  selectedRoomsAtom,
-} from "@/store/reserve";
+import { nightsAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { Button } from "../ui/button";
-import { RESET } from "jotai/utils";
-import { formatDistance } from "date-fns";
-import { X } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
+import { removeSelectedRoomAtom, selectedRoomsAtom } from "@/store/rooms";
 
 const SelectedRoomCard = () => {
   const router = useRouter();
-  const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
-  const [reserveCount] = useAtom(reserveCountAtom);
-  const [date, setDate] = useAtom(reserveDateAtom);
+  const selectedRooms = useAtomValue(selectedRoomsAtom);
+  const reserveGuestAndRoom = useAtomValue(reserveGuestAndRoomAtom);
   const [, removeRoom] = useAtom(removeSelectedRoomAtom);
-  const nights = parseInt(
-    date?.from && date?.to && formatDistance(date?.from, date?.to)
-  );
+  const nights = useAtomValue(nightsAtom);
+
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-displayxs text-black">Your reservation</h1>
-      {/* <div className="border p-3 rounded-xl">
-        <div className="flex flex-col lg:flex-row justify-between gap-2"></div>
-        
-        <div className="flex flex-col gap-3 md:gap-6 mt-4"></div>
-      </div> */}
 
       <div className="flex flex-col gap-4">
         {selectedRooms.map((product, index) => (
@@ -67,10 +51,10 @@ const SelectedRoomCard = () => {
                         <span>{formatNumberWithCommas(extra.unitPrice)}₮</span>
                       </div>
                     ))}
-                    {/* <h2>{product.room?.category?.name}</h2>
-                            <span className="text-textsm text-black/60">
-                              {product.room?.unitPrice}₮ x {nights} nights
-                            </span> */}
+                    <h2>{product.room?.category?.name}</h2>
+                    <span className="text-textsm text-black/60">
+                      {product.room?.unitPrice}₮ x {nights} nights
+                    </span>
                   </div>
                 </div>
               </div>
@@ -112,7 +96,7 @@ const SelectedRoomCard = () => {
       </div>
 
       <div className="flex flex-col gap-2">
-        {selectedRooms.length === reserveCount.room && (
+        {selectedRooms.length === reserveGuestAndRoom.room && (
           <Button
             variant={"secondary"}
             onClick={() => router.push("/booking/your-details")}

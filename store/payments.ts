@@ -1,5 +1,6 @@
 import { IInvoice } from "@/types/payments";
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 export const paymentSuccessAtom = atom<boolean>(false);
 export const openMethodsAtom = atom<boolean>(true);
@@ -24,3 +25,5 @@ export const handleMethodAtom = atom(
 );
 
 export const paymentTypeAtom = atom<string>("full");
+export const selectedMethodCardAtom = atom<string>("Card");
+export const totalAmountAtom = atomWithStorage<number>("totalAmount", 0);

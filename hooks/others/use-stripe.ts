@@ -1,9 +1,9 @@
 import convertToSubcurrency from "@/lib/convertToSubcurrency";
-import { totalAmountAtom } from "@/store/reserve";
 import { useAtom } from "jotai";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { totalAmountAtom } from "@/store/payments";
 
 export const useStripeCheckout = () => {
   const stripe = useStripe();
