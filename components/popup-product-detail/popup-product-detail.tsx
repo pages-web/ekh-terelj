@@ -78,9 +78,9 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
         setApi={setApi}
       >
         <CarouselContent>
-          {images.map((image) => {
+          {images.map((image, index) => {
             return (
-              <CarouselItem>
+              <CarouselItem key={index}>
                 <Image
                   // src={image?.url}
                   src="/images/product.png"

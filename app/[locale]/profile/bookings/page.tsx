@@ -1,11 +1,9 @@
 "use client";
 import { useQuery } from "@apollo/client";
-import ProfileLayout from "../profile-layout";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { queries } from "@/sdk/graphql/sales";
 import { useCurrentUser } from "@/sdk/queries/auth";
-import { Link, useRouter } from "@/i18n/routing";
-import Image from "@/components/ui/image";
+import { useRouter } from "@/i18n/routing";
 import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import {
   Table,
@@ -19,16 +17,7 @@ import {
 import { format, formatDistance } from "date-fns";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { useLabels, useTags } from "@/sdk/queries/sales";
 
 const Orders = () => {
   const { currentUser } = useCurrentUser();
@@ -39,35 +28,32 @@ const Orders = () => {
       sortField: "createdAt",
     },
   });
-  const { data: tagsData } = useQuery(queries.tags);
   const { data: roomCategoriesData } = useQuery(roomQueries.roomCategories, {
     variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
   });
   const { data: stagesData } = useQuery(queries.stages, {
     variables: { pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID },
   });
+  const { tags } = useTags();
+  const { labels } = useLabels();
   const roomCategories = roomCategoriesData?.productCategories;
   const deals = data?.deals;
   const stages = stagesData?.salesStages;
-  const tags = tagsData?.tags;
 
   const router = useRouter();
   return (
     <div className="w-[80%] min-h-screen space-y-3 md:space-y-6 pt-6 md:pt-10 flex flex-col container">
       <h1 className="text-displaysm font-bold">Bookings</h1>
       <Separator />
-      <Tabs defaultValue="all" className="w-[400px]">
+      {/* <Tabs defaultValue="all" className="w-[400px]">
         <TabsList className="gap-10">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="confirmed">Paid</TabsTrigger>
           <TabsTrigger value="unconfirmed">Waiting</TabsTrigger>
           <TabsTrigger value="canceled">Canceled</TabsTrigger>
         </TabsList>
-        {/* <TabsContent value="account">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent> */}
-      </Tabs>
+
+      </Tabs> */}
 
       <Suspense>
         <div className="w-full space-y-4">
@@ -103,7 +89,11 @@ const Orders = () => {
               {data?.deals.map((deal: any, index: number) => {
                 return (
                   <TableRow
-                    onClick={() => router.push(`/profile/bookings/${deal._id}`)}
+                    onClick={() =>
+                      deal.stage.code !== "canceled" &&
+                      router.push(`/profile/bookings/${deal._id}`)
+                    }
+                    key={index}
                     className="cursor-pointer py-10 h-[70px]"
                   >
                     <TableCell className="font-medium">{deal._id}</TableCell>
@@ -122,12 +112,16 @@ const Orders = () => {
                         deal.stage.code !== "canceled" ? (
                         <span
                           className={`text-textxs px-2 py-1 rounded-lg ${
-                            deal.labels[0]?.name.includes("Full")
-                              ? " bg-[#95fea0] text-[#1d6824]"
-                              : " bg-[#c7ffcd] text-secondary"
+                            tags?.filter((tag: any) =>
+                              deal.tagIds.includes(tag._id)
+                            )
+                              ? "bg-[#95fea0] text-[#1d6824]"
+                              : "bg-[#c7ffcd] text-secondary"
                           }`}
                         >
-                          {deal.labels[0]?.name.includes("Full")
+                          {tags?.filter((tag: any) =>
+                            deal.tagIds.includes(tag._id)
+                          )
                             ? "Fullpaid"
                             : "Prepaid"}
                         </span>

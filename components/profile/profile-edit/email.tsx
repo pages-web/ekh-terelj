@@ -5,8 +5,8 @@ const Email = () => {
   return (
     <div className="py-12">
       <EmailDescription title="Your email address has been verified">
-        If you want to change your email address, click the "Change email
-        address" button
+        {`If you want to change your email address, click the "Change email
+        address" button`}
       </EmailDescription>
       <ChangeEmail />
     </div>

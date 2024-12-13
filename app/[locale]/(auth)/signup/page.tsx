@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import RegisterForm from "@/containers/auth/register-form";
-import { Metadata } from "next/types";
 import { Link } from "@/i18n/routing";
 
 const SignUp = () => {

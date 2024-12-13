@@ -1,5 +1,5 @@
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const propertyTypes = [
   {
@@ -22,7 +22,7 @@ const propertyTypes = [
     available: "5",
     image: "/images/Rectangle 7.png",
   },
-]
+];
 
 export default function Discover() {
   return (
@@ -35,7 +35,7 @@ export default function Discover() {
         </a>
       </div>
       <p className="text-muted-foreground mb-8">
-        Explore our range of property types for every traveler's preference.
+        {`Explore our range of property types for every traveler's preference.`}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {propertyTypes.map((property, index) => (
@@ -60,5 +60,5 @@ export default function Discover() {
         ))}
       </div>
     </div>
-  )
+  );
 }

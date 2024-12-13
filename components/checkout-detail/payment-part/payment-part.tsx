@@ -1,26 +1,23 @@
 import PaymentMethodCard from "@/components/payment-method-card/payment-method-card";
 import Image from "@/components/ui/image";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mutations, queries } from "@/sdk/graphql/payments";
+import { mutations } from "@/sdk/graphql/payments";
 import { mutations as salesMutations } from "@/sdk/graphql/sales";
 import { useStages } from "@/sdk/queries/sales";
 import {
-  handleMethodAtom,
   paymentSuccessAtom,
   paymentTypeAtom,
   selecteddMethodAtom,
   selectedMethodCardAtom,
   totalAmountAtom,
 } from "@/store/payments";
-import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
+import { reserveDateAtom } from "@/store/reserve";
 import { IStage } from "@/types/sales";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { formatDistance } from "date-fns";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { RESET } from "jotai/utils";
 import { useRouter } from "@/i18n/routing";
-import StripePayment from "@/containers/payments/stripe/stripe";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import CheckoutPage from "@/containers/payments/stripe/checkoutPage";

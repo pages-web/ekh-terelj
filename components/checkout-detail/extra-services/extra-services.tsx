@@ -1,15 +1,7 @@
 "use client";
 import ReserveDetailExtra from "@/components/reserve-detail-extra/reserve-detail-extra";
-import { Button } from "@/components/ui/button";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useGetCategories, useGetProducts } from "@/sdk/queries/extras";
-import { selectedExtras } from "@/store/rooms";
+
+import { useGetProducts } from "@/sdk/queries/extras";
 import { IProduct } from "@/types/products";
 
 const ExtraServices = () => {

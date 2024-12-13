@@ -14,7 +14,7 @@ import Rooms from "@/components/top-rooms/top-rooms";
 import { pageOffers } from "@/components/offers/offerData";
 
 export default function HomePage() {
-  const t = useTranslations("HomePage");
+  // const t = useTranslations("HomePage");
   return (
     <div className="flex flex-col gap-8 lg:gap-16">
       <div className="relative overflow-hidden">

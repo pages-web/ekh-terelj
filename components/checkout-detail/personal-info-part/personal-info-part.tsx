@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -9,17 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PhoneInput } from "@/components/ui/phone-input";
-import { useAtomValue } from "jotai";
-import { reserveUserAtom } from "@/store/reserve";
+
 import { useCurrentUser } from "@/sdk/queries/auth";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {

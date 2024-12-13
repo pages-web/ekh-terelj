@@ -80,7 +80,7 @@ const ProductDetailDescription = () => {
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="included">What's included</TabsContent>
+      <TabsContent value="included">{`What's included`}</TabsContent>
       <TabsContent value="faq">FAQ</TabsContent>
       <TabsContent value="policies">Policies</TabsContent>
     </Tabs>

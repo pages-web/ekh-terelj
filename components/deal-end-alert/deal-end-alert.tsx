@@ -1,3 +1,4 @@
+"use client";
 import { dealDurationAtom, dealIdAtom } from "@/store/rooms";
 import { intervalToDuration } from "date-fns";
 import { useAtom, useAtomValue } from "jotai";
@@ -8,21 +9,21 @@ const DealEndAlert = () => {
   const [dealDuration, setDealDuration] = useAtom(dealDurationAtom);
   const dealId = useAtomValue(dealIdAtom);
   useEffect(() => {
-    let interval: any;
-
-    if (!!dealId) {
-      interval = setInterval(() => {
-        setDealDuration((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
+    // if (!!dealId) {
+    const interval = setInterval(() => {
+      setDealDuration((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    // }
+    //  else {
+    //   console.log("end");
+    //   clearInterval(interval);
+    // }
 
     return () => clearInterval(interval);
   }, [dealId, setDealDuration]);

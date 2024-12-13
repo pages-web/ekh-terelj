@@ -11,7 +11,9 @@ export const useStages = () => {
 };
 
 export const useTags = () => {
-  const { data, loading } = useQuery(queries.tags);
+  const { data, loading } = useQuery(queries.tags, {
+    variables: { type: "sales:deal" },
+  });
   return { tags: data?.tags, loading };
 };
 

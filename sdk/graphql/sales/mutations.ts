@@ -23,8 +23,8 @@ const commonParams = `
 `;
 
 const dealsAdd = gql`
-  mutation DealsAdd(${commonFields} $customerIds: [String] $labelIds: [String]) {
-    dealsAdd(${commonParams} customerIds: $customerIds labelIds: $labelIds) {
+  mutation DealsAdd(${commonFields} $customerIds: [String] $labelIds: [String], $tagIds: [String]) {
+    dealsAdd(${commonParams} customerIds: $customerIds labelIds: $labelIds, tagIds: $tagIds) {
       _id
     }
   }

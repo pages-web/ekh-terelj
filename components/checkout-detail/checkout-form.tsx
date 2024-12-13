@@ -1,5 +1,4 @@
 "use client";
-import { phoneZod } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,16 +19,14 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import PaymentPart from "./payment-part/payment-part";
-import { formatDistance } from "date-fns";
 import { useAtom, useAtomValue } from "jotai";
 import {
   confirmBookingViewAtom,
   reserveCompletedAtom,
   reserveDateAtom,
-  reserveGuestAndRoomAtom,
   reserveUserAtom,
 } from "@/store/reserve";
-import { useStages } from "@/sdk/queries/sales";
+import { useStages, useTags } from "@/sdk/queries/sales";
 import { useMutation, useQuery } from "@apollo/client";
 import { mutations } from "@/sdk/graphql/sales";
 import { mutations as paymentMutations } from "@/sdk/graphql/payments";
@@ -46,7 +43,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useCurrentUser } from "@/sdk/queries/auth";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
@@ -65,7 +61,7 @@ import { useLocale } from "next-intl";
 import Image from "../ui/image";
 import { Loading } from "../ui/loading";
 import { CircleCheck, CircleX } from "lucide-react";
-import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
+import { dealIdAtom } from "@/store/rooms";
 import { reserveDetailSchema } from "@/lib/schema";
 import { useAddDeal } from "@/sdk/mutations/sales";
 
@@ -427,6 +423,7 @@ export const termsContent = `
 
 const CheckoutForm = () => {
   const { handleAddDeal } = useAddDeal();
+  const { tags } = useTags();
   //----------------------------------
   const router = useRouter();
   const [date] = useAtom(reserveDateAtom);
@@ -466,7 +463,6 @@ const CheckoutForm = () => {
   const [editDeal] = useMutation(mutations.dealsEdit);
   const [addPayment] = useMutation(mutations.addPayment);
   const { data } = useQuery(queries.payments);
-  const { data: tagsData } = useQuery(salesQueries.tags);
   const paymentsData = data?.payments;
   const { stages } = useStages();
 
@@ -477,6 +473,9 @@ const CheckoutForm = () => {
     { data: transactionData, loading: transactionLoading },
   ] = useMutation(paymentMutations.transactionsAdd);
   const [checkInvoice] = useMutation(paymentMutations.checkInvoice);
+  const { data: dealDetaildata } = useQuery(salesQueries.dealDetail, {
+    variables: { id: dealId },
+  });
 
   useEffect(() => {
     fetch("/api/create-payment-intent", {
@@ -571,9 +570,11 @@ const CheckoutForm = () => {
                     id: dealId,
                     stageId: stages?.find((st: IStage) => st.code === "future")
                       ?._id,
-                    tagIds: tagsData?.tags.find(
-                      (tag: any) => tag.name === "card"
-                    )?._id,
+                    tagIds: [
+                      ...dealDetaildata?.dealDetail.tagIds,
+                      tags.find((tag: any) => tag.name.toLowerCase() === "card")
+                        ?._id,
+                    ],
                   },
                 }),
                   addPayment({
@@ -603,31 +604,31 @@ const CheckoutForm = () => {
                   });
               }
             }))
-        : setIsLoading(false);
-      createInvoice({
-        variables: {
-          amount: totalAmount,
-          customerId: paymentsData[0]._id,
-          customerType: "customer",
-          contentType: "deal",
-          contentTypeId: dealId,
-          description: `Room reservation - ${reserveUser.mail}`,
-          paymentIds: [paymentsData[0]._id],
-          phone: reserveUser.phone,
-        },
-        onCompleted: (invoice) => {
-          transactionAdd({
+        : createInvoice({
             variables: {
-              invoiceId: invoice.invoiceCreate._id,
-              paymentId: paymentsData[0]?._id,
               amount: totalAmount,
+              customerId: paymentsData[0]._id,
+              customerType: "customer",
+              contentType: "deal",
+              contentTypeId: dealId,
+              description: `Room reservation - ${reserveUser.mail}`,
+              paymentIds: [paymentsData[0]._id],
+              phone: reserveUser.phone,
             },
-            // onCompleted: () => {
-            //   setSelectedPayment(paymentsData[0]._id);
-            // },
+            onCompleted: (invoice) => {
+              transactionAdd({
+                variables: {
+                  invoiceId: invoice.invoiceCreate._id,
+                  paymentId: paymentsData[0]?._id,
+                  amount: totalAmount,
+                },
+                // onCompleted: () => {
+                //   setSelectedPayment(paymentsData[0]._id);
+                // },
+              });
+            },
           });
-        },
-      });
+      setIsLoading(false);
     }, 3000);
   };
 
@@ -680,7 +681,7 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormLabel className="text-textxs">
-                        Guest's first name
+                        {`Guest's first name`}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -700,7 +701,7 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormLabel className="text-textxs">
-                        Guest's last name
+                        {`Guest's last name`}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -722,7 +723,7 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-textxs">
-                        Guest's e-mail
+                        {`Guest's e-mail`}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -892,7 +893,7 @@ const CheckoutForm = () => {
                   !transactionLoading &&
                   !invoiceLoading &&
                   !isLoading ? (
-                  <div className="text-destructive">Don't close until pay</div>
+                  <div className="text-destructive">{`Don't close until pay`}</div>
                 ) : confirmBookingView === "confirmed" && !isLoading ? (
                   <div className="flex gap-2">
                     <div className=" w-fit rounded-lg bg-[#dcf6df] border-[#46cb53] text-[#46cb53] flex items-center gap-2 px-5 py-[6px]">
@@ -984,9 +985,12 @@ const CheckoutForm = () => {
                             stageId: stages?.find(
                               (st: IStage) => st.code === "future"
                             )?._id,
-                            tagIds: tagsData?.tags.find(
-                              (tag: any) => tag.name === "qpay"
-                            )?._id,
+                            tagIds: [
+                              ...dealDetaildata?.dealDetail.tagIds,
+                              tags.find(
+                                (tag: any) => tag.name.toLowerCase === "qpay"
+                              )?._id,
+                            ],
                           },
                         });
                         addPayment({

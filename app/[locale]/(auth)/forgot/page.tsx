@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import ForgotForm from "@/containers/auth/forgot-form";
-import { Metadata } from "next/types";
 import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
 

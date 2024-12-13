@@ -1,5 +1,3 @@
-import CategoryTabs from "@/components/category-tabs/category-tabs";
-import Heading from "@/components/heading/heading";
 import AccommodationLayout from "./accommodation-layout";
 import ProductCard from "@/components/product-card/product-card";
 

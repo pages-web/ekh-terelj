@@ -20,6 +20,7 @@ const Stepper = ({
           return (
             // <Link href={step.path} key={index}>
             <Step
+              key={index}
               title={step.title}
               index={index + 1}
               isDone={index < currentActive}

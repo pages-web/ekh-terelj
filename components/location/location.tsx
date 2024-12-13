@@ -1,20 +1,26 @@
-"use client"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { MapPin, Plane, Car } from "lucide-react"
+"use client";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MapPin, Plane, Car } from "lucide-react";
 
 export default function Location() {
   const handleGetDirections = () => {
-    const destination = encodeURIComponent("Prime Minister Amar's street 15, Ulaanbaatar 14200, Mongolia");
+    const destination = encodeURIComponent(
+      "Prime Minister Amar's street 15, Ulaanbaatar 14200, Mongolia"
+    );
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
     window.open(mapsUrl, "_blank");
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-displaysm font-normal-bold mb-2">Browse offers at our premier hotel</h2>
+      <h2 className="text-displaysm font-normal-bold mb-2">
+        Browse offers at our premier hotel
+      </h2>
       <p className="text-gray-600 mb-6 text-muted-foreground">
-        Our beautiful hotels and resorts offer luxurious accommodation, exclusive Sydney accommodation deals, signature experiences and memorable destinations.
+        Our beautiful hotels and resorts offer luxurious accommodation,
+        exclusive Sydney accommodation deals, signature experiences and
+        memorable destinations.
       </p>
       <Card className="overflow-hidden">
         <div className="h-[400px] w-full">
@@ -33,11 +39,13 @@ export default function Location() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                <p className="text-textsm">Prime Minister Amar's street 15, Ulaanbaatar 14200, Mongolia</p>
+                <p className="text-textsm">{`Prime Minister Amar's street 15, Ulaanbaatar 14200, Mongolia`}</p>
               </div>
               <div className="flex items-center space-x-2">
                 <Plane className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                <p className="text-textsm">Nearest airport 2 hour Genghis khan airport</p>
+                <p className="text-textsm">
+                  Nearest airport 2 hour Genghis khan airport
+                </p>
               </div>
               <div className="flex items-center space-x-2">
                 <Car className="h-5 w-5 text-gray-400 flex-shrink-0" />
@@ -46,7 +54,11 @@ export default function Location() {
             </div>
           </CardContent>
           <CardFooter className="justify-end p-6 pt-0">
-            <Button variant="outline" className="text-primary" onClick={handleGetDirections}>
+            <Button
+              variant="outline"
+              className="text-primary"
+              onClick={handleGetDirections}
+            >
               Get directions
               <span className="ml-2">→</span>
             </Button>

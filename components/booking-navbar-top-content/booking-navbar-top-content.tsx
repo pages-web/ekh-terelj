@@ -3,13 +3,10 @@
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { Bed, CalendarIcon, MapPin, Users } from "lucide-react";
+import { Bed, CalendarIcon, Users } from "lucide-react";
 import { format } from "date-fns";
-import { Calendar } from "../ui/calendar";
 import { useAtom } from "jotai";
 import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
-import BackButton from "../back-button/back-button";
-import ReserveButton from "../../containers/reserve/reserve-button";
 import DateForm from "@/containers/reserve/date-form";
 import Image from "../ui/image";
 import { Link } from "@/i18n/routing";

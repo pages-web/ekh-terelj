@@ -15,7 +15,7 @@ const AccommodationLayout = ({ children }: PropsWithChildren) => {
         title="Top Trending Hotel Rooms Views"
         desc="A masterclass of sophistication, a stay at Atlantis The Royal delivers extraordinary luxury, unlike anywhere else."
       />
-      <CategoryTabs tabs={categories} defaultTab={categories[0]} />
+      <CategoryTabs tabs={categories} />
       {children}
     </div>
   );

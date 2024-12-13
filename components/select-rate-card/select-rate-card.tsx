@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useAtom } from "jotai";
-import { reserveMealTypeAtom, selectedRoomAtom } from "@/store/reserve";
 import PopupOfferDetail from "../popup-offer-detail/popup-offer-detail";
 import OfferDetailsButton from "../offer-details-button/offer-details-button";
 import { Link, useRouter } from "@/i18n/routing";
@@ -34,8 +33,8 @@ const SelectRateCard = ({
   index: number;
 }) => {
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
-  const [mealType, setMealType] = useAtom(reserveMealTypeAtom);
-  const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
+  // const [mealType, setMealType] = useAtom(reserveMealTypeAtom);
+  // const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
 
   const router = useRouter();
 
@@ -48,7 +47,7 @@ const SelectRateCard = ({
     },
   });
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setMealType(data);
+    // setMealType(data);
     router.push("/booking/your-details");
   }
   return (
@@ -109,11 +108,11 @@ const SelectRateCard = ({
                 <div className="flex gap-1 items-center leading-none text-black/60">
                   <CircleAlert className="min-w-4 min-h-4" />
                   <span className="text-textxs w-[70px]">
-                    {`${selectedRoom?.unitPrice}₮ MNT per night`}
+                    {/* {`${selectedRoom?.unitPrice}₮ MNT per night`} */}
                   </span>
                 </div>
                 <h1 className="text-textxl md:text-displaysm font-bold text-end w-full">
-                  {`MNT ${selectedRoom?.unitPrice}₮`}
+                  {/* {`MNT ${selectedRoom?.unitPrice}₮`} */}
                 </h1>
               </div>
 

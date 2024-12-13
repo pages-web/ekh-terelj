@@ -9,6 +9,7 @@ import {
 import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import { usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { Loading } from "@/components/ui/loading";
 
 const CheckoutPage = ({ amount }: { amount: number }) => {
   const stripe = useStripe();
@@ -67,15 +68,8 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
   };
 
   if (!clientSecret || !stripe || !elements) {
-    return (
-      <div className="flex items-center justify-center">
-        <div
-          className="inline-block h-8 w-8 animate-spin rounded-full fill-primary   border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
-          role="status"
-        ></div>
-      </div>
-    );
-  }
+    return <Loading />;
+  } 
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">

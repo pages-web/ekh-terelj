@@ -56,10 +56,12 @@ const SelectProductCard = ({
         </DialogContent>
       </Dialog>
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="w-full">Select room</Button>
-        </DialogTrigger>
+      {/* <Dialog>
+        <DialogTrigger asChild> */}
+      <Button className="w-full" onClick={HandleSelectRoom}>
+        Select room
+      </Button>
+      {/* </DialogTrigger>
         <DialogContent>
           <DialogTitle className="text-textlg flex-row items-center gap-2">
             Select additional services{" "}
@@ -73,7 +75,7 @@ const SelectProductCard = ({
             <Button onClick={HandleSelectRoom}>Done</Button>
           </DialogClose>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

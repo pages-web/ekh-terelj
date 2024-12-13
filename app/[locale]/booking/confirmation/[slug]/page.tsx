@@ -1,21 +1,17 @@
 "use client";
 import BookingLayout from "../../booking-layout";
-import { useRouter } from "@/i18n/routing";
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import {
   reserveCompletedAtom,
   reserveDateAtom,
   reserveGuestAndRoomAtom,
 } from "@/store/reserve";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@apollo/client";
 import { queries } from "@/sdk/graphql/sales";
 import { useParams } from "next/navigation";
-import { useCurrentUser } from "@/sdk/queries/auth";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Check, CircleCheck, Terminal } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { format, formatDistance } from "date-fns";
 import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import { RESET } from "jotai/utils";
@@ -171,7 +167,9 @@ const YourDetails = () => {
                           {extras?.map(
                             (extra: any, index: number) =>
                               extra.information.parentId ===
-                                room.product._id && <h2>{extra.name},</h2>
+                                room.product._id && (
+                                <h2 key={index}>{extra.name},</h2>
+                              )
                           )}
                         </div>
                       </div>

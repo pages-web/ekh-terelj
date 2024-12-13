@@ -6,7 +6,7 @@ import { IStage } from "@/types/sales";
 import { paymentTypeAtom } from "@/store/payments";
 import { useMutation } from "@apollo/client";
 import { mutations } from "../graphql/sales";
-import { useLabels, useStages } from "../queries/sales";
+import { useLabels, useStages, useTags } from "../queries/sales";
 
 export const useAddDeal = () => {
   const [addDeal, { data, loading }] = useMutation(mutations.dealsAdd);
@@ -21,6 +21,7 @@ export const useAddDeal = () => {
 
   const { stages } = useStages();
   const { labels } = useLabels();
+  const { tags } = useTags();
 
   const selectedRoomsByMutation = selectedRooms.map(({ room }) => ({
     productId: room?._id,
@@ -60,11 +61,12 @@ export const useAddDeal = () => {
       startDate: from,
       closeDate: to,
       description: `${description}`,
-      labelIds: [
+      tagIds: [
         paymentType === "full"
-          ? labels?.find((l: any) => l.name === "Full payment")?._id
-          : labels?.find((l: any) => l.name === "Pre payment")?._id,
+          ? tags.find((t: any) => t.name.toLowerCase() === "full payment")?._id
+          : tags.find((t: any) => t.name.toLowerCase() === "pre payment")?._id,
       ],
+      labelIds: [labels.find((l: any) => l.name.toLowerCase() === "web")?._id],
     };
 
     addDeal({

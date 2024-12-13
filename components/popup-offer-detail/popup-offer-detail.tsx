@@ -34,8 +34,10 @@ const PopupOfferDetail = () => {
       <h1 className="px-4 text-displayxs">Standard Rate</h1>
       <Separator className="my-2" />
       <div className="px-4 flex flex-col gap-6">
-        {datas.map((data) => {
-          return <TitleWithDesc title={data.title} desc={data.desc} />;
+        {datas.map((data, index) => {
+          return (
+            <TitleWithDesc key={index} title={data.title} desc={data.desc} />
+          );
         })}
       </div>
       <Separator className="my-2" />

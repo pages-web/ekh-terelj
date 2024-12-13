@@ -1,11 +1,10 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@apollo/client";
 import { queries } from "@/sdk/graphql/sales";
 import { useParams } from "next/navigation";
 import { useCurrentUser } from "@/sdk/queries/auth";
-import { Check, CircleCheck, Terminal } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { format, formatDistance } from "date-fns";
 import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
@@ -45,7 +44,7 @@ const OrderDetail = () => {
                 <div className="w-fit rounded-lg bg-[#dcf6df] border-[#46cb53] text-[#46cb53] flex items-center gap-2 px-5 py-[6px]">
                   <CircleCheck className="h-4 w-4" color="#46cb53" />
                   <p className="w-fit text-[#46cb53] text-textsm">Confirmed</p>
-                </div>    
+                </div>
               </div>
 
               <div>
@@ -62,12 +61,12 @@ const OrderDetail = () => {
               </div>
             </div>
 
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <Button variant={"secondary"}>Print full version</Button>
-              {/* <Button variant={"secondary"}>
+              <Button variant={"secondary"}>
                 Save your confirmation to phone
-              </Button> */}
-            </div>
+              </Button>
+            </div> */}
           </div>
 
           <div className="w-full flex flex-col gap-6 border rounded-lg p-6 shadow-md">
@@ -141,7 +140,9 @@ const OrderDetail = () => {
                           {extras?.map(
                             (extra: any, index: number) =>
                               extra.information.parentId ===
-                                room.product._id && <h2>{extra.name},</h2>
+                                room.product._id && (
+                                <h2 key={index}>{extra.name},</h2>
+                              )
                           )}
                         </div>
                       </div>

@@ -1,16 +1,17 @@
-import { Phone, MapPin, Mail } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
+import { Phone, MapPin, Mail } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export default function ContactComponent() {
   return (
     <div className="w-full max-w-[1600px] mx-auto p-6">
-     <h1 className="text-3xl font-bold mb-4">Contact</h1>
+      <h1 className="text-3xl font-bold mb-4">Contact</h1>
       <p className="mb-8 text-gray-600">
-        No request is too great and no detail too small. We are also here to assist you before your trip at Best Western Tuushin Hotel.
+        No request is too great and no detail too small. We are also here to
+        assist you before your trip at Best Western Tuushin Hotel.
       </p>
-      
+
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           <div className="flex items-center mb-4">
@@ -20,15 +21,15 @@ export default function ContactComponent() {
               <p>+976 11 32 3162</p>
             </div>
           </div>
-          
+
           <div className="flex items-center mb-4">
             <MapPin className="mr-2" />
             <div>
               <h2 className="font-semibold">Location</h2>
-              <p>Prime Minister Amar's street 15, Ulaanbaatar Mongolia</p>
+              <p>{`Prime Minister Amar's street 15, Ulaanbaatar Mongolia`}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center mb-8">
             <Mail className="mr-2" />
             <div>
@@ -36,7 +37,7 @@ export default function ContactComponent() {
               <p>info@bestwern.mn</p>
             </div>
           </div>
-          
+
           <h2 className="text-2xl font-bold mb-4">Leave a message ?</h2>
           <form className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -48,7 +49,9 @@ export default function ContactComponent() {
               <Input type="tel" placeholder="Enter your phone" />
             </div>
             <Textarea placeholder="Limit 250 characters" />
-            <Button className="w-full bg-teal-600 hover:bg-teal-700">Send message</Button>
+            <Button className="w-full bg-teal-600 hover:bg-teal-700">
+              Send message
+            </Button>
           </form>
         </div>
         <div className="h-[400px] lg:h-full rounded-lg overflow-hidden">

@@ -1,20 +1,12 @@
-import BookingNavbarTopContent from "@/components/booking-navbar-top-content/booking-navbar-top-content";
-import CategoryTabs from "@/components/category-tabs/category-tabs";
-import Heading from "@/components/heading/heading";
-import BookingNavbarTop from "@/components/layout/booking-navbar-top";
+"use client";
+
 import Stepper from "@/components/stepper/stepper";
-import ReserveRedirector from "@/containers/reserve/reserve-redirector";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { steps } from "@/lib/steps";
-import { totalAmountAtom } from "@/store/payments";
-import {
-  reserveDateAtom,
-  reserveGuestAndRoomAtom,
-  reserveInfoAtom,
-} from "@/store/reserve";
+import { reserveInfoAtom } from "@/store/reserve";
 import { selectedRoomsAtom } from "@/store/rooms";
-import { useAtom, useAtomValue } from "jotai";
-import { PropsWithChildren, Suspense, useEffect } from "react";
+import { useAtomValue } from "jotai";
+import { PropsWithChildren } from "react";
 
 const BookingLayout = ({
   children,

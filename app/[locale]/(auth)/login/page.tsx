@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 // import FacebookLogin from "@/containers/auth/facebook-login";
 // import GoogleLogin from "@/containers/auth/google-login";
-import { Metadata } from "next/types";
 import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
 import LoginForm from "@/containers/auth/login-form";

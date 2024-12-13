@@ -65,6 +65,15 @@ export const client = new ApolloClient({
   link: splitLink,
 });
 
+export function createApolloClient() {
+  return new ApolloClient({
+    link: new HttpLink({
+      fetch,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
 const Apollo = ({ children }: { children: ReactNode }) => (
   <ApolloProvider client={client}>{children}</ApolloProvider>
 );

@@ -117,6 +117,8 @@ const dealDetail = gql`
       name
       description
       labelIds
+      paymentsData
+      tagIds
     }
   }
 `;
@@ -155,6 +157,7 @@ const dealFullDetail = gql`
       }
       paymentsData
       amount
+      tagIds
     }
   }
 `;

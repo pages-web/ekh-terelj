@@ -11,7 +11,6 @@ import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
 import { useRouter } from "@/i18n/routing";
 import { paymentTypeAtom, totalAmountAtom } from "@/store/payments";
-import { useStripeCheckout } from "@/hooks/others/use-stripe";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { selectedRoomsAtom } from "@/store/rooms";
 

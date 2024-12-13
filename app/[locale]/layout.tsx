@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import { Toaster } from "@/components/ui/toaster";
-import Providers from "@/store";
 import Apollo from "./ApolloClient";
 
 export const metadata: Metadata = {

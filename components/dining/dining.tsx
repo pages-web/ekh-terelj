@@ -1,11 +1,9 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -109,11 +107,11 @@ export default function HotelDining({
             Sydney Opera House and Harbour Bridge.
           </p>
           <p className="text-gray-600">
-            With influences from across the globe, the hotel's restaurants
+            {`With influences from across the globe, the hotel's restaurants
             showcase inspired cuisine – from Mediterranean feasts to refined
             Japanese omakase - while the expansive Spa invites guests to pamper
             pre or post celebration, experiencing the tradition of onsen bathing
-            or a relaxing yoga class overlooking the city below.
+            or a relaxing yoga class overlooking the city below.`}
           </p>
         </div>
       </div>

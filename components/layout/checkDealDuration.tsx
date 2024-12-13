@@ -15,7 +15,6 @@ const CheckDealDuration = () => {
   const canceledStageId = stages?.find(
     (stage: IStage) => stage.code === "canceled"
   )?._id;
-  console.log(dealId);
 
   useEffect(() => {
     if (!!dealId && dealDuration === 0) {
