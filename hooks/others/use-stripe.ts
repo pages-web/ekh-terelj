@@ -24,7 +24,7 @@ export const useStripeCheckout = () => {
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, [totalAmount]);
+  }, [totalAmount]);  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

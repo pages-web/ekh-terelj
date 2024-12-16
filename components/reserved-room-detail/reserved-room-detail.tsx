@@ -172,7 +172,7 @@ const ReservedRoomDetail = () => {
               0
             ) / paymentTypeDivider
           )} */}
-          {totalAmount}₮
+          {formatNumberWithCommas(totalAmount)}₮
         </h1>
       </div>
     </div>
