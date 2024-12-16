@@ -34,7 +34,7 @@ export async function NavbarTop({
           className="h-12 text-2xl overflow-hidden"
         >
           <Image
-            src={"/images/logo.png"}
+            src={"/images/logo2.png"}
             height={100}
             width={152}
             quality={100}

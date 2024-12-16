@@ -49,7 +49,7 @@ export default function Footer() {
     >
       <div className="container mx-auto">
         <div className="flex flex-col items-center mb-8">
-          <Image src="/images/logo.png" alt="logo" width={90} height={34} />
+          <Image src="/images/logo2.png" alt="logo" width={90} height={34} />
           <p className="text-center text-sm text-gray-600 mb-6">
             Our mission is to equip modern explorers, with cutting-edge, functional and stylish bags that elevate every adventure.
           </p>

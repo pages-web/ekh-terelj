@@ -34,8 +34,8 @@ const CheckoutPage = () => {
 
     return {
       mode: "payment",
-      amount: convertToSubcurrency(totalAmount),
-      currency: "mnt", //optional, can be mnt
+      amount: 1000,
+      currency: "usd", //optional, can be mnt
       paymentMethodTypes: ["card"],
     };
   }, [stripeData, totalAmount]);
@@ -45,8 +45,9 @@ const CheckoutPage = () => {
       stripe={stripeInstance}
       options={{
         mode: "payment",
-        amount: convertToSubcurrency(totalAmount),
-        currency: "mnt", //optional, can be mnt
+        // amount: convertToSubcurrency(totalAmount),
+        amount: 1000,
+        currency: "usd", //optional, can be mnt
         paymentMethodTypes: ["card"],
       }}
     >

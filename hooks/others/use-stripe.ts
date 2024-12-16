@@ -20,7 +20,7 @@ export const useStripeCheckout = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: convertToSubcurrency(totalAmount) }),
+      body: JSON.stringify({ amount: 1000 }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
@@ -46,7 +46,7 @@ export const useStripeCheckout = () => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3001/${locale}/payment-success?amount=${totalAmount}`,
+        return_url: `https://pms-client.erxes.io/${locale}/payment-success?amount=${totalAmount}`,
       },
     });
 

@@ -483,7 +483,7 @@ const CheckoutForm = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: convertToSubcurrency(totalAmount) }),
+      body: JSON.stringify({ amount: 1000 }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
@@ -599,7 +599,7 @@ const CheckoutForm = () => {
                     },
                     onCompleted: () =>
                       router.push(
-                        `http://localhost:3001/${locale}/booking/confirmation/${dealId}`
+                        `https://pms-client.erxes.io/${locale}/booking/confirmation/${dealId}`
                       ),
                   });
               }
@@ -1015,7 +1015,7 @@ const CheckoutForm = () => {
                           },
                         });
                         router.push(
-                          `http://localhost:3001/${locale}/booking/confirmation/${dealId}`
+                          `https://pms-client.erxes.io/${locale}/booking/confirmation/${dealId}`
                         );
                       }
                     },

@@ -19,7 +19,7 @@ const StripePayment = () => {
       options={{
         mode: "payment",
         amount: convertToSubcurrency(amount),
-        currency: "mnt", //optional, can be mnt
+        currency: "usd", //optional, can be mnt
         paymentMethodTypes: ["card"],
       }}
     >
