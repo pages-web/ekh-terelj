@@ -16,7 +16,7 @@ import { useAtomValue } from "jotai";
 import { currentConfigAtom } from "@/store/config";
 
 export default function HomePage() {
-  // const t = useTranslations("HomePage");
+  // const t = useTranslations("HomePage")
 
   return (
     <div className="flex flex-col gap-8 lg:gap-16">
