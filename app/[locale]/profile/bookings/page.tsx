@@ -17,28 +17,34 @@ import {
 import { format, formatDistance } from "date-fns";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { Separator } from "@/components/ui/separator";
-import { useLabels, useTags } from "@/sdk/queries/sales";
+import { useLabels } from "@/sdk/queries/sales";
+import { useAtom, useAtomValue } from "jotai";
+import { currentConfigAtom } from "@/store/config";
 
 const Orders = () => {
   const { currentUser } = useCurrentUser();
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { data } = useQuery(queries.deals, {
     variables: {
       limit: 10000,
       customerIds: [currentUser?.erxesCustomerId],
       sortField: "createdAt",
+      sortDirection: 1,
     },
   });
   const { data: roomCategoriesData } = useQuery(roomQueries.roomCategories, {
-    variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
+    variables: { parentId: currentConfig?.roomCategories[0] },
   });
   const { data: stagesData } = useQuery(queries.stages, {
-    variables: { pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID },
+    variables: { pipelineId: currentConfig?.pipelineConfig.pipelineId },
   });
-  const { tags } = useTags();
+
   const { labels } = useLabels();
   const roomCategories = roomCategoriesData?.productCategories;
   const deals = data?.deals;
   const stages = stagesData?.salesStages;
+
+  console.log(data);
 
   const router = useRouter();
   return (
@@ -86,6 +92,9 @@ const Orders = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {data?.deals.length === 0 && (
+                <TableRow>{`There are no bookings :(`}</TableRow>
+              )}
               {data?.deals.map((deal: any, index: number) => {
                 return (
                   <TableRow
@@ -99,10 +108,7 @@ const Orders = () => {
                     <TableCell className="font-medium">{deal._id}</TableCell>
                     <TableCell>{format(deal.createdAt, "PPpp")}</TableCell>
                     <TableCell>{format(deal.startDate, "PP")}</TableCell>
-                    <TableCell className="capitalize">
-                      {tags.find((tag: any) => tag._id === deal.tagIds[0])
-                        ?.name || "-"}
-                    </TableCell>
+                    <TableCell className="capitalize">{"-"}</TableCell>
                     <TableCell>
                       {deal.stage.code === "unconfirmed" ? (
                         <span className="text-textxs text-[#726e34] bg-[#fcf37e] px-2 py-1 rounded-lg">
@@ -111,19 +117,22 @@ const Orders = () => {
                       ) : deal.stage.code !== "unconfirmed" &&
                         deal.stage.code !== "canceled" ? (
                         <span
-                          className={`text-textxs px-2 py-1 rounded-lg ${
-                            tags?.filter((tag: any) =>
-                              deal.tagIds.includes(tag._id)
-                            )
-                              ? "bg-[#95fea0] text-[#1d6824]"
-                              : "bg-[#c7ffcd] text-secondary"
-                          }`}
+                          className={`text-textxs px-2 py-1 rounded-lg bg-[#95fea0] text-[#1d6824]`}
                         >
-                          {tags?.filter((tag: any) =>
+                          {/* ${
+                              tags?.filter((tag: any) =>
+                                deal.tagIds.includes(tag._id)
+                              )
+                                ? "bg-[#95fea0] text-[#1d6824]"
+                                : "bg-[#c7ffcd] text-secondary"
+                            } */}
+                            
+                          {/* {tags?.filter((tag: any) =>
                             deal.tagIds.includes(tag._id)
                           )
                             ? "Fullpaid"
-                            : "Prepaid"}
+                            : "Prepaid"} */}
+                          Paid
                         </span>
                       ) : (
                         <span className="text-textxs text-destructive bg-[#ffc0c0] px-2 py-1 rounded-lg">

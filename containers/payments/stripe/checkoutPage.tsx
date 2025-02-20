@@ -69,7 +69,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
 
   if (!clientSecret || !stripe || !elements) {
     return <Loading />;
-  } 
+  }
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">

@@ -11,7 +11,7 @@ export const { getClient } = registerApolloClient(() => {
     return {
       headers: {
         ...headers,
-        "erxes-app-token": process.env.NEXT_PUBLIC_ERXES_APP_TOKEN,
+        "erxes-app-token": process.env.NEXT_PUBLIC_APP_TOKEN,
         "Cache-Control": "no-cache",
       },
     };

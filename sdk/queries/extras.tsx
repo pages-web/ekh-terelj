@@ -1,5 +1,7 @@
 import { QueryHookOptions, useQuery } from "@apollo/client";
 import { queries } from "../graphql/extras";
+import { useAtomValue } from "jotai";
+import { currentConfigAtom } from "@/store/config";
 
 export const useGetUoms = (options?: QueryHookOptions) => {
   const { data, loading } = useQuery(queries.uoms, options);
@@ -14,8 +16,9 @@ export const useGetProducts = (options?: QueryHookOptions) => {
 };
 
 export const useGetCategories = (options?: QueryHookOptions) => {
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { data, loading } = useQuery(queries.categories, {
-    variables: { parentId: process.env.NEXT_PUBLIC_EXTRAS_ID },
+    variables: { parentId: currentConfig?.extraProductCategories[0] },
     ...options,
   });
   const categories = data?.productCategories || [];

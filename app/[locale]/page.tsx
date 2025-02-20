@@ -12,9 +12,12 @@ import Location from "@/components/location/location";
 import Trend from "@/components/trend-activities/trend";
 import Rooms from "@/components/top-rooms/top-rooms";
 import { pageOffers } from "@/components/offers/offerData";
+import { useAtomValue } from "jotai";
+import { currentConfigAtom } from "@/store/config";
 
 export default function HomePage() {
   // const t = useTranslations("HomePage");
+
   return (
     <div className="flex flex-col gap-8 lg:gap-16">
       <div className="relative overflow-hidden">

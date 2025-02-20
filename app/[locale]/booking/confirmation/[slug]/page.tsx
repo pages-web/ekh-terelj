@@ -1,6 +1,6 @@
 "use client";
 import BookingLayout from "../../booking-layout";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
   reserveCompletedAtom,
   reserveDateAtom,
@@ -17,16 +17,18 @@ import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import { RESET } from "jotai/utils";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
+import { currentConfigAtom } from "@/store/config";
 
 const YourDetails = () => {
   const params = useParams();
+  const currentConfig = useAtomValue(currentConfigAtom);
   const setReserveGuestAndRoom = useSetAtom(reserveGuestAndRoomAtom);
   const setSelectedRooms = useSetAtom(selectedRoomsAtom);
   const setReserveCompleted = useSetAtom(reserveCompletedAtom);
   const setDate = useSetAtom(reserveDateAtom);
   const setDealId = useSetAtom(dealIdAtom);
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
-    variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
+    variables: { parentId: currentConfig?.roomCategories[0] },
   });
   const { data } = useQuery(queries.dealFullDetail, {
     variables: {
@@ -83,7 +85,7 @@ const YourDetails = () => {
               <div>
                 <div className="flex gap-2 text-textsm">
                   <span>Your confirmation code: </span>
-                  <span className="font-bold">{params.slug}</span>
+                  <span className="font-bold">{deal?.number}</span>
                 </div>
               </div>
             </div>

@@ -18,8 +18,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
     <div className="text-start space-y-3 cursor-pointer group">
       <div className="h-[300px] overflow-hidden w-fit rounded-xl relative flex justify-center items-center">
         <Image
-          // src={attachment?.url}
-          src="/images/product.png"
+          src={room.attachment?.url || ""}
           width={1200}
           height={1200}
           className="h-full group-hover:blur-sm duration-300 brightness-90"

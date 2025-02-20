@@ -8,12 +8,15 @@ import { CircleCheck } from "lucide-react";
 import { format, formatDistance } from "date-fns";
 import { queries as roomQueries } from "@/sdk/graphql/rooms";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
+import { useAtomValue } from "jotai";
+import { currentConfigAtom } from "@/store/config";
 
 const OrderDetail = () => {
   const params = useParams();
   const { currentUser } = useCurrentUser();
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
-    variables: { parentId: process.env.NEXT_PUBLIC_CATEGORY_ID },
+    variables: { parentId: currentConfig?.roomCategories[0] },
   });
   const { data } = useQuery(queries.dealFullDetail, {
     variables: {

@@ -113,6 +113,23 @@ const changeDeal = gql`
   }
 `;
 
+const addLabel = gql`
+  mutation salesPipelineLabelsAdd(
+    $name: String!
+    $colorCode: String!
+    $pipelineId: String!
+  ) {
+    salesPipelineLabelsAdd(
+      name: $name
+      colorCode: $colorCode
+      pipelineId: $pipelineId
+    ) {
+      _id
+      __typename
+    }
+  }
+`;
+
 const mutations = {
   dealsAdd,
   dealsEdit,
@@ -120,5 +137,6 @@ const mutations = {
   conformityEdit,
   addPayment,
   changeDeal,
+  addLabel,
 };
 export default mutations;

@@ -5,16 +5,18 @@ import {
 } from "@apollo/client";
 import { ICategory, IProduct } from "@/types/products";
 import { queries } from "../graphql/rooms";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { selectedRoomsAtom } from "@/store/rooms";
+import { currentConfigAtom } from "@/store/config";
 
 const useRooms = (
   options?: OperationVariables
 ): { rooms: IProduct[]; loading: boolean } => {
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { data, loading } = useQuery<{ products: IProduct[] }>(queries.rooms, {
     variables: {
-      pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID,
-      categoryId: process.env.NEXT_PUBLIC_CATEGORY_ID,
+      pipelineId: currentConfig?.pipelineConfig.pipelineId,
+      categoryId: currentConfig?.roomCategories[0],
       perPage: 1000,
     },
     ...options,
@@ -24,9 +26,10 @@ const useRooms = (
 };
 
 export const useRoomCategories = (options?: OperationVariables) => {
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { data, loading } = useQuery(queries.roomCategories, {
     variables: {
-      parentId: process.env.NEXT_PUBLIC_CATEGORY_ID,
+      parentId: currentConfig?.roomCategories[0],
     },
     ...options,
   });
@@ -43,11 +46,12 @@ type CheckRoomsResult = {
 export const useCheckRooms = (
   options?: OperationVariables
 ): CheckRoomsResult => {
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { loading: loadingRooms } = useRooms({
     onCompleted({ products }: { products: IProduct[] }) {
       checkRooms({
         variables: {
-          pipelineId: process.env.NEXT_PUBLIC_PIPELINE_ID,
+          pipelineId: currentConfig?.pipelineConfig.pipelineId,
           ids: products.map((product) => product._id),
           ...options?.variables,
         },

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
       query: queries.payments,
       context: {
         headers: {
-          "erxes-app-token": process.env.NEXT_ERXES_APP_TOKEN,
+          "erxes-app-token": process.env.NEXT_PUBLIC_APP_TOKEN,
           "Cache-Control": "no-cache",
         },
       },

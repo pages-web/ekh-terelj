@@ -2,13 +2,16 @@
 import ReserveDetailExtra from "@/components/reserve-detail-extra/reserve-detail-extra";
 
 import { useGetProducts } from "@/sdk/queries/extras";
+import { currentConfigAtom } from "@/store/config";
 import { IProduct } from "@/types/products";
+import { useAtomValue } from "jotai";
 
 const ExtraServices = () => {
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { products: extras } = useGetProducts({
     variables: {
       perPage: 10,
-      categoryId: process.env.NEXT_PUBLIC_EXTRAS_ID,
+      categoryId: currentConfig?.extraProductCategories[0],
     },
   });
 

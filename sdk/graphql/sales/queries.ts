@@ -40,6 +40,8 @@ const deals = gql`
     $search: String
     $startDate: String
     $endDate: String
+    $sortField: String
+    $sortDirection: Int
   ) {
     deals(
       initialStageId: $initialStageId
@@ -55,6 +57,8 @@ const deals = gql`
       search: $search
       startDate: $startDate
       endDate: $endDate
+      sortField: $sortField
+      sortDirection: $sortDirection
     ) {
       products
       unUsedAmount
@@ -99,6 +103,7 @@ const deals = gql`
       assignedUserIds
       order
       createdUserId
+      number
     }
   }
 `;
@@ -119,6 +124,7 @@ const dealDetail = gql`
       labelIds
       paymentsData
       tagIds
+      number
     }
   }
 `;
@@ -158,6 +164,7 @@ const dealFullDetail = gql`
       paymentsData
       amount
       tagIds
+      number
     }
   }
 `;
