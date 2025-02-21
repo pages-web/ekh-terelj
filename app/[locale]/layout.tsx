@@ -10,15 +10,8 @@ import CurrentConfigProvider from "@/containers/config/currentConfig";
 export const metadata: Metadata = {
   title: "Flower Hotel",
   description: "Flower Hotel",
-  openGraph: {
-    images: [
-      {
-        url: "/images/logo2.png",
-        width: 800,
-        height: 600,
-        alt: "Flower Hotel",
-      },
-    ],
+  icons: {
+    icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
   },
 };
 
