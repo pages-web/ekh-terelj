@@ -13,10 +13,12 @@ const ProductCard = ({ category }: { category: any }) => {
     variables: { categoryId: category?._id, perPage: 1 },
   });
   const product: IProduct = data?.products?.[0];
-  const id = "product-1-detail";
   const locale = useParams().locale;
   return (
-    <Link href={`/room-detail/${id}`} locale={locale === "en" ? "en" : "mn"}>
+    <Link
+      href={`/room-detail/${product?._id}`}
+      locale={locale === "en" ? "en" : "mn"}
+    >
       <div className="space-y-3">
         {product?.attachment?.url && (
           <div className="h-[300px] overflow-hidden rounded-xl">

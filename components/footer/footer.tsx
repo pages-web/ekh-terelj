@@ -33,17 +33,17 @@ const footerSections = [
 
 const socialIcons = [
   {
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/flower_hotel_ulaanbaatar",
     label: "Instagram",
     icon: "/images/instagram.svg",
   },
   {
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/flowerhotelulaanbaatar",
     label: "Facebook",
     icon: "/images/facebook.svg",
   },
-  { href: "https://twitter.com", label: "Twitter", icon: "/images/x.svg" },
-  { href: "https://google.com", label: "Google", icon: "/images/google.svg" },
+  // { href: "https://twitter.com", label: "Twitter", icon: "/images/x.svg" },
+  // { href: "https://google.com", label: "Google", icon: "/images/google.svg" },
 ];
 
 export default function Footer() {

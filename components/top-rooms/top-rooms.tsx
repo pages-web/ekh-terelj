@@ -12,7 +12,6 @@ export default function Rooms() {
     variables: { parentId: currentConfig?.roomCategories[0] },
   });
   const categories = data?.productCategories;
-  console.log(data, "data");
   return (
     <div>
       <div className="container">

@@ -10,7 +10,6 @@ export async function NavbarTop({
   children: React.ReactNode;
 }) {
   const menuItems = [
-    { href: "/", label: "About Hotel" },
     { href: "/accommodation", label: "Accommodation" },
     { href: "/dining", label: "Dining" },
     { href: "/events", label: "Events" },
