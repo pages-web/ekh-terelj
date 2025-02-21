@@ -8,7 +8,7 @@ const Accommodation = () => {
         {Array(5)
           .fill(1)
           .map((_, index) => {
-            return <ProductCard key={index} />;
+            return <ProductCard category={null} key={index} />;
           })}
       </div>
     </AccommodationLayout>

@@ -10,7 +10,7 @@ import { queries } from "@/sdk/graphql/rooms";
 
 const ProductCard = ({ category }: { category: any }) => {
   const { data } = useQuery(queries.rooms, {
-    variables: { categoryId: category._id, perPage: 1 },
+    variables: { categoryId: category?._id, perPage: 1 },
   });
   const product: IProduct = data?.products?.[0];
   const id = "product-1-detail";
@@ -31,7 +31,7 @@ const ProductCard = ({ category }: { category: any }) => {
 
         <div className="space-y-2">
           <div>
-            <h3 className="text-textmd">{category.name}</h3>
+            <h3 className="text-textmd">{category?.name}</h3>
             <p className="flex text-black/50 text-textsm items-center">
               <Star className="w-4 h-4 mr-2" />
               4.7 (2,578 Reviews)

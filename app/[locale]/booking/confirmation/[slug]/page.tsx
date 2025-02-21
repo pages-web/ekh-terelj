@@ -29,6 +29,7 @@ const YourDetails = () => {
   const setDealId = useSetAtom(dealIdAtom);
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
     variables: { parentId: currentConfig?.roomCategories[0] },
+    skip: !currentConfig,
   });
   const { data } = useQuery(queries.dealFullDetail, {
     variables: {
