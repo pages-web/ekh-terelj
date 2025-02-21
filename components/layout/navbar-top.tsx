@@ -14,9 +14,9 @@ export async function NavbarTop({
     { href: "/accommodation", label: "Accommodation" },
     { href: "/dining", label: "Dining" },
     { href: "/events", label: "Events" },
-    { href: "/wellness", label: "Wellness" },
-    { href: "/offer", label: "Offer" },
-    { href: "/gallery", label: "Gallery" },
+    // { href: "/wellness", label: "Wellness" },
+    // { href: "/offer", label: "Offer" },
+    // { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ];
 
@@ -31,20 +31,20 @@ export async function NavbarTop({
         <Link
           href="/"
           aria-label="SF Homepage"
-          className="h-12 text-2xl overflow-hidden"
+          className="w-fit h-28 text-2xl overflow-hidden mt-5"
         >
           <Image
             src={"/images/logo2.png"}
-            height={100}
-            width={152}
+            height={300}
+            width={300}
             quality={100}
             skipAnimation
             priority
             alt=""
-            className="object-contain h-12 w-auto object-left"
+            className="object-contain h-full w-full object-left"
           />
         </Link>
-        <nav className="hidden xl:flex flex-wrap gap-2 md:gap-4">
+        <nav className="flex gap-2 md:gap-4">
           {menuItems.map((item) => (
             <Link
               key={item.href}

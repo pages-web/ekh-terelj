@@ -40,11 +40,11 @@ export default function HomePage() {
         </div>
       </div>
       <Discount />
-      <Discover />
+      {/* <Discover /> */}
       <Rooms />
-      <Trending />
-      <Promo />
-      <HotelDining
+      {/* <Trending /> */}
+      {/* <Promo /> */}
+      {/* <HotelDining
         title="Exclusive Dining Experience"
         description="Experience the finest dining with a view of the city skyline."
         buttonNames={["Gourmet", "Buffet", "Cafe", "Room Service"]}
@@ -54,14 +54,10 @@ export default function HomePage() {
           "/images/image 8.png",
           "/images/image1.png",
         ]}
-      />
+      /> */}
       <Trend />
-      <Offer
-        offers={pageOffers}
-        title="Unforgettable experiences await"
-        description="Join us for a journey of luxury and relaxation at our stunning locations."
-      />
-      <Gallery />
+      <Offer offers={pageOffers} title="RESTAURANT & BAR" description="" />
+      {/* <Gallery /> */}
       <Location />
     </div>
   );

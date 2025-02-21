@@ -11,19 +11,21 @@ type DiscountCardProps = {
 
 const discountData: DiscountCardProps[] = [
   {
-    imageSrc: "/images/Rectangle 6.png",
-    imageAlt: "Hotel reception",
+    imageSrc: "/images/offer1.png",
+    imageAlt: "МАРТ 8",
     discountPercentage: 50,
-    title: "Get Extra Discount at Azure Oasis Hotel",
-    validity: "Valid only on 14 Jan - 20 Jan 2024",
+    title: "МАРТ 8",
+    validity:
+      "Эрхэм харилцагч эмэгтэйчүүд та бүхэндээ Мартын 8-ны мэндийг хүргэе манай Зочид буудал Мартын 8-ны хүлээн авалт зохион байгуулахад бэлэн боллоо.",
     badgeColor: "bg-white",
   },
   {
-    imageSrc: "/images/Rectangle 6.png",
-    imageAlt: "Person using smartphone",
+    imageSrc: "/images/offer2.png",
+    imageAlt: "Discount Card",
     discountPercentage: 35,
-    title: "Exclusive Deals Just for you",
-    validity: "Valid only on 14 Jan - 20 Jan 2024",
+    title: "Discount Card",
+    validity:
+      "Эрхэм хэрэглэгч та манай Зочид буудлын ресторануудаар нийт 201000₮ - өөс дээш үнийн дүнтэй үйлчилгээ авсан тохиолдолд таны тооцооны хуудсын үндэслэн тухайн үедээ хөнгөлөлтийн картыг шууд нээлгэх боломжтой.Карт нээлгэхэд юу шаардлагатай вэ?Карт нээлгэхэд шаардлагтай мэдээллийг бүрэн зөв бөглөхКарт эзэмшихэд үүссэн ...",
     badgeColor: "bg-green-500",
   },
 ];
@@ -36,7 +38,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
   validity,
   badgeColor,
 }) => (
-  <div className="flex-1 relative rounded-lg overflow-hidden">
+  <div className="flex-1 relative rounded-lg overflow-hidden max-h-[330px]">
     <Image
       src={imageSrc}
       alt={imageAlt}
@@ -46,16 +48,22 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
     />
     <div className="absolute inset-0 bg-opacity-40 p-4 flex flex-col justify-between">
       <div>
-        <span
+        {/* <span
           className={`bg-opacity-15 bg-white backdrop-blur-2xl text-white px-2 py-1 rounded-full text-textxs ${badgeColor}`}
         >
           {validity}
-        </span>
-        <h3 className="text-white text-textmd lg:text-displayxs font-semibold mt-2">{title}</h3>
+        </span> */}
+        <h3 className="text-white text-textmd lg:text-displayxs font-semibold">
+          {title}
+        </h3>
       </div>
       <div>
-        <span className="text-white text-textxl lg:text-displayxl font-bold">{discountPercentage}%</span>
-        <p className="text-white text-textsm">*with Terms and Condition</p>
+        {/* <span className="text-white text-textxl lg:text-displayxl font-bold">
+          {discountPercentage}%
+        </span> */}
+        <p className="text-white text-textsm bg-black/40 py-2 px-4 rounded-lg">
+          {validity}
+        </p>
       </div>
     </div>
   </div>
@@ -63,8 +71,8 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
 
 export default function Discount() {
   return (
-    <div className="p-4 w-11/12 mx-auto max-w-[1800px] ">
-      <h2 className="text-displaysm  font-normal mb-4">Exclusive deals just for you!</h2>
+    <div className="container">
+      <h2 className="text-displaysm  font-normal mb-4">Our special offers</h2>
       <div className="lg:flex flex flex-col lg:flex-row gap-8">
         {discountData.map((discount, index) => (
           <DiscountCard key={index} {...discount} />

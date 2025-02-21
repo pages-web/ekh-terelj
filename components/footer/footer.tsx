@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Image from "next/image"
+import * as React from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 
 const footerSections = [
   {
@@ -29,17 +29,24 @@ const footerSections = [
       { href: "/", label: "FAQ" },
     ],
   },
-]
+];
 
 const socialIcons = [
-  { href: "https://instagram.com", label: "Instagram", icon: "/images/instagram.svg" },
-  { href: "https://facebook.com", label: "Facebook", icon: "/images/facebook.svg" },
+  {
+    href: "https://instagram.com",
+    label: "Instagram",
+    icon: "/images/instagram.svg",
+  },
+  {
+    href: "https://facebook.com",
+    label: "Facebook",
+    icon: "/images/facebook.svg",
+  },
   { href: "https://twitter.com", label: "Twitter", icon: "/images/x.svg" },
   { href: "https://google.com", label: "Google", icon: "/images/google.svg" },
-]
+];
 
 export default function Footer() {
-
   return (
     <motion.footer
       initial={{ opacity: 0, y: 50 }}
@@ -49,9 +56,17 @@ export default function Footer() {
     >
       <div className="container mx-auto">
         <div className="flex flex-col items-center mb-8">
-          <Image src="/images/logo2.png" alt="logo" width={90} height={34} />
+          <Image
+            src="/images/logo2.png"
+            alt="logo"
+            width={300}
+            height={300}
+            className="mb-10"
+            quality={100}
+          />
           <p className="text-center text-sm text-gray-600 mb-6">
-            Our mission is to equip modern explorers, with cutting-edge, functional and stylish bags that elevate every adventure.
+            Our mission is to equip modern explorers, with cutting-edge,
+            functional and stylish bags that elevate every adventure.
           </p>
         </div>
 
@@ -65,7 +80,10 @@ export default function Footer() {
                 <ul className="space-y-2">
                   {section.links.map((link, linkIndex) => (
                     <li key={linkIndex}>
-                      <a href={link.href} className="text-sm text-gray-600 hover:text-gray-900">
+                      <a
+                        href={link.href}
+                        className="text-sm text-gray-600 hover:text-gray-900"
+                      >
                         {link.label}
                       </a>
                     </li>
@@ -78,12 +96,8 @@ export default function Footer() {
 
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4">Get Updates</h3>
-          <form  className="flex flex-col space-y-2">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              required
-            />
+          <form className="flex flex-col space-y-2">
+            <Input type="email" placeholder="Enter your email" required />
             <Button type="submit">Subscribe</Button>
           </form>
         </div>
@@ -102,13 +116,17 @@ export default function Footer() {
         </div>
 
         <div className="text-center text-sm text-gray-600">
-          <p>&copy; 2024 Erxes.io All rights reserved.</p>
+          <p>&copy; 2025 All rights reserved.</p>
           <div className="mt-2 space-x-4">
-            <a href="/privacy" className="hover:text-gray-900">Privacy Policy</a>
-            <a href="/terms" className="hover:text-gray-900">Terms of Service</a>
+            <a href="/privacy" className="hover:text-gray-900">
+              Privacy Policy
+            </a>
+            <a href="/terms" className="hover:text-gray-900">
+              Terms of Service
+            </a>
           </div>
         </div>
       </div>
     </motion.footer>
-  )
+  );
 }

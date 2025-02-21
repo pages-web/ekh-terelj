@@ -55,6 +55,9 @@ const roomCategories = gql`
       name
       order
       description
+      attachment {
+        url
+      }
     }
   }
 `;

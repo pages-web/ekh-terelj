@@ -8,7 +8,7 @@ interface OfferProps {
 
 export default function Offer({ offers, title, description }: OfferProps) {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-[1600px]">
+    <div className="container py-8">
       <h1 className="text-displaysm font-normal mb-4">
         {title}
       </h1>
