@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import Image from "@/components/ui/image";
 import ReserveSelectDate from "@/components/reserve-select-date/reserve-select-date";
 import HotelDining from "@/components/dining/dining";
@@ -12,12 +11,12 @@ import Location from "@/components/location/location";
 import Trend from "@/components/trend-activities/trend";
 import Rooms from "@/components/top-rooms/top-rooms";
 import { pageOffers } from "@/components/offers/offerData";
-import { useAtomValue } from "jotai";
+import AboutSection from "@/components/home-about/home-about";
+import Accommodation from "@/components/home-Accommodation/accommodation";
+
 import { currentConfigAtom } from "@/store/config";
 
 export default function HomePage() {
-  // const t = useTranslations("HomePage")
-
   return (
     <div className="flex flex-col gap-8 lg:gap-16">
       <div className="relative overflow-hidden">
@@ -40,21 +39,9 @@ export default function HomePage() {
         </div>
       </div>
       <Discount />
-      {/* <Discover /> */}
-      <Rooms />
-      {/* <Trending /> */}
-      {/* <Promo /> */}
-      {/* <HotelDining
-        title="Exclusive Dining Experience"
-        description="Experience the finest dining with a view of the city skyline."
-        buttonNames={["Gourmet", "Buffet", "Cafe", "Room Service"]}
-        images={[
-          "/images/image 8.png",
-          "/images/image1.png",
-          "/images/image 8.png",
-          "/images/image1.png",
-        ]}
-      /> */}
+      <AboutSection />
+      <Accommodation />
+
       <Trend />
       <Offer offers={pageOffers} title="RESTAURANT & BAR" description="" />
       {/* <Gallery /> */}

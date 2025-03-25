@@ -1,61 +1,58 @@
 import { Link } from "@/i18n/routing";
-import { Separator } from "../ui/separator";
 import Image from "../ui/image";
-import { Suspense } from "react";
 
-export async function NavbarTop({
-  children,
-  ...rest
-}: {
-  children: React.ReactNode;
-}) {
+export async function NavbarTop({ children }: { children?: React.ReactNode }) {
   const menuItems = [
-    { href: "/accommodation", label: "Accommodation" },
-    { href: "/dining", label: "Dining" },
+    { href: "/accommodation", label: "Accomodation" },
     { href: "/events", label: "Events" },
-    // { href: "/wellness", label: "Wellness" },
-    // { href: "/offer", label: "Offer" },
-    // { href: "/gallery", label: "Gallery" },
-    { href: "/contact", label: "Contact" },
+    { href: "/dining", label: "Dining" },
+    { href: "/wellness", label: "Wellness" },
+    { href: "/offers", label: "Offers" },
+    { href: "/about", label: "About" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/account", label: "Account" },
   ];
 
   return (
-    <header
-      className={
-        "z-50 sticky top-0 py-3 md:shadow-md bg-background text-white w-full border-b"
-      }
-      {...rest}
-    >
-      <div className="flex md:flex-row gap-4 md:gap-[clamp(1rem,3vw,3rem)] justify-between items-center w-full md:h-[60px] md:sticky top-0 container pt-1 md:pt-0">
-        <Link
-          href="/"
-          aria-label="SF Homepage"
-          className="w-fit h-28 text-2xl overflow-hidden mt-5"
-        >
-          <Image
-            src={"/images/logo2.png"}
-            height={300}
-            width={300}
-            quality={100}
-            skipAnimation
-            priority
-            alt=""
-            className="object-contain h-full w-full object-left"
-          />
-        </Link>
-        <nav className="flex gap-2 md:gap-4">
-          {menuItems.map((item) => (
+    <header className="z-50 sticky top-0 w-full bg-white border-b-[3px] border-blue-500">
+      <div className="bg-gray-600 text-white text-sm py-1 px-4">Home</div>
+
+      <div className="flex flex-col md:flex-row justify-between items-center container mx-auto py-3">
+        <nav className="flex gap-6">
+          {menuItems.slice(0, 4).map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-label={item.label}
-              className="text-black font-normal text-textsm px-3 py-2 hover:underline"
+              className="text-black font-normal text-sm hover:underline"
             >
               {item.label}
             </Link>
           ))}
         </nav>
-        {children}
+
+        <Link href="/" aria-label="Homepage">
+          <Image
+            src="/images/logo.png"
+            height={60}
+            width={60}
+            alt="Logo"
+            className="object-contain"
+          />
+        </Link>
+
+        <nav className="flex gap-6">
+          {menuItems.slice(4).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={item.label}
+              className="text-black font-normal text-sm hover:underline"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
