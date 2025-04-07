@@ -21,6 +21,7 @@ const eventSpaces = [
     image: "/images/number3.png",
   },
 ];
+import Link from "next/link";
 
 export default function MeetingsAndEvents() {
   return (
@@ -60,7 +61,10 @@ export default function MeetingsAndEvents() {
                   Free parking
                 </div>
               </div>
-              <Button className="mt-4">View more →</Button>
+
+              <Link href="/arva" passHref>
+                <Button className="mt-4">View more →</Button>
+              </Link>
             </div>
           </div>
         ))}
