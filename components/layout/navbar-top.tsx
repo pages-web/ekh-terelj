@@ -14,9 +14,7 @@ export async function NavbarTop({ children }: { children?: React.ReactNode }) {
   ];
 
   return (
-    <header className="z-50 sticky top-0 w-full bg-white border-b-[3px] border-blue-500">
-      <div className="bg-gray-600 text-white text-sm py-1 px-4">Home</div>
-
+    <header className="z-50 sticky top-0 w-full bg-white border-b ">
       <div className="flex flex-col md:flex-row justify-between items-center container mx-auto py-3">
         <nav className="flex gap-6">
           {menuItems.slice(0, 4).map((item) => (

@@ -1,20 +1,15 @@
 import Image from "@/components/ui/image";
 import ReserveSelectDate from "@/components/reserve-select-date/reserve-select-date";
-import HotelDining from "@/components/dining/dining";
+
 import Offer from "@/components/offers/offers";
-import Gallery from "@/components/gallery/gallery";
-import Discount from "@/components/discount/discount";
-import Discover from "@/components/discover/discover";
-import Trending from "@/components/trending/trending";
-import Promo from "@/components/promo/promo";
+
 import Location from "@/components/location/location";
 import Trend from "@/components/trend-activities/trend";
-import Rooms from "@/components/top-rooms/top-rooms";
-import { pageOffers } from "@/components/offers/offerData";
+import FeatureGrid from "@/components/hom-features/features";
+
 import AboutSection from "@/components/home-about/home-about";
 import Accommodation from "@/components/home-Accommodation/accommodation";
-
-import { currentConfigAtom } from "@/store/config";
+import Subscription from "@/components/offers/offers";
 
 export default function HomePage() {
   return (
@@ -38,14 +33,21 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <Discount />
       <AboutSection />
-      <Accommodation />
-
-      <Trend />
-      <Offer offers={pageOffers} title="RESTAURANT & BAR" description="" />
-      {/* <Gallery /> */}
+      <div>
+        <h1 className="text-[30px] font-bold text-center mb-1 ">
+          Recommended Rooms and Suites
+        </h1>
+        <p className="text-gray-600 text-center max-w-2xl mx-auto">
+          Floor-to-ceiling windows unlock sublime views from all 202 rooms and
+          suites, each highlighted by sophisticated décor with Chinoiserie
+          touches.
+        </p>
+      </div>
+      <Accommodation /> <Subscription />
       <Location />
+      <Trend />
+      <FeatureGrid />
     </div>
   );
 }

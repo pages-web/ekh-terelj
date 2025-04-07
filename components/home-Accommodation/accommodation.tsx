@@ -95,16 +95,7 @@ const rooms = [
 
 export default function Accommodation() {
   return (
-    <div className="p-10 bg-gray-100 container min-h-screen">
-      <h1 className="text-[30px] font-bold text-center mb-4">
-        Recommended Rooms and Suites
-      </h1>
-      <p className="text-gray-600 text-center max-w-2xl mx-auto">
-        Floor-to-ceiling windows unlock sublime views from all 202 rooms and
-        suites, each highlighted by sophisticated décor with Chinoiserie
-        touches.
-      </p>
-
+    <div className="p-10  container min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {rooms.map((room) => (
           <div

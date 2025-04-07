@@ -1,23 +1,20 @@
-import CategoryTabs from "@/components/category-tabs/category-tabs";
 import Heading from "@/components/heading/heading";
 import { PropsWithChildren } from "react";
+import Accommodation from "@/components/home-Accommodation/accommodation";
 
-const AccommodationLayout = ({ children }: PropsWithChildren) => {
-  const categories = [
-    { name: "Hotel room", path: "/accommodation" },
-    { name: "Suites", path: "/accommodation/suites" },
-    { name: "Signature suites", path: "/accommodation/signatures-suites" },
-    { name: "Homes", path: "/accommodation/homes" },
-  ];
+export default function AccommodationLayout() {
+  const accommodations = [1, 2];
+
   return (
     <div className="min-h-screen container space-y-10 py-10">
       <Heading
+        className="text-center"
         title="Top Trending Hotel Rooms Views"
         desc="A masterclass of sophistication, a stay at Atlantis The Royal delivers extraordinary luxury, unlike anywhere else."
       />
-      <CategoryTabs tabs={categories} />
-      {children}
+      {accommodations.map((_, index) => (
+        <Accommodation key={index} />
+      ))}
     </div>
   );
-};
-export default AccommodationLayout;
+}
