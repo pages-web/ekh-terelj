@@ -1,7 +1,7 @@
 import Image from "@/components/ui/image";
 import ReserveSelectDate from "@/components/reserve-select-date/reserve-select-date";
 
-import Offer from "@/components/offers/offers";
+import Offer from "@/components/home-offers/offers";
 
 import Location from "@/components/location/location";
 import Trend from "@/components/trend-activities/trend";
@@ -9,7 +9,7 @@ import FeatureGrid from "@/components/hom-features/features";
 
 import AboutSection from "@/components/home-about/home-about";
 import Accommodation from "@/components/home-Accommodation/accommodation";
-import Subscription from "@/components/offers/offers";
+import Subscription from "@/components/home-offers/offers";
 
 export default function HomePage() {
   return (

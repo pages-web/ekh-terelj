@@ -3,40 +3,33 @@ import { Users, Clock, ParkingCircle } from "lucide-react";
 
 const eventSpaces = [
   {
-    title: "The Arva",
+    title: "Celebrations",
     description:
-      "Drawing its name from the Latin word for ‘cultivated land’, Arva pays homage to Italy’s rustic, cucina del raccolto tradition, creating heart-warming dishes using the finest, sustainably sourced ingredients from local farms and fresh from the ocean.",
-    image: "/images/arva.png",
-  },
-  {
-    title: "The Nama",
-    description:
-      "With immersive views of the city below, The Garden Terrace, with its fire pits, water features, and surrounding greenery, offers a show stopping New York backdrop for any occasion.",
-    image: "/images/nama.png",
+      "Whether a special birthday, anniversary, or cocktail-raising occasion, Aman New York serves as the perfect backdrop for life’s milestones.",
+    image: "/images/number1.png",
   },
   {
     title: "Garden Terrace",
     description:
-      "Welcoming year-round alfresco dining, the Garden Terrace - with its retractable glass roof, firepits and water features - offers sophisticated light meals and original cocktails served in a convivial atmosphere. A corner bar adds to the allure, with spectacular views overlooking the iconic crossroads of Fifth Avenue and 57th Street.",
-    image: "/images/garden.png",
+      "With immersive views of the city below, The Garden Terrace, with its fire pits, water features, and surrounding greenery, offers a show stopping New York backdrop for any occasion.",
+    image: "/images/number2.png",
   },
   {
-    title: "Lounge bar",
+    title: "Private Dining",
     description:
-      "Open day to night, working fireplaces frame the Lounge Bar – Aman New York’s central hub - offering a sophisticated menu of light dishes, sharing plates and cicchetti served alongside premium drinks, original cocktails, craft beers, spirits, and fine wines.",
-    image: "/images/lounge-bar.png",
+      "The ideal setting for an upcoming gathering, Aman New York’s Private Dining rooms combine the brand’s warm hospitality with menus created by renowned chefs.",
+    image: "/images/number3.png",
   },
 ];
 import Link from "next/link";
 
-export default function Dining() {
+export default function Events() {
   return (
     <div className="max-w-6xl mx-auto p-6 mb-[60px]">
       <div className="text-center mb-10">
-        <h1 className="text-[30px] font-semibold mb-2">Cuisine</h1>
+        <h1 className="text-[30px] font-semibold mb-2">Meetings & Events</h1>
         <p className="text-sm">
-          Aman Tokyo is home to one of the widest selections of dining venues
-          found in any of the city’s hotels.
+          Unparalleled spaces to celebrate or strategise
         </p>
       </div>
 
@@ -69,7 +62,7 @@ export default function Dining() {
                 </div>
               </div>
 
-              <Link href="/dinning-details" passHref>
+              <Link href="/events-details" passHref>
                 <Button className="mt-4">View more →</Button>
               </Link>
             </div>

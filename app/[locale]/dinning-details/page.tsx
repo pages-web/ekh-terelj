@@ -5,7 +5,7 @@ export default function ArvaPage() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <button className="mb-4 text-blue-500 hover:underline">←</button>
 
-      <h1 className="text-2xl font-semibold text-center">The Arva</h1>
+      <h1 className="text-[28px] font-semibold text-center">The Arva</h1>
       <p className="text-center text-sm text-gray-600 mt-2">
         <a href="#" className="underline hover:text-gray-800">
           Aman Tokyo is home to one of the widest selections of dining venues
@@ -21,12 +21,12 @@ export default function ArvaPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {[
-          "/images/yi.jpg",
-          "/images/are.jpg",
-          "/images/san.jpg",
-          "/images/si.jpg",
-          "/images/wu.jpg",
-          "/images/liu.jpg",
+          "/images/yi.png",
+          "/images/are.png",
+          "/images/san.png",
+          "/images/si.png",
+          "/images/wu.png",
+          "/images/liu.png",
         ].map((src, i) => (
           <div key={i} className="overflow-hidden rounded-xl">
             <Image
@@ -45,7 +45,16 @@ export default function ArvaPage() {
           Aman debuts its global dining concept, Arva, for the first time in
           North America, offering authentically Italian breakfast, lunch, and
           dinner, imbued with a distinct sense of place, in the heart of
-          Manhattan...
+          Manhattan. Paying homage to Italy’s rustic, cucina del
+          raccolto tradition (literally ‘harvest cuisine’), ingredients are
+          transformed into elegant dishes that showcase the exquisite flavours
+          of the finest seasonal ingredients. Arva changes with the seasons,
+          sourcing the majority of its ingredients locally from a network of
+          farmers and purveyors, while also partnering with initiatives such as
+          City Harvest. Fulton Fish Market provides the freshest seafood, while
+          the option to opt for filtered Vero water when dining supports The
+          Billion Oyster Project, a conservation initiative that aims to clean
+          local waterways.
         </p>
       </div>
     </div>

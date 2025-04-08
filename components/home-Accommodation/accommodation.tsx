@@ -100,7 +100,7 @@ export default function Accommodation() {
     <div className="p-10  container min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {rooms.map((room) => (
-          <Link href="/grand-suite" key={room.id}>
+          <Link href="/room-detail" key={room.id}>
             <div className="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-[500px] hover:shadow-lg transition">
               <div className="relative h-[280px]">
                 <Image

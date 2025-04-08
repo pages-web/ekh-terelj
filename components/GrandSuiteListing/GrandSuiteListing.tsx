@@ -1,34 +1,43 @@
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, Users, Wifi } from "lucide-react";
 
 export default function GrandSuiteListing() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-[100px] p-6">
       <div className="space-y-4">
-        <img
-          src="/suite-main.jpg"
-          alt="Suite Main"
-          className="rounded-2xl shadow-md"
+        <Image
+          src="/images/suite-main.png"
+          alt="Main suite image"
+          width={800}
+          height={500}
+          className="rounded-2xl shadow-md w-full h-auto"
         />
-        <div className="grid grid-cols-3 gap-4">
-          {["suite1.jpg", "suite2.jpg", "suite3.jpg", "suite4.jpg"].map(
-            (src, idx) => (
-              <img
-                key={idx}
-                src={`/${src}`}
-                alt={`Suite ${idx + 1}`}
-                className="rounded-xl shadow"
-              />
-            )
-          )}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            "images/suite1.png",
+            "images/suite2.png",
+            "images/suite3.png",
+            "images/suite4.png",
+          ].map((src, idx) => (
+            <Image
+              key={idx}
+              src={`/${src}`}
+              alt={`Suite thumbnail ${idx + 1}`}
+              width={300}
+              height={200}
+              className="rounded-xl shadow w-full h-auto"
+            />
+          ))}
         </div>
       </div>
 
       <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-semibold">Grand Suite 57th Street</h2>
-          <p className="text-gray-500">
-            4 guest · 2 bedroom · <Wifi className="inline w-4 h-4" />
+          <p className="text-gray-500 flex items-center gap-2 mt-1">
+            <Users className="w-4 h-4" /> 4 guests · 2 bedroom ·{" "}
+            <Wifi className="w-4 h-4" />
           </p>
         </div>
 
@@ -50,7 +59,7 @@ export default function GrandSuiteListing() {
           />
           <Feature
             icon="🕒"
-            title="Free cancellation for 48 hours."
+            title="Free cancellation for 48 hours"
             desc="Cancel your reservation within 48 hours."
           />
         </div>
@@ -67,20 +76,20 @@ export default function GrandSuiteListing() {
             </div>
             <div className="flex justify-between">
               <span>Guests</span>
-              <span>2 Adult, 1 Child</span>
+              <span>2 Adults, 1 Child</span>
             </div>
             <div className="border-t pt-2">
               <div className="flex justify-between">
-                <span>480$ x 5 nights</span>
-                <span>2400$</span>
+                <span>$480 x 5 nights</span>
+                <span>$2400</span>
               </div>
               <div className="flex justify-between">
                 <span>Service fee</span>
-                <span>59$</span>
+                <span>$59</span>
               </div>
               <div className="flex justify-between font-semibold pt-2">
                 <span>Total price</span>
-                <span>2459$</span>
+                <span>$2459</span>
               </div>
             </div>
           </CardContent>
@@ -88,7 +97,7 @@ export default function GrandSuiteListing() {
 
         <div className="text-sm text-gray-500">
           <p>
-            Starting at 185-257 square metres (2,000-2,770 square feet), Aman
+            Starting at 185–257 square metres (2,000–2,770 square feet), Aman
             New York’s Aman Suites are the largest one-bedroom suites in the
             Crown Building...
           </p>
@@ -106,7 +115,7 @@ type FeatureProps = {
 
 function Feature({ icon, title, desc }: FeatureProps) {
   return (
-    <div className="flex items-start gap-2">
+    <div className="flex items-start gap-3">
       <span className="text-xl">{icon}</span>
       <div>
         <p className="font-medium">{title}</p>

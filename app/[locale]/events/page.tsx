@@ -1,5 +1,5 @@
-import HotelDining from "@/components/dining/dining";
+import Events from "@/components/event/events";
 
 export default function Event() {
-  return <HotelDining />;
+  return <Events />;
 }
