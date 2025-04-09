@@ -4,7 +4,7 @@ import { CalendarDays, Users, Wifi } from "lucide-react";
 
 export default function GrandSuiteListing() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-[100px] p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-[100px] container p-6">
       <div className="space-y-4">
         <Image
           src="/images/suite-main.png"
@@ -34,7 +34,7 @@ export default function GrandSuiteListing() {
 
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-semibold">Grand Suite 57th Street</h2>
+          <h2 className="text-[30px] font-semibold">Grand Suite 57th Street</h2>
           <p className="text-gray-500 flex items-center gap-2 mt-1">
             <Users className="w-4 h-4" /> 4 guests · 2 bedroom ·{" "}
             <Wifi className="w-4 h-4" />
@@ -97,9 +97,16 @@ export default function GrandSuiteListing() {
 
         <div className="text-sm text-gray-500">
           <p>
-            Starting at 185–257 square metres (2,000–2,770 square feet), Aman
+            Starting at 185-257 square metres (2,000-2,770 square feet), Aman
             New York’s Aman Suites are the largest one-bedroom suites in the
-            Crown Building...
+            Crown Building, with the option to connect to the Junior Suite on
+            Fifth Avenue to create a two-bedroom space. Occupying the corners of
+            floors 11 and 12, they feature corner views of one of the most
+            iconic meeting points, Fifth Avenue and 57th Street. ​Well-suited to
+            longer stays and those looking for an abundance of private
+            space, the Aman Suites` one or two bedrooms are accompanied by a
+            dedicated office, kitchenette, and wet bar that lends itself to
+            intimate entertaining. 
           </p>
         </div>
       </div>

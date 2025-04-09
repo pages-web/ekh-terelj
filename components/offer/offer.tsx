@@ -95,7 +95,7 @@ const ExclusiveOffers = () => {
             <p className="text-gray-700 mb-4">{offers[0].description}</p>
             <div className="flex flex-wrap gap-3 mt-4">
               <a
-                href="#"
+                href="/offer-details"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors"
               >
                 {offers[0].primaryCta}
