@@ -59,7 +59,9 @@ const OrderDetail = () => {
               <div>
                 <div className="flex gap-2 text-textsm">
                   <span>Your confirmation code: </span>
-                  <span className="font-bold">{params?.id.slice(-9)}</span>
+                  <span className="font-bold">
+                    {params?.id && params.id.slice(-9)}
+                  </span>
                 </div>
               </div>
             </div>
