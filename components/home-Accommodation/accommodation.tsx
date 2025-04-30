@@ -62,7 +62,7 @@ export default function Rooms() {
                         ?.value.split(",")
                         .map((facility, index) => (
                           <p
-                            className="text-md rounded-full border py-2 px-3 text-black/70"
+                            className="text-sm rounded-full border py-2 px-3 text-black/70"
                             key={index}
                           >
                             {facility}
