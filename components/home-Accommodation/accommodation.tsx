@@ -36,7 +36,7 @@ export default function Rooms() {
                   <div className="border p-5 rounded-2xl cursor-pointer bg-white overflow-hidden flex flex-col hover:shadow-lg transition hover:-translate-y-1">
                     <div className="relative h-[280px] overflow-hidden rounded-lg mb-3">
                       <Image
-                        src={post.thumbnail.url || "/images/default-room.jpg"}
+                        src={post.thumbnail?.url || "/images/default-room.jpg"}
                         width={400}
                         height={300}
                         className="w-full h-full"
