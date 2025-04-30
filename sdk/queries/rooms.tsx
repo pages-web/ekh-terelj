@@ -36,6 +36,19 @@ export const useRoomCategories = (options?: OperationVariables) => {
   return { roomCategories: data?.productCategories, loading };
 };
 
+export const useRoomsAndCategories = () => {
+  const { rooms, loading } = useRooms();
+  const { roomCategories, loading: categoryLoading } = useRoomCategories();
+
+  const roomsAndCategories: (ICategory & { rooms: IProduct[] })[] =
+    roomCategories?.map((category: ICategory) => ({
+      ...category,
+      rooms: rooms.filter((room: IProduct) => room.categoryId === category._id),
+    }));
+
+  return { roomsAndCategories, loading: loading || categoryLoading };
+};
+
 type CheckRoomsResult = {
   roomCategoriesByProduct: IProduct[];
   loading: boolean;

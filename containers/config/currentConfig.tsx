@@ -8,7 +8,6 @@ import { createContext, useContext, useEffect, useTransition } from "react";
 
 const CurrentConfigProvider = ({ children }: React.PropsWithChildren) => {
   const [currentConfig, setCurrentConfig] = useAtom(currentConfigAtom);
-  console.log(currentConfig, "config");
   const { loading } = useQuery(queries.PmsBranchDetail, {
     variables: { id: process.env.NEXT_PUBLIC_PMS_TOKEN },
     onCompleted: (data) => {

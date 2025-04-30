@@ -37,7 +37,6 @@ const PostList = gql`
           _id
           code
           label
-          __typename
         }
         authorKind
         author {
@@ -52,9 +51,7 @@ const PostList = gql`
               firstName
               lastName
               middleName
-              __typename
             }
-            __typename
           }
           ... on ClientPortalUser {
             _id
@@ -65,17 +62,13 @@ const PostList = gql`
             username
             customer {
               avatar
-              __typename
             }
-            __typename
           }
-          __typename
         }
         categoryIds
         categories {
           _id
           name
-          __typename
         }
         featured
         status
@@ -83,7 +76,6 @@ const PostList = gql`
         tags {
           _id
           name
-          __typename
         }
         authorId
         createdAt
@@ -91,23 +83,15 @@ const PostList = gql`
         scheduledDate
         thumbnail {
           url
-          __typename
         }
         title
         updatedAt
-        __typename
       }
-      __typename
     }
   }
 `;
 
-import { GET_ROOMS } from "./getRooms";
-import { PmsBranchList, PmsBranchDetail } from "./otherQueries";
-
-export const queries = {
-  Posts: GET_ROOMS,
-  PmsBranchList,
-  PmsBranchDetail,
+const queries = {
+  PostList,
 };
-
+export default queries;

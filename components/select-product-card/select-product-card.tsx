@@ -48,7 +48,7 @@ const SelectProductCard = ({
   return (
     <div className={`h-fit space-y-4 border p-4 rounded-xl ${className}`}>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <SelectRoomProductCard {...room} />
         </DialogTrigger>
         <DialogContent className="rounded-xl no-scrollbar overflow-y-scroll w-[95%] h-[95%] md:h-[90%] md:max-w-[1000px] px-0 border-0">

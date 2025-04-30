@@ -44,7 +44,8 @@ export default function HomePage() {
           touches.
         </p>
       </div>
-      <Accommodation /> <Subscription />
+      <Accommodation />
+      <Subscription />
       <Location />
       <Trend />
       <FeatureGrid />

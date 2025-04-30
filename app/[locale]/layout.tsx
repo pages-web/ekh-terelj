@@ -8,8 +8,8 @@ import Apollo from "./ApolloClient";
 import CurrentConfigProvider from "@/containers/config/currentConfig";
 
 export const metadata: Metadata = {
-  title: "Flower Hotel",
-  description: "Flower Hotel",
+  title: "Эх Тэрэлж",
+  description: "Эх Тэрэлж",
   icons: {
     icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
   },
