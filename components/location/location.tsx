@@ -14,7 +14,7 @@ export default function Location() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       <h2 className="text-displaysm font-bold mb-2">Getting here</h2>
       <p className="text-gray-600 mb-6 text-muted-foreground">
         The Otemachi Tower is connected to the five-line Otemachi subway

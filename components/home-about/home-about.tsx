@@ -1,6 +1,6 @@
 export default function AboutSection() {
   return (
-    <section className="flex flex-col items-center text-center py-12 px-6">
+    <section className="flex flex-col items-center text-center">
       <a href="/about">
         <button className="border border-gray-400 rounded-full px-4 py-1 text-sm mb-4">
           About

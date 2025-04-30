@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const PostList = gql`
+const CmsPosts = gql`
   query PostList(
     $clientPortalId: String!
     $type: String
@@ -38,33 +38,6 @@ const PostList = gql`
           code
           label
         }
-        authorKind
-        author {
-          ... on User {
-            _id
-            username
-            email
-            details {
-              fullName
-              shortName
-              avatar
-              firstName
-              lastName
-              middleName
-            }
-          }
-          ... on ClientPortalUser {
-            _id
-            fullName
-            firstName
-            lastName
-            email
-            username
-            customer {
-              avatar
-            }
-          }
-        }
         categoryIds
         categories {
           _id
@@ -77,21 +50,167 @@ const PostList = gql`
           _id
           name
         }
-        authorId
-        createdAt
-        autoArchiveDate
-        scheduledDate
         thumbnail {
+          name
           url
         }
+        images {
+          url
+          name
+        }
         title
-        updatedAt
+        content
+        slug
+        excerpt
+        customFieldsData
       }
     }
   }
 `;
 
-const queries = {
-  PostList,
-};
+const CmsCustomFieldGroups = gql`
+  query CmsCustomFieldGroups(
+    $clientPortalId: String!
+    $page: Int
+    $perPage: Int
+    $postType: String
+    $pageId: String
+    $categoryId: String
+  ) {
+    cmsCustomFieldGroups(
+      clientPortalId: $clientPortalId
+      page: $page
+      perPage: $perPage
+      postType: $postType
+      pageId: $pageId
+      categoryId: $categoryId
+    ) {
+      _id
+      clientPortalId
+      code
+      label
+      parentId
+      customPostTypes {
+        _id
+        code
+        label
+      }
+      fields {
+        _id
+        code
+        text
+        type
+        validation
+        order
+        options
+        optionsValues
+      }
+    }
+  }
+`;
+
+const CmsPostDetail = gql`
+  query Post($id: String) {
+    cmsPost(_id: $id) {
+      _id
+      type
+      clientPortalId
+      title
+      slug
+      content
+      excerpt
+      categoryIds
+      status
+      tagIds
+      authorId
+      featured
+      featuredDate
+      scheduledDate
+      autoArchiveDate
+      reactions
+      reactionCounts
+      thumbnail {
+        url
+        type
+        name
+      }
+      images {
+        url
+        type
+        name
+      }
+      video {
+        url
+        type
+        name
+      }
+      audio {
+        url
+        type
+        name
+      }
+      documents {
+        url
+        type
+        name
+      }
+      attachments {
+        url
+        type
+        name
+      }
+      pdfAttachment {
+        pages {
+          url
+          name
+          type
+          size
+          duration
+        }
+      }
+      videoUrl
+      createdAt
+      updatedAt
+      authorKind
+      author {
+        ... on User {
+          _id
+          username
+          email
+          details {
+            fullName
+            shortName
+            avatar
+            firstName
+            lastName
+            middleName
+          }
+        }
+        ... on ClientPortalUser {
+          _id
+          fullName
+          firstName
+          lastName
+          email
+          username
+          customer {
+            avatar
+          }
+        }
+      }
+      categories {
+        _id
+        name
+        slug
+      }
+      tags {
+        _id
+        name
+      }
+      customFieldsData
+    }
+  }
+`;
+
+const queries = { CmsPosts, CmsCustomFieldGroups, CmsPostDetail };
 export default queries;

@@ -57,7 +57,7 @@ export async function NavbarTop({ children }: { children?: React.ReactNode }) {
 
         <Link href="/" aria-label="Homepage" className="flex justify-center">
           <Image
-            src="/images/logo.png"
+            src="/images/erxesLogo.png"
             height={60}
             width={60}
             alt="Logo"

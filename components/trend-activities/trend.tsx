@@ -31,7 +31,7 @@ const blogs = [
 
 export default function BlogSection() {
   return (
-    <section className="container mx-auto px-4 py-12 text-center">
+    <section className="container mx-auto text-center">
      
       <div className="inline-block bg-gray-100 text-gray-800 text-xs px-4 py-1 rounded-full">
         Blog

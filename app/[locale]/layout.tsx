@@ -6,10 +6,18 @@ import DefaultLayout from "@/components/layout";
 import { Toaster } from "@/components/ui/toaster";
 import Apollo from "./ApolloClient";
 import CurrentConfigProvider from "@/containers/config/currentConfig";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "100", "200", "300", "800", "900"], // Add weights you need
+  variable: "--font-roboto", // Optional: for CSS variable usage
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Эх Тэрэлж",
-  description: "Эх Тэрэлж",
+  title: "Template 1",
+  description: "Template 1",
   icons: {
     icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
   },
@@ -25,7 +33,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={roboto.className}>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Apollo>

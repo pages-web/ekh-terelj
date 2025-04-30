@@ -1,51 +1,73 @@
 "use client";
 
 import Link from "next/link";
-import { useQuery } from "@apollo/client";
-import { queries } from "@/sdk/graphql/cms";
-import useRooms, {
-  useCheckRooms,
-  useRoomCategories,
-  useRoomsAndCategories,
-} from "@/sdk/queries/rooms";
 import Image from "../ui/image";
+import { useCustomCmsPosts } from "@/sdk/queries/cms";
 
 export default function Rooms() {
-  const { roomsAndCategories } = useRoomsAndCategories();
+  const { customPosts } = useCustomCmsPosts();
 
   return (
-    <section id="room" className="lg:pt-24 pt-5">
-      <div className="container mx-auto">
-        <h2 className="text-2xl font-semibold mb-4 text-center">
-          Өрөөний Сонголт
-        </h2>
+    <section id="room">
+      <div className="container mx-auto space-y-10">
+        <div className="flex flex-col items-center">
+          <a href="/about">
+            <button className="border border-gray-400 rounded-full px-4 py-1 text-sm mb-4">
+              Accommodation
+            </button>
+          </a>
+          <h2 className="text-[20px] font-semibold">
+            Recommended rooms and suites
+          </h2>
+          <p className="text-gray-600 max-w-2xl mt-2">
+            Floor-to-ceiling windows unlock sublime views from all 202 rooms and
+            suites, each highlighted by sophisticated décor with Chinoiserie
+            touches. Body-contouring beds draped in luxury Frette linens make
+            for a relaxing stay, while marble-clad bathrooms feature heated
+            floors and signature Jo Loves amenities.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {roomsAndCategories &&
-            roomsAndCategories?.map((category) => {
+          {customPosts &&
+            customPosts?.map((post) => {
               return (
-                <Link href={`/room-detail/${category._id}`} key={category._id}>
-                  <div className="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden flex flex-col hover:shadow-lg transition">
-                    <div className="relative h-[280px]">
+                <Link href={`/room-detail/${post._id}`} key={post._id}>
+                  <div className="border p-5 rounded-2xl cursor-pointer bg-white overflow-hidden flex flex-col hover:shadow-lg transition hover:-translate-y-1">
+                    <div className="relative h-[280px] overflow-hidden rounded-lg mb-3">
                       <Image
-                        src={
-                          category.rooms?.[0]?.attachment?.url ||
-                          "/images/default-room.jpg"
-                        }
+                        src={post.thumbnail.url || "/images/default-room.jpg"}
                         width={400}
                         height={300}
                         className="w-full h-full"
-                        alt={category.name}
+                        alt={post.title}
                       />
                     </div>
-                    <div className="p-6 flex flex-col justify-between flex-grow">
-                      <h2 className="text-xl font-semibold">{category.name}</h2>
-                      {/* <p className="text-gray-600">
-                      {rating} ⭐ ({reviews} Reviews)
-                    </p> */}
-                      <p className="text-lg font-bold mt-2">
-                        ₮{category.rooms[0]?.unitPrice.toLocaleString()}{" "}
-                        <span className="text-sm text-gray-500">per night</span>
+                    <div className="flex justify-between">
+                      <h2 className="text-lg font-semibold">{post.title}</h2>
+                      <p className="text-xl font-bold">
+                        {post.customFieldsData
+                          .find((field) => field.code === "product")
+                          ?.product?.unitPrice.toLocaleString()}
+                        ₮{" "}
                       </p>
+                    </div>
+                    <div className="flex justify-end">
+                      <p className="text-md">Per night</p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {post.customFieldsData
+                        .find((field) => field.code === "facilities")
+                        ?.value.split(",")
+                        .map((facility, index) => (
+                          <p
+                            className="text-md rounded-full border py-2 px-3 text-black/70"
+                            key={index}
+                          >
+                            {facility}
+                          </p>
+                        ))}
                     </div>
                   </div>
                 </Link>

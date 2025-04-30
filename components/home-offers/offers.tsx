@@ -43,7 +43,7 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-12">
+    <section className="max-w-7xl mx-auto">
       <div className="flex justify-center mb-6">
         <button className="bg-gray-100 text-gray-800 text-xs px-4 py-1 rounded-full">
           Features
