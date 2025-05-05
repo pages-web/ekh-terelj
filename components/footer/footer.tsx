@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-300 px-6 pt-12 text-gray-700">
-      <div className="max-w-7xl mx-auto grid gap-[40px] md:grid-cols-3 text-center md:text-left">
+    <footer className="bg-white border-t border-gray-300 pt-12 text-gray-700 mt-28">
+      <div className="grid gap-[40px] md:grid-cols-3 text-center md:text-left container">
         <div>
           <h3 className="font-semibold text-lg mb-4">STAY</h3>
           <ul className="space-y-2 text-gray-500">
@@ -36,7 +36,7 @@ export default function Footer() {
           </button>
         </div>
 
-        <div>
+        <div className="justify-self-end text-end">
           <h3 className="font-semibold text-lg mb-4">EXPERIENCE</h3>
           <ul className="space-y-2 text-gray-500">
             <li>Events & Meeting</li>
@@ -47,18 +47,20 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gray-300 mt-12 py-3 flex flex-col md:flex-row justify-between items-center text-sm text-center gap-4">
-        <p className="text-gray-500">&copy; 2025 Erxes Template 1</p>
-        <div className="flex space-x-6 text-gray-500">
-          <a href="#" className="hover:text-gray-800 transition">
-            Instagram
-          </a>
-          <a href="#" className="hover:text-gray-800 transition">
-            Facebook
-          </a>
-          <a href="#" className="hover:text-gray-800 transition">
-            Youtube
-          </a>
+      <div className="border-t border-gray-300 mt-12 py-3">
+        <div className="container flex flex-col md:flex-row justify-between items-center text-sm text-center gap-4">
+          <p className="text-gray-500">&copy; 2025 Erxes Template 1</p>
+          <div className="flex space-x-6 text-gray-500">
+            <a href="#" className="hover:text-gray-800 transition">
+              Instagram
+            </a>
+            <a href="#" className="hover:text-gray-800 transition">
+              Facebook
+            </a>
+            <a href="#" className="hover:text-gray-800 transition">
+              Youtube
+            </a>
+          </div>
         </div>
       </div>
     </footer>

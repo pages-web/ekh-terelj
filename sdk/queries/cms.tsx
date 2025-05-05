@@ -7,7 +7,6 @@ import {
   ICustomField,
 } from "@/types/cms";
 import useRooms from "./rooms";
-import { group } from "console";
 
 export const useCmsPosts = (variables?: OperationVariables) => {
   const { data, loading } = useQuery(queries.CmsPosts, {

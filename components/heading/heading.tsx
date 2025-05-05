@@ -10,7 +10,7 @@ const Heading = ({
   return (
     <div className={`space-y-3 ${className}`}>
       <h1 className="text-displaysm text-black">{title}</h1>
-      {desc && <p className="text-black/70 text-textmd">{desc}</p>}
+      {desc && <p className="text-black/70 text-textmd max-w-5xl">{desc}</p>}
     </div>
   );
 };

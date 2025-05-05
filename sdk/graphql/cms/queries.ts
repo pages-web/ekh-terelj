@@ -63,6 +63,7 @@ const CmsPosts = gql`
         slug
         excerpt
         customFieldsData
+        customFieldsMap
       }
     }
   }

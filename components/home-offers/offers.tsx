@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import HeadingButton from "../heading-button/heading-button";
+import Heading from "../heading/heading";
 
 const features = [
   {
@@ -43,21 +45,16 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <section className="max-w-7xl mx-auto">
-      <div className="flex justify-center mb-6">
-        <button className="bg-gray-100 text-gray-800 text-xs px-4 py-1 rounded-full">
-          Features
-        </button>
-      </div>
-
-      <h2 className="text-center text-[30px] font-semibold mb-4">
-        Experience Comfort & Culture in a Modern Way
-      </h2>
-      <p className="text-center text-gray-600 mb-8">
-        Discover luxury from towering heights with a private theater production
+    <section className="space-y-10">
+      <div className="flex flex-col items-center text-center space-y-6">
+        <HeadingButton title="Features" />
+        <Heading
+          title="Experience Comfort & Culture in a Modern Way"
+          desc=" Discover luxury from towering heights with a private theater production
         in our suites, a swim in the highest hotel pool in Western Europe, or
-        indulge in afternoon tea with a unique Asian twist.
-      </p>
+        indulge in afternoon tea with a unique Asian twist."
+        />
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {features.map((feature, index) => (
