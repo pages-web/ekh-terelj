@@ -16,8 +16,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Template 1",
-  description: "Template 1",
+  title: "Эх тэрэлж",
+  description: "Эх тэрэлж",
   icons: {
     icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
   },
