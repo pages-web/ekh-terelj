@@ -11,7 +11,7 @@ const BookingNavbarTop = ({ children }: PropsWithChildren) => {
       !pathname.includes("confirmation")
     ) {
       return (
-        <div className="z-50 md:sticky top-[76px] md:top-[85px] py-3 md:shadow-md bg-background w-full border-b shadow-sm">
+        <div className="z-50 md:sticky top-[52px] py-3 md:shadow-md bg-background w-full border-b shadow-sm">
           <div className="container w-full py-3">{children}</div>
         </div>
       );
