@@ -26,6 +26,16 @@ export async function NavbarTop({ children }: { children?: React.ReactNode }) {
   return (
     <header className="z-50 sticky top-0 w-full bg-white border-b">
       <div className="flex justify-between items-center container mx-auto py-3 px-4">
+        <Link href="/" aria-label="Homepage" className="flex justify-center">
+          <Image
+            src="/images/erxesLogo.png"
+            height={60}
+            width={60}
+            alt="Logo"
+            className="object-contain"
+          />
+        </Link>
+
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -54,16 +64,6 @@ export async function NavbarTop({ children }: { children?: React.ReactNode }) {
             </SheetContent>
           </Sheet>
         </div>
-
-        <Link href="/" aria-label="Homepage" className="flex justify-center">
-          <Image
-            src="/images/erxesLogo.png"
-            height={60}
-            width={60}
-            alt="Logo"
-            className="object-contain"
-          />
-        </Link>
 
         <div className="hidden md:flex justify-between items-center w-full max-w-xl mx-auto">
           <nav className="flex gap-6">
