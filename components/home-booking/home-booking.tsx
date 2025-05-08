@@ -4,10 +4,10 @@ import Image from "../ui/image";
 
 const HomeBooking = () => {
   return (
-    <div className="h-[85vh] relative overflow-hidden p-10 my-10 rounded-3xl flex items-end">
+    <div className="lg:h-[85vh] relative overflow-hidden p-5 lg:p-10 my-10 rounded-3xl flex items-end">
       <div className="h-full w-full -z-10 aspect-video absolute bottom-0 left-0 ">
         <Image
-          src="/images/bg.png"
+          src="/images/home.jpg"
           width={1440}
           height={920}
           quality={100}
@@ -18,11 +18,9 @@ const HomeBooking = () => {
 
       <div className="w-full z-10 space-y-9">
         <div className="text-center text-white">
-          <Link href="/about">
-            <button className="border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10">
-              About
-            </button>
-          </Link>
+          <button className="border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10">
+            Book
+          </button>
           <h1 className="font-medium text-[40px] md:text-[64px]">
             FOR THOSE WHO WANTED ALL.
           </h1>

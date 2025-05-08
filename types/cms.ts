@@ -14,11 +14,7 @@ export interface ICmsPostCategory {
 export interface ICmsPostTag {
   _id: string;
   name: string;
-}
-
-export interface ICustomField {
-  field: string;
-  value: string;
+  slug: string;
 }
 
 export interface ICmsPost {
@@ -37,30 +33,5 @@ export interface ICmsPost {
   content: string;
   slug: string;
   excerpt: string;
-  customFieldsData: ICustomField[];
-}
-
-export interface ICustomCmsPost extends ICmsPost {
-  customFieldsData: (ICustomField & ICmsCustomFieldGroup)[];
-}
-
-export interface ICmsCustomField {
-  _id: string;
-  code: string;
-  text: string;
-  type: string;
-  validation: string;
-  order: number;
-  options: string[];
-  optionsValues: string[];
-}
-
-export interface ICmsCustomFieldGroup {
-  _id: string;
-  clientPortalId: string;
-  code: string;
-  label: string;
-  parentId: string;
-  customPostTypes: ICmsCustomPostType[];
-  fields: ICmsCustomField[];
+  customFieldsMap: any;
 }

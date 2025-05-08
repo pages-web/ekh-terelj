@@ -69,47 +69,6 @@ const CmsPosts = gql`
   }
 `;
 
-const CmsCustomFieldGroups = gql`
-  query CmsCustomFieldGroups(
-    $clientPortalId: String!
-    $page: Int
-    $perPage: Int
-    $postType: String
-    $pageId: String
-    $categoryId: String
-  ) {
-    cmsCustomFieldGroups(
-      clientPortalId: $clientPortalId
-      page: $page
-      perPage: $perPage
-      postType: $postType
-      pageId: $pageId
-      categoryId: $categoryId
-    ) {
-      _id
-      clientPortalId
-      code
-      label
-      parentId
-      customPostTypes {
-        _id
-        code
-        label
-      }
-      fields {
-        _id
-        code
-        text
-        type
-        validation
-        order
-        options
-        optionsValues
-      }
-    }
-  }
-`;
-
 const CmsPostDetail = gql`
   query Post($id: String) {
     cmsPost(_id: $id) {
@@ -209,9 +168,38 @@ const CmsPostDetail = gql`
         name
       }
       customFieldsData
+      customFieldsMap
     }
   }
 `;
 
-const queries = { CmsPosts, CmsCustomFieldGroups, CmsPostDetail };
+const CmsTags = gql`
+  query CmsTags(
+    $clientPortalId: String!
+    $searchValue: String
+    $page: Int
+    $perPage: Int
+    $sortField: String
+    $sortDirection: String
+  ) {
+    cmsTags(
+      clientPortalId: $clientPortalId
+      searchValue: $searchValue
+      page: $page
+      perPage: $perPage
+      sortField: $sortField
+      sortDirection: $sortDirection
+    ) {
+      _id
+      clientPortalId
+      name
+      slug
+      colorCode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const queries = { CmsPosts, CmsPostDetail, CmsTags };
 export default queries;

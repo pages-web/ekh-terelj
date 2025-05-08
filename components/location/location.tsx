@@ -49,7 +49,7 @@ export default function Location() {
         ></iframe>
       </div>
 
-      <div className="grid grid-cols-4 gap-10">
+      {/* <div className="grid grid-cols-4 gap-10">
         {infos.map((info, index) => (
           <div key={index} className="flex items-center space-x-2">
             <DynamicIcon name={info.icon as keyof typeof Icons} />
@@ -66,7 +66,7 @@ export default function Location() {
         >
           Get directions
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

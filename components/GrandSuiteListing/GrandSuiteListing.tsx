@@ -5,7 +5,7 @@ import { Users, Wifi } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Loading } from "../ui/loading";
 import Image from "../ui/image";
-import { useCustomCmsPostDetail } from "@/sdk/queries/cms";
+import { useCmsPostDetail } from "@/sdk/queries/cms";
 import {
   Carousel,
   CarouselContent,
@@ -16,6 +16,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import useRooms from "@/sdk/queries/rooms";
 
 export default function GrandSuiteListing() {
   const params = useParams();
@@ -40,15 +41,11 @@ export default function GrandSuiteListing() {
     emblaThumbsApi.scrollTo(emblaMainApi.selectedScrollSnap());
   }, [emblaMainApi, emblaThumbsApi, setSelectedIndex]);
 
-  const { customPost } = useCustomCmsPostDetail(params.slug);
-
-  const product = customPost?.customFieldsData?.find(
-    (field) => field.code === "product"
-  )?.product;
-
-  const facilities = customPost.customFieldsData
-    ?.find((field) => field.code === "facilities")
-    ?.value.split(",");
+  const { rooms } = useRooms();
+  const { post } = useCmsPostDetail(params.slug as string);
+  const room = rooms.find(
+    (room) => room._id === post?.customFieldsMap?.roomGroup?.main_product
+  );
 
   useEffect(() => {
     if (!emblaMainApi) return;
@@ -57,7 +54,9 @@ export default function GrandSuiteListing() {
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
   }, [emblaMainApi, onSelect]);
 
-  if (!customPost)
+  console.log(room, "room");
+
+  if (!post || !room)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loading />
@@ -66,74 +65,78 @@ export default function GrandSuiteListing() {
 
   return (
     <div className="min-h-screen container p-6 space-y-6">
-      <h2 className="text-[30px] font-semibold">{customPost.title}</h2>
-      <div className="grid grid-cols-2 gap-3 lg:gap-6">
-        {customPost.thumbnail && (
+      <h2 className="text-[30px] font-semibold">{post.title}</h2>
+      <div className="grid-cols-2 gap-3 lg:gap-6 lg:grid hidden">
+        {room.attachment && (
           <Image
-            src={customPost.thumbnail?.url}
-            alt={customPost.title}
+            src={room.attachment?.url}
+            alt={room.attachment.name}
             width={800}
             height={500}
-            className="rounded-2xl shadow-md w-full h-full aspect-video"
+            className="rounded-2xl shadow-md w-full aspect-video"
           />
         )}
 
         <div className="grid grid-cols-2 gap-3 lg:gap-6">
-          {customPost.images &&
-            customPost.images.map((attachment, idx) => (
-              <Image
-                key={idx}
-                src={attachment.url}
-                alt={`Suite thumbnail ${idx + 1}`}
-                width={300}
-                height={200}
-                className="rounded-xl shadow w-full h-full aspect-video"
-              />
-            ))}
-        </div>
-      </div>
-
-      {/* <Carousel
-        className="lg:hidden"
-        plugins={[
-          Autoplay({
-            delay: 2000,
-          }),
-        ]}
-      >
-        <CarouselContent>
-          {[customPost.thumbnail, ...customPost.images].map(
-            (attachment, idx) => (
-              <CarouselItem key={idx}>
+          {room.attachmentMore &&
+            room.attachmentMore
+              .slice(0, 4)
+              .map((attachment, idx) => (
                 <Image
-                  src={attachment?.url}
-                  alt={`Suite thumbnail ${idx + 1}`}
+                  key={idx}
+                  src={attachment.url}
+                  alt={post.title}
                   width={300}
                   height={200}
                   className="rounded-xl shadow w-full h-full aspect-video"
                 />
-              </CarouselItem>
-            )
-          )}
-        </CarouselContent>
-      </Carousel> */}
+              ))}
+        </div>
+      </div>
+
+      {(room.attachment || room.attachmentMore) && (
+        <Carousel
+          className="lg:hidden"
+          plugins={[
+            Autoplay({
+              delay: 2000,
+            }),
+          ]}
+        >
+          <CarouselContent>
+            {[room.attachment, ...(room.attachmentMore ?? [])].map(
+              (attachment, idx) => (
+                <CarouselItem key={idx}>
+                  <Image
+                    src={attachment?.url}
+                    alt={`Suite thumbnail ${idx + 1}`}
+                    width={300}
+                    height={200}
+                    className="rounded-xl shadow w-full h-full aspect-video"
+                  />
+                </CarouselItem>
+              )
+            )}
+          </CarouselContent>
+        </Carousel>
+      )}
 
       <div className="space-y-6">
         <div
           className="text-sm text-gray-500"
-          dangerouslySetInnerHTML={{ __html: customPost.content || "" }}
+          dangerouslySetInnerHTML={{ __html: post.content || "" }}
         ></div>
 
-        <p className="font-bold text-xl">
-          {product?.unitPrice.toLocaleString()}₮
-        </p>
+        <p className="font-bold text-xl">{room?.unitPrice.toLocaleString()}₮</p>
 
         <div className="space-y-3">
           <h2 className="text-displaysm">Facilities & Services</h2>
           <div className="w-fit pl-5">
-            {facilities?.map((facility, idx) => (
-              <Feature key={idx} title={facility} />
-            ))}
+            {post.customFieldsMap.roomGroup.main_facilities
+              .split(",")
+              ?.map((facility: string, idx: number) => (
+                <Feature key={idx} title={facility} />
+              ))}
           </div>
         </div>
       </div>

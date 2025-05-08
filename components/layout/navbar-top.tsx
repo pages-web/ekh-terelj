@@ -1,3 +1,5 @@
+"use client";
+
 import { Link } from "@/i18n/routing";
 import Image from "../ui/image";
 import { Button } from "@/components/ui/button";
@@ -10,29 +12,35 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { useCmsPosts, useCmsTags } from "@/sdk/queries/cms";
+import { menuItems } from "@/lib/menuItems";
 
-export async function NavbarTop({ children }: { children?: React.ReactNode }) {
-  const menuItems = [
-    { href: "/accommodation", label: "Accomodation" },
-    { href: "/events", label: "Events" },
-    { href: "/dining", label: "Dining" },
-    { href: "/wellness", label: "Wellness" },
-    { href: "/offers", label: "Offers" },
-    { href: "/about", label: "About" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/account", label: "Account" },
-  ];
+export function NavbarTop({ children }: { children?: React.ReactNode }) {
+  const { tags } = useCmsTags();
+  const { posts } = useCmsPosts({
+    tagIds: [tags?.find((tag) => tag.slug === "accomodation")?._id],
+  });
 
   return (
     <header className="z-50 sticky top-0 w-full bg-white border-b">
       <div className="flex justify-between items-center container mx-auto py-3 px-4">
-        <Link href="/" aria-label="Homepage" className="flex justify-center">
+        <Link href="/" aria-label="Homepage" className="w-32">
           <Image
-            src="/images/erxesLogo.png"
-            height={60}
-            width={60}
+            src="/images/tereljLogo.png"
+            height={300}
+            width={150}
+            quality={100}
             alt="Logo"
-            className="object-contain"
+            className="w-full h-full"
           />
         </Link>
 
@@ -66,30 +74,39 @@ export async function NavbarTop({ children }: { children?: React.ReactNode }) {
         </div>
 
         <div className="hidden md:flex justify-between items-center w-full max-w-xl mx-auto">
-          <nav className="flex gap-6">
-            {menuItems.slice(0, 4).map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-label={item.label}
-                className="text-black font-normal text-sm hover:underline"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <nav className="flex gap-6">
-            {menuItems.slice(4).map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-label={item.label}
-                className="text-black font-normal text-sm hover:underline"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <NavigationMenu>
+            <NavigationMenuList>
+              {menuItems.map((item, index) => (
+                <NavigationMenuItem key={index}>
+                  {item.label === "Accomodation" ? (
+                    <NavigationMenuTrigger>{item.label}</NavigationMenuTrigger>
+                  ) : (
+                    <NavigationMenuLink
+                      href={item.href}
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      {item.label}
+                    </NavigationMenuLink>
+                  )}
+
+                  {item.label === "Accomodation" && (
+                    <NavigationMenuContent className="p-2 flex flex-col gap-2">
+                      {posts &&
+                        posts.map((post, index) => (
+                          <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                            href={`/room-detail/${post._id}`}
+                            key={index}
+                          >
+                            {post.title}
+                          </NavigationMenuLink>
+                        ))}
+                    </NavigationMenuContent>
+                  )}
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
       </div>
     </header>
