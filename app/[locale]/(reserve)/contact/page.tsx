@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ContactComponent() {
   return (
-    <div className="w-full max-w-[1600px] mx-auto p-6">
+    <div className="w-full container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Contact</h1>
       <p className="mb-8 text-gray-600">
         No request is too great and no detail too small. We are also here to
@@ -15,48 +15,32 @@ export default function ContactComponent() {
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           <div className="flex items-center mb-4">
-            <Phone className="mr-2" />
+            <Phone className="mr-2 h-5 min-w-5" />
             <div>
               <h2 className="font-semibold">Phone</h2>
-              <p>+976-11-458330</p>
+              <p>+976 9900 4359</p>
             </div>
           </div>
 
           <div className="flex items-center mb-4">
-            <MapPin className="mr-2" />
+            <MapPin className="mr-2 h-5 min-w-5" />
             <div>
               <h2 className="font-semibold">Location</h2>
-              <p>{`Bayanzurkh Duureg, Zaluuchuud Avenue -18, Ulaanbaatar-49, Mongolia, P.O.Box-328`}</p>
+              <p>{`Ulaanbaatar, Mongolia, Ikh Terelj resort`}</p>
             </div>
           </div>
 
           <div className="flex items-center mb-8">
-            <Mail className="mr-2" />
+            <Mail className="mr-2 h-5 min-w-5" />
             <div>
               <h2 className="font-semibold">Email</h2>
-              <p>reservation@flower-hotel.mn</p>
+              <p>ekh.terelj@gmail.com</p>
             </div>
           </div>
-
-          <h2 className="text-2xl font-bold mb-4">Leave a message ?</h2>
-          <form className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <Input placeholder="Enter your first name" />
-              <Input placeholder="Enter your last name" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Input type="email" placeholder="Enter your email" />
-              <Input type="tel" placeholder="Enter your phone" />
-            </div>
-            <Textarea placeholder="Limit 250 characters" />
-            <Button className="w-full bg-teal-600 hover:bg-teal-700">
-              Send message
-            </Button>
-          </form>
         </div>
         <div className="h-[400px] lg:h-full rounded-lg overflow-hidden">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.9127757590254!2d106.9352121770386!3d47.92438637122066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d9692166117ef3d%3A0x16047093895df1e4!2sFlower%20Hotel!5e1!3m2!1smn!2smn!4v1740094066102!5m2!1smn!2smn"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.5520482391134!2d107.40107967680291!3d47.84827087125747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d94255801871fe5%3A0xb6d2b3a83c270feb!2sEkh%20terelj%20resort!5e0!3m2!1smn!2smn!4v1746674109557!5m2!1smn!2smn"
             width="100%"
             height="100%"
             style={{ border: 0 }}

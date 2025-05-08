@@ -6,7 +6,7 @@ export default function AboutSection() {
   return (
     <section className="flex flex-col items-center text-center">
       <div className="space-y-6">
-        <HeadingButton title="About" />
+        <HeadingButton title="About" link=""/>
         <Heading
           title="Aman New York"
           desc=" East meets West and old meets new. Manhattan’s iconic Crown Building

@@ -23,12 +23,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { useCmsPosts, useCmsTags } from "@/sdk/queries/cms";
 import { menuItems } from "@/lib/menuItems";
+import { cn } from "@/lib/utils";
+import { useRoomCategories } from "@/sdk/queries/rooms";
 
 export function NavbarTop({ children }: { children?: React.ReactNode }) {
-  const { tags } = useCmsTags();
-  const { posts } = useCmsPosts({
-    tagIds: [tags?.find((tag) => tag.slug === "accomodation")?._id],
-  });
+  const { roomCategories } = useRoomCategories();
 
   return (
     <header className="z-50 sticky top-0 w-full bg-white border-b">
@@ -44,69 +43,73 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
           />
         </Link>
 
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Open menu">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-64 p-6 overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle className="text-xl font-semibold text-black">
-                  Menu
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col gap-4 mt-6">
-                {menuItems.map((item) => (
-                  <Link
-                    href={item.href}
-                    aria-label={item.label}
-                    className="text-black text-base font-medium hover:underline"
-                    key={item.href}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+        <div className="flex justify-between gap-2">
+          <div className="hidden md:flex justify-between items-center">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {menuItems.map((item, index) => (
+                  <NavigationMenuItem key={index}>
+                    {item.label === "Accomodation" ? (
+                      <NavigationMenuTrigger>
+                        {item.label}
+                      </NavigationMenuTrigger>
+                    ) : (
+                      <NavigationMenuLink
+                        href={item.href}
+                        className={cn(navigationMenuTriggerStyle(), "w-full")}
+                      >
+                        {item.label}
+                      </NavigationMenuLink>
+                    )}
 
-        <div className="hidden md:flex justify-between items-center w-full max-w-xl mx-auto">
-          <NavigationMenu>
-            <NavigationMenuList>
-              {menuItems.map((item, index) => (
-                <NavigationMenuItem key={index}>
-                  {item.label === "Accomodation" ? (
-                    <NavigationMenuTrigger>{item.label}</NavigationMenuTrigger>
-                  ) : (
-                    <NavigationMenuLink
+                    {item.label === "Accomodation" && (
+                      <NavigationMenuContent className=" p-2 flex flex-col gap-2 ">
+                        {roomCategories &&
+                          roomCategories.map((category, index) => (
+                            <NavigationMenuLink
+                              className={navigationMenuTriggerStyle()}
+                              href={`/room-detail/${category._id}`}
+                              key={index}
+                            >
+                              {category.name}
+                            </NavigationMenuLink>
+                          ))}
+                      </NavigationMenuContent>
+                    )}
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          {children}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Open menu">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-64 p-6 overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle className="text-xl font-semibold text-black">
+                    Menu
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-6">
+                  {menuItems.map((item) => (
+                    <Link
                       href={item.href}
-                      className={navigationMenuTriggerStyle()}
+                      aria-label={item.label}
+                      className="text-black text-base font-medium hover:underline"
+                      key={item.href}
                     >
                       {item.label}
-                    </NavigationMenuLink>
-                  )}
-
-                  {item.label === "Accomodation" && (
-                    <NavigationMenuContent className="p-2 flex flex-col gap-2">
-                      {posts &&
-                        posts.map((post, index) => (
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                            href={`/room-detail/${post._id}`}
-                            key={index}
-                          >
-                            {post.title}
-                          </NavigationMenuLink>
-                        ))}
-                    </NavigationMenuContent>
-                  )}
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+                    </Link>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

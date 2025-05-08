@@ -33,7 +33,8 @@ export const useRoomCategories = (options?: OperationVariables) => {
     },
     ...options,
   });
-  return { roomCategories: data?.productCategories, loading };
+
+  return { roomCategories: data?.productCategories as ICategory[], loading };
 };
 
 export const useRoomsAndCategories = () => {

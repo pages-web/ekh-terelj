@@ -28,7 +28,7 @@ export default function Location() {
   return (
     <div className="space-y-10">
       <div className="flex flex-col items-center text-center space-y-6">
-        <HeadingButton title="Location" />
+        <HeadingButton title="Location" link="/contact"/>
         <Heading
           title="Getting here"
           desc=" The Otemachi Tower is connected to the five-line Otemachi subway
@@ -39,7 +39,7 @@ export default function Location() {
 
       <div className="h-[400px] w-full">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.9127757590254!2d106.9352121770386!3d47.92438637122066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d9692166117ef3d%3A0x16047093895df1e4!2sFlower%20Hotel!5e1!3m2!1smn!2smn!4v1740094066102!5m2!1smn!2smn"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.5520482391134!2d107.40107967680291!3d47.84827087125747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d94255801871fe5%3A0xb6d2b3a83c270feb!2sEkh%20terelj%20resort!5e0!3m2!1smn!2smn!4v1746674109557!5m2!1smn!2smn"
           width="100%"
           height="100%"
           style={{ border: 0 }}

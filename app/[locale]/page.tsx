@@ -12,6 +12,8 @@ import Accommodation from "@/components/home-Accommodation/accommodation";
 import Subscription from "@/components/home-offers/offers";
 import { useCmsPosts } from "@/sdk/queries/cms";
 import HomeBooking from "@/components/home-booking/home-booking";
+import Gallery from "@/components/gallery/gallery";
+import HomeRestaurant from "@/components/home-restaurant/home-restaurant";
 
 export default function HomePage() {
   return (
@@ -19,10 +21,12 @@ export default function HomePage() {
       <HomeBooking />
       {/* <AboutSection /> */}
       <Accommodation />
-      <Subscription />
+      <HomeRestaurant />
+      <Gallery />
+      {/* <Subscription /> */}
       <Location />
-      {/* <Trend /> */}
-      {/* <FeatureGrid /> */}
+      {/* <Trend />
+      <FeatureGrid /> */}
     </div>
   );
 }

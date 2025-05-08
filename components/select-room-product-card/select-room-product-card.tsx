@@ -29,7 +29,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
         <span className="absolute text-textxs bg-white/60 py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 duration-300">
           Room details
         </span>
-        <h3 className="text-textlg absolute bottom-0 left-0 p-2 text-white font-semibold">
+        <h3 className={`text-textlg absolute bottom-0 left-0 p-2 ${room.attachment?.url ? "text-white" : "text-black"} font-semibold`}>
           {category?.name}{" "}
           <span className="font-normal text-textxs">32(m2)</span>
         </h3>

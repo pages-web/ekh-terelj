@@ -47,7 +47,7 @@ export default function FeatureGrid() {
   return (
     <section className="space-y-10">
       <div className="flex flex-col items-center text-center space-y-6">
-        <HeadingButton title="Features" />
+        <HeadingButton title="Features" link=""/>
         <Heading
           title="Experience Comfort & Culture in a Modern Way"
           desc=" Discover luxury from towering heights with a private theater production
