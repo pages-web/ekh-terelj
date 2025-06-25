@@ -1,7 +1,7 @@
 export const menuItems = [
-  { href: "/accommodation", label: "Accomodation" },
-  { href: "/gallery", label: "Gallery" },
-  // { href: "/restaurant", label: "Restaurant" },
-  // { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+  { href: "/accommodation", label: "Үйлчилгээ", extra: "Accomodation" },
+  { href: "/news", label: "Мэдээ мэдээлэл" },
+  { href: "/tourist", label: "Жуулчид" },
+  { href: "/job-openings", label: "Нээлттэй ажлын байр" },
+  { href: "/contact", label: "Холбоо барих" },
+]

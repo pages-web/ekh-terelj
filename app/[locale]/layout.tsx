@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import DefaultLayout from "@/components/layout";
-import { Toaster } from "@/components/ui/toaster";
-import Apollo from "./ApolloClient";
-import CurrentConfigProvider from "@/containers/config/currentConfig";
-import { Roboto } from "next/font/google";
+import type { Metadata } from "next"
+import "./globals.css"
+import { NextIntlClientProvider } from "next-intl"
+import { getMessages } from "next-intl/server"
+import DefaultLayout from "@/components/layout"
+import { Toaster } from "@/components/ui/toaster"
+import Apollo from "./ApolloClient"
+import CurrentConfigProvider from "@/containers/config/currentConfig"
+import { Roboto } from "next/font/google"
 
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "100", "200", "300", "800", "900"], // Add weights you need
-  variable: "--font-roboto", // Optional: for CSS variable usage
+  weight: ["400", "500", "700", "100", "200", "300", "800", "900"],
+  variable: "--font-roboto",
   display: "swap",
-});
+})
 
 export const metadata: Metadata = {
   title: "Эх тэрэлж",
@@ -21,16 +21,17 @@ export const metadata: Metadata = {
   icons: {
     icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
   },
-};
+}
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
 }>) {
-  const messages = await getMessages();
+  const { locale } = await params
+  const messages = await getMessages({ locale })
 
   return (
     <html lang={locale} className={roboto.className}>
@@ -45,5 +46,5 @@ export default async function RootLayout({
         <Toaster />
       </body>
     </html>
-  );
+  )
 }

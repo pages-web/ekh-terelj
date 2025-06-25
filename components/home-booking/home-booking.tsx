@@ -1,38 +1,96 @@
-import { Link } from "@/i18n/routing";
-import ReserveSelectDate from "../reserve-select-date/reserve-select-date";
-import Image from "../ui/image";
+import ReserveSelectDate from "../reserve-select-date/reserve-select-date"
+import Image from "../ui/image"
+import { useCmsPosts } from "@/sdk/queries/cms"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination, Autoplay } from "swiper/modules"
+import { Loading } from "../ui/loading"
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/autoplay"
 
 const HomeBooking = () => {
+  const { posts, loading } = useCmsPosts({
+    tagIds: ["EiBafCNFaCWnLCvKUajEb"],
+  })
+
+  if (loading) return <Loading />
+
+  const post = posts[0]
+  const images = post?.images || []
+
   return (
-    <div className="lg:h-[85vh] relative overflow-hidden p-5 lg:p-10 my-10 rounded-3xl flex items-end">
-      <div className="h-full w-full -z-10 aspect-video absolute bottom-0 left-0 ">
-        <Image
-          src="/images/home.jpg"
-          width={1440}
-          height={920}
-          quality={100}
-          className="h-full md:w-full brightness-[.8]"
-          alt=""
-        />
+    <div className='lg:h-[85vh] relative overflow-hidden p-5 lg:p-10 my-10 rounded-3xl flex items-end'>
+      <div className='h-full w-full absolute inset-0 z-0'>
+        {images.length > 0 ? (
+          <Swiper
+            key={`swiper-${images.length}`}
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={0}
+            slidesPerView={1}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            autoplay={{
+              delay: 4000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            loop={images.length > 1}
+            initialSlide={0}
+            watchSlidesProgress={true}
+            observer={true}
+            observeParents={true}
+            allowTouchMove={true}
+            grabCursor={true}
+            className='h-full w-full'
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={`slide-${index}`} className='swiper-slide'>
+                <div className='w-full h-full relative'>
+                  <Image
+                    src={image.url}
+                    width={1440}
+                    height={920}
+                    quality={100}
+                    className='h-full w-full object-cover brightness-[.8]'
+                    alt={image.name || `Banner slide ${index + 1}`}
+                    priority={index === 0}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <Image
+            src='/images/home.jpg'
+            width={1440}
+            height={920}
+            quality={100}
+            className='h-full md:w-full brightness-[.8]'
+            alt='Default banner'
+          />
+        )}
       </div>
 
-      <div className="w-full z-10 space-y-9">
-        <div className="text-center text-white">
-          <button className="border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10">
+      <div className='w-full z-20 space-y-9 relative'>
+        <div className='text-center text-white'>
+          {/* <button className='border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10'>
             Book
-          </button>
-          <h1 className="font-medium text-[40px] md:text-[64px]">
-            FOR THOSE WHO WANTED ALL.
+          </button> */}
+          <h1 className='font-medium text-[40px] md:text-[64px]'>
+            {post?.title || "FOR THOSE WHO WANTED ALL."}
           </h1>
-          <p className="text-lg">
-            Find your perfect stay with ease explore a wide range of rooms, grab
-            great deals, and book your ideal gateway today.
+          <p className='text-lg'>
+            {post?.excerpt ||
+              "Find your perfect stay with ease explore a wide range of rooms, grab great deals, and book your ideal gateway today."}
           </p>
         </div>
 
         <ReserveSelectDate />
       </div>
     </div>
-  );
-};
-export default HomeBooking;
+  )
+}
+export default HomeBooking
