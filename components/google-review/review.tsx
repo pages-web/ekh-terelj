@@ -1,5 +1,3 @@
-// Review.tsx
-
 "use client"
 
 import React, { useEffect } from "react"
@@ -34,18 +32,16 @@ const Review = () => {
 
   return (
     <section className='w-full py-16 lg:py-24 review-section'>
-      {/* container болон max-width хязгаарлалттай классуудыг хассан */}
       <div className='w-full px-0'>
         <div className='text-center mb-12'>
           <h2 className='text-3xl lg:text-4xl font-bold text-gray-900 mb-4'>
             Зочдын сэтгэгдэл
           </h2>
           <p className='text-gray-600 max-w-2xl mx-auto'>
-            Манай зочид буудалд амарч байсан зочдын үнэн бодит сэтгэгдлүүд
+            Манай зочид буудалд амарч байсан зочдын сэтгэгдлүүд
           </p>
         </div>
 
-        {/* Swiper wrapper-д w-full max-w-none нэмсэн */}
         <div className='w-full max-w-none max-h-[600px] overflow-y-auto scroll-smooth'>
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -63,11 +59,11 @@ const Review = () => {
             }}
             breakpoints={{
               640: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 20,
               },
               1024: {
-                slidesPerView: 3,
+                slidesPerView: 1,
                 spaceBetween: 24,
               },
             }}
@@ -119,7 +115,6 @@ const Review = () => {
           font-weight: bold;
         }
 
-        /* Custom scrollbar styles */
         .overflow-y-auto::-webkit-scrollbar {
           width: 6px;
         }
