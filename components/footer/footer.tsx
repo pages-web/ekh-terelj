@@ -33,22 +33,18 @@ export default function Footer() {
 
             <div className='flex gap-4'>
               <a
-                href='#'
+                href='https://www.facebook.com/ekhterel'
+                target='_blank'
                 className='text-gray-400 hover:text-blue-600 transition-colors duration-200'
               >
                 <FacebookIcon size={20} />
               </a>
               <a
-                href='#'
+                href='https://www.instagram.com/ekhtereljresort/'
+                target='_blank'
                 className='text-gray-400 hover:text-pink-600 transition-colors duration-200'
               >
                 <InstagramIcon size={20} />
-              </a>
-              <a
-                href='#'
-                className='text-gray-400 hover:text-red-600 transition-colors duration-200'
-              >
-                <YoutubeIcon size={20} />
               </a>
             </div>
           </div>
@@ -108,10 +104,10 @@ export default function Footer() {
               <div className='flex items-center gap-3'>
                 <Phone size={16} className='text-gray-400 flex-shrink-0' />
                 <a
-                  href='tel:+97699004359'
+                  href='tel:+97688010003'
                   className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
                 >
-                  +976 9900 4359
+                  +976 8801 0003, 86010003
                 </a>
               </div>
               <div className='flex items-center gap-3'>

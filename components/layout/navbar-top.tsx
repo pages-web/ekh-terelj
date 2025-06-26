@@ -23,10 +23,17 @@ import {
 } from "@/components/ui/navigation-menu"
 import { menuItems } from "@/lib/menuItems"
 import { cn } from "@/lib/utils"
-import { useRoomCategories } from "@/sdk/queries/rooms"
+import { useCmsPosts } from "@/sdk/queries/cms"
 
 export function NavbarTop({ children }: { children?: React.ReactNode }) {
-  const { roomCategories } = useRoomCategories()
+  const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
+    useCmsPosts({
+      categoryId: "1s1knKVOLplWPaIGkDnFd",
+    })
+
+  const roomCategories = allGrandSuitePosts.filter((post) =>
+    post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd")
+  )
 
   return (
     <header className='z-50 sticky top-0 w-full bg-white border-b'>
@@ -70,7 +77,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                               href={`/room-detail/${category._id}`}
                               key={index}
                             >
-                              {category.name}
+                              {category.title}
                             </NavigationMenuLink>
                           ))}
                       </NavigationMenuContent>

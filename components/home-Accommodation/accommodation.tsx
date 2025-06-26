@@ -50,12 +50,21 @@ const FallbackImage = ({ name }: { name: string }) => (
 )
 
 export default function Rooms() {
-  const { roomsAndCategories, loading: roomsLoading } = useRoomsAndCategories()
   const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({})
 
   const { posts, loading: postsLoading } = useCmsPosts({
     tagIds: ["wVx0BObZxZJ94IaJrhGPe"],
   })
+
+  const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
+    useCmsPosts({
+      categoryId: "1s1knKVOLplWPaIGkDnFd",
+    })
+
+  const grandSuitePosts = allGrandSuitePosts.filter((post) =>
+    post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd")
+  )
+
   const post = posts[0]
 
   const handleImageError = (categoryId: string) => {
@@ -68,7 +77,7 @@ export default function Rooms() {
         <Heading title={post?.title} desc={post?.content} />
       </div>
 
-      {roomsLoading ? (
+      {grandSuitePostsLoading ? (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {[...Array(6)].map((_, index) => (
             <RoomCardSkeleton key={index} />
@@ -76,96 +85,93 @@ export default function Rooms() {
         </div>
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {roomsAndCategories &&
-            roomsAndCategories?.map((category, index) => {
-              const room = category.rooms[0]
-              const imageUrl = room?.attachment?.url
+          {grandSuitePosts &&
+            grandSuitePosts?.map((category, index) => {
+              const imageUrl = category.thumbnail?.url
               const hasImageError = imageErrors[category._id]
 
-              if (room)
-                return (
-                  <Link href={`/room-detail/${category._id}`} key={index}>
-                    <div className='group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300 hover:-translate-y-1 cursor-pointer h-auto'>
-                      <div className='relative h-56 md:h-64 overflow-hidden bg-gray-50'>
-                        {imageUrl && !hasImageError ? (
-                          <div className='relative w-full h-full'>
-                            <Image
-                              src={imageUrl}
-                              width={600}
-                              height={400}
-                              className='w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500'
-                              alt={category.name}
-                              onError={() => handleImageError(category._id)}
-                              loading='lazy'
-                            />
-                            <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-                          </div>
-                        ) : (
-                          <FallbackImage name={category.name} />
-                        )}
+              return (
+                <Link href={`/room-detail/${category._id}`} key={index}>
+                  <div className='group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300 hover:-translate-y-1 cursor-pointer h-auto'>
+                    <div className='relative h-56 md:h-64 overflow-hidden bg-gray-50'>
+                      {imageUrl && !hasImageError ? (
+                        <div className='relative w-full h-full'>
+                          <Image
+                            src={imageUrl}
+                            width={600}
+                            height={400}
+                            className='w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500'
+                            alt={category.title}
+                            onError={() => handleImageError(category._id)}
+                            loading='lazy'
+                          />
+                          <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                        </div>
+                      ) : (
+                        <FallbackImage name={category.title} />
+                      )}
 
-                        {imageUrl && !hasImageError && (
-                          <div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-                        )}
+                      {imageUrl && !hasImageError && (
+                        <div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                      )}
+                    </div>
+
+                    <div className='p-5 space-y-3'>
+                      <div className='space-y-1'>
+                        <h3 className='text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors line-clamp-1'>
+                          {category.title}
+                        </h3>
+                        <p
+                          className='text-sm text-gray-500 line-clamp-2'
+                          dangerouslySetInnerHTML={{
+                            __html: category.excerpt || "",
+                          }}
+                        />
                       </div>
 
-                      <div className='p-5 space-y-3'>
-                        <div className='space-y-1'>
-                          <h3 className='text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors line-clamp-1'>
-                            {category.name}
-                          </h3>
-                          <p
-                            className='text-sm text-gray-500 line-clamp-2'
-                            dangerouslySetInnerHTML={{
-                              __html: room.description || "",
-                            }}
-                          />
+                      <div className='flex items-center justify-between pt-3 border-t border-gray-100'>
+                        <div>
+                          <div className='flex items-baseline gap-1'>
+                            <span className='text-xl font-bold text-gray-900'>
+                              {category.customFieldsMap?.room_post?.price
+                                ? category.customFieldsMap?.room_post?.price.toLocaleString() +
+                                  "₮"
+                                : "N/A"}
+                            </span>
+                          </div>
+                          <p className='text-xs text-gray-500'>
+                            {category.customFieldsMap?.room_post?.hour_rate ||
+                              "N/A"}
+                          </p>
                         </div>
 
-                        <div className='flex items-center justify-between pt-3 border-t border-gray-100'>
-                          <div>
-                            <div className='flex items-baseline gap-1'>
-                              <span className='text-xl font-bold text-gray-900'>
-                                {category.code === "1-6"
-                                  ? ""
-                                  : room.unitPrice?.toLocaleString() + "₮" ||
-                                    "0"}
-                              </span>
-                            </div>
-                            <p className='text-xs text-gray-500'>
-                              {category.code === "1-5"
-                                ? "нэг цагийн үнэ"
-                                : "нэг өдрийн үнэ"}
-                            </p>
-                          </div>
-
-                          <div className='flex items-center justify-center w-8 h-8 rounded-full bg-gray-900 text-white group-hover:bg-gray-800 transition-colors'>
-                            <svg
-                              className='w-4 h-4 transform group-hover:translate-x-0.5 transition-transform'
-                              fill='none'
-                              stroke='currentColor'
-                              viewBox='0 0 24 24'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth={2}
-                                d='M17 8l4 4m0 0l-4 4m4-4H3'
-                              />
-                            </svg>
-                          </div>
+                        <div className='flex items-center justify-center w-8 h-8 rounded-full bg-gray-900 text-white group-hover:bg-gray-800 transition-colors'>
+                          <svg
+                            className='w-4 h-4 transform group-hover:translate-x-0.5 transition-transform'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M17 8l4 4m0 0l-4 4m4-4H3'
+                            />
+                          </svg>
                         </div>
                       </div>
                     </div>
-                  </Link>
-                )
+                  </div>
+                </Link>
+              )
             })}
         </div>
       )}
 
-      {roomsAndCategories &&
-        roomsAndCategories.length === 0 &&
-        !roomsLoading && (
+      {grandSuitePosts &&
+        grandSuitePosts.length === 0 &&
+        !grandSuitePostsLoading && (
           <div className='text-center py-12'>
             <div className='max-w-md mx-auto'>
               <div className='w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center'>

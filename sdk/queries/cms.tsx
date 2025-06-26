@@ -21,7 +21,7 @@ export const useCmsPostDetail = (id: string) => {
     variables: { id },
   })
 
-  const post: ICmsPost = data?.CmsPostDetail || {}
+  const post: ICmsPost = data?.cmsPost || {}
 
   return { post, loading }
 }
