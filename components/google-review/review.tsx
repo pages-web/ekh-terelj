@@ -8,7 +8,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
-import { Star, User } from "lucide-react"
+import { Star } from "lucide-react"
 
 const renderStars = (rating: number) =>
   Array.from({ length: 5 }, (_, i) => (
@@ -34,8 +34,8 @@ const Review = () => {
 
   return (
     <section className='w-full py-16 lg:py-24 review-section'>
-      {/* container классыг хасаж, w-full max-w-none нэмнэ */}
-      <div className='w-full max-w-none px-0'>
+      {/* container болон max-width хязгаарлалттай классуудыг хассан */}
+      <div className='w-full px-0'>
         <div className='text-center mb-12'>
           <h2 className='text-3xl lg:text-4xl font-bold text-gray-900 mb-4'>
             Зочдын сэтгэгдэл
@@ -45,7 +45,7 @@ const Review = () => {
           </p>
         </div>
 
-        {/* Swiper wrapper-д w-full max-w-none нэмнэ */}
+        {/* Swiper wrapper-д w-full max-w-none нэмсэн */}
         <div className='w-full max-w-none max-h-[600px] overflow-y-auto scroll-smooth'>
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
