@@ -14,15 +14,16 @@ const Review = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
-  useEffect(() => {
-    const isDevelopment =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
+  const isLocal =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1")
 
-    if (isDevelopment) {
+  useEffect(() => {
+    if (isLocal) {
       setTimeout(() => {
         setIsLoading(false)
-      }, 1000)
+      }, 500)
       return
     }
 
@@ -66,7 +67,7 @@ const Review = () => {
         style.parentNode.removeChild(style)
       }
     }
-  }, [])
+  }, [isLocal])
 
   const staticReviews = [
     {
@@ -121,11 +122,6 @@ const Review = () => {
       />
     ))
   }
-
-  const isLocal =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1")
 
   return (
     <section className='w-full py-16 lg:py-24 review-section'>

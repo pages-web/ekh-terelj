@@ -43,27 +43,17 @@ const WIDGETS_SAVE_LEAD = gql`
 
 export default function JobOpenings() {
   const [formData, setFormData] = useState({
-    name: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    position: "",
-    message: "",
+    jobName: "",
+    maritalStatus: "",
+    education: "",
+    advantage: "",
+    skill: "",
+    level: "",
+    shortSummary: "",
   })
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [notification, setNotification] = useState<string | null>(null)
-
-  const positions = [
-    "I am interested in...",
-    "Програмист",
-    "Дизайнер",
-    "Менежер",
-    "Маркетинг мэргэжилтэн",
-    "Борлуулалтын төлөөлөгч",
-  ]
 
   const [saveLead, { loading }] = useMutation(WIDGETS_SAVE_LEAD)
 
@@ -75,33 +65,15 @@ export default function JobOpenings() {
     }))
   }
 
-  const handleFileSelect = (e: any) => {
-    const file = e.target.files[0]
-    if (file) {
-      setSelectedFile(file)
-    }
-  }
-
-  const handleDragOver = (e: any) => {
-    e.preventDefault()
-  }
-
-  const handleDrop = (e: any) => {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
-    if (file) {
-      setSelectedFile(file)
-    }
-  }
-
   const handleSubmit = async () => {
     if (
-      !formData.name ||
-      !formData.lastName ||
-      !formData.phone ||
-      !formData.email ||
-      !formData.position ||
-      !selectedFile
+      !formData.jobName ||
+      !formData.maritalStatus ||
+      !formData.education ||
+      !formData.advantage ||
+      !formData.skill ||
+      !formData.level ||
+      !formData.shortSummary
     ) {
       setNotification("Мэдээллийг бүрэн оруулна уу!")
       return
@@ -112,21 +84,25 @@ export default function JobOpenings() {
         language: navigator.language,
       }
       const submissions = [
-        { _id: "name", type: "text", value: String(formData.name) },
-        { _id: "lastName", type: "text", value: String(formData.lastName) },
-        { _id: "phone", type: "text", value: String(formData.phone) },
-        { _id: "email", type: "text", value: String(formData.email) },
-        { _id: "position", type: "text", value: String(formData.position) },
-        { _id: "message", type: "text", value: String(formData.message) },
+        { _id: "jobName", type: "text", value: String(formData.jobName) },
         {
-          _id: "cv",
+          _id: "maritalStatus",
           type: "text",
-          value: selectedFile ? selectedFile.name : "",
+          value: String(formData.maritalStatus),
+        },
+        { _id: "education", type: "text", value: String(formData.education) },
+        { _id: "advantage", type: "text", value: String(formData.advantage) },
+        { _id: "skill", type: "text", value: String(formData.skill) },
+        { _id: "level", type: "text", value: String(formData.level) },
+        {
+          _id: "shortSummary",
+          type: "text",
+          value: String(formData.shortSummary),
         },
       ]
       await saveLead({
         variables: {
-          formId: "ncnsWzkTgVd6ikRmYXHPX",
+          formId: "jQ9egMCPP0aSQpa7NNSed",
           submissions,
           browserInfo,
           cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",
@@ -134,14 +110,14 @@ export default function JobOpenings() {
       })
       setShowSuccessModal(true)
       setFormData({
-        name: "",
-        lastName: "",
-        phone: "",
-        email: "",
-        position: "",
-        message: "",
+        jobName: "",
+        maritalStatus: "",
+        education: "",
+        advantage: "",
+        skill: "",
+        level: "",
+        shortSummary: "",
       })
-      setSelectedFile(null)
       setNotification(null)
     } catch (err) {
       setNotification("Алдаа гарлаа. Дахин оролдоно уу.")
@@ -175,207 +151,118 @@ export default function JobOpenings() {
               <div className='space-y-6'>
                 <div className='flex items-center gap-3 border-b border-gray-200 pb-3'>
                   <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[#113f52]/10'>
-                    <User className='h-5 w-5 text-[#113f52]' />
-                  </div>
-                  <h2 className='text-xl font-semibold text-gray-800'>
-                    Хувийн мэдээлэл
-                  </h2>
-                </div>
-
-                <div className='grid gap-6 md:grid-cols-2'>
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <User className='h-4 w-4' />
-                      Нэр
-                    </label>
-                    <input
-                      type='text'
-                      name='name'
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder='Таны нэр'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <User className='h-4 w-4' />
-                      Овог
-                    </label>
-                    <input
-                      type='text'
-                      name='lastName'
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder='Таны овог'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <Phone className='h-4 w-4' />
-                      Утасны дугаар
-                    </label>
-                    <input
-                      type='tel'
-                      name='phone'
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder='+976 99119911'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <Mail className='h-4 w-4' />
-                      Имэйл
-                    </label>
-                    <input
-                      type='email'
-                      name='email'
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder='example@gmail.com'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className='space-y-6'>
-                <div className='flex items-center gap-3 border-b border-gray-200 pb-3'>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[#113f52]/10'>
                     <Briefcase className='h-5 w-5 text-[#113f52]' />
                   </div>
                   <h2 className='text-xl font-semibold text-gray-800'>
-                    Ажлын байр
+                    Ажлын мэдээлэл
                   </h2>
                 </div>
 
-                <div className='space-y-2'>
-                  <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                    <Briefcase className='h-4 w-4' />
-                    Ажлын байрны нэр
-                  </label>
-                  <div className='relative'>
-                    <button
-                      type='button'
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className='flex w-full items-center justify-between rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-left text-gray-700 outline-none transition-all duration-200 hover:border-gray-300 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10'
-                    >
-                      <span
-                        className={
-                          formData.position ? "text-gray-700" : "text-gray-400"
-                        }
-                      >
-                        {formData.position || "Ажлын байрыг сонгоно уу"}
-                      </span>
-                      <ChevronDown
-                        className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                          isDropdownOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    {isDropdownOpen && (
-                      <div className='absolute z-10 mt-2 w-full rounded-xl border-2 border-gray-200 bg-white shadow-xl'>
-                        {positions.map((position, index) => (
-                          <button
-                            key={index}
-                            type='button'
-                            onClick={() => {
-                              if (index !== 0) {
-                                setFormData((prev) => ({ ...prev, position }))
-                              }
-                              setIsDropdownOpen(false)
-                            }}
-                            className={`w-full px-4 py-3 text-left transition-colors duration-200 ${
-                              index === 0
-                                ? "cursor-default text-gray-400"
-                                : "text-gray-700 hover:bg-[#113f52]/5"
-                            } ${index === 1 ? "rounded-t-xl" : ""} ${
-                              index === positions.length - 1
-                                ? "rounded-b-xl"
-                                : ""
-                            }`}
-                            disabled={index === 0}
-                          >
-                            {position}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className='space-y-6'>
-                <div className='flex items-center gap-3 border-b border-gray-200 pb-3'>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[#113f52]/10'>
-                    <FileText className='h-5 w-5 text-[#113f52]' />
-                  </div>
-                  <h2 className='text-xl font-semibold text-gray-800'>
-                    Анкет файл
-                  </h2>
-                </div>
-
-                <div className='space-y-2'>
-                  <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                    <Upload className='h-4 w-4' />
-                    CV-гээ байруулуулна уу
-                  </label>
-                  <div
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    className='group cursor-pointer rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-8 text-center transition-all duration-200 hover:border-[#113f52] hover:bg-[#113f52]/5'
-                  >
-                    <input
-                      type='file'
-                      onChange={handleFileSelect}
-                      className='hidden'
-                      id='file-upload'
-                      accept='.pdf,.doc,.docx'
-                    />
-                    <label htmlFor='file-upload' className='cursor-pointer'>
-                      <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-[#113f52] to-[#113f52] shadow-lg group-hover:scale-105 transition-transform duration-200'>
-                        <Upload className='h-8 w-8 text-white' />
-                      </div>
-                      <p className='mb-2 text-lg font-medium text-gray-600'>
-                        {selectedFile
-                          ? selectedFile.name
-                          : "Файлаа энд чирэн оруулна уу"}
-                      </p>
+                <div className='space-y-6'>
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <Briefcase className='h-4 w-4' />
+                      Таны сонирхож буй ажлын нэр:
                     </label>
+                    <input
+                      type='text'
+                      name='jobName'
+                      value={formData.jobName}
+                      onChange={handleInputChange}
+                      placeholder='Таны сонирхож буй ажлын нэр'
+                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
                   </div>
-                </div>
-              </div>
 
-              <div className='space-y-6'>
-                <div className='flex items-center gap-3 border-b border-gray-200 pb-3'>
-                  <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[#113f52]/10'>
-                    <MessageSquare className='h-5 w-5 text-[#113f52]' />
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <User className='h-4 w-4' />
+                      Гэр бүлийн байдал
+                    </label>
+                    <input
+                      type='text'
+                      name='maritalStatus'
+                      value={formData.maritalStatus}
+                      onChange={handleInputChange}
+                      placeholder='Гэр бүлийн байдал'
+                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
                   </div>
-                  <h2 className='text-xl font-semibold text-gray-800'>
-                    Нэмэлт мэдээлэл
-                  </h2>
-                </div>
 
-                <div className='space-y-2'>
-                  <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                    <MessageSquare className='h-4 w-4' />
-                    Мессеж
-                  </label>
-                  <textarea
-                    name='message'
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder='Өөрийн тухай, туршлага, чадвараа товчхон бичнэ үү...'
-                    rows={4}
-                    className='w-full resize-none rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                  />
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <FileText className='h-4 w-4' />
+                      Боловсрол
+                    </label>
+                    <input
+                      type='text'
+                      name='education'
+                      value={formData.education}
+                      onChange={handleInputChange}
+                      placeholder='Боловсрол'
+                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <Briefcase className='h-4 w-4' />
+                      Та ажил мэргэжлийнхээ хувьд бусдаас юугаараа давуу вэ?
+                    </label>
+                    <textarea
+                      name='advantage'
+                      value={formData.advantage}
+                      onChange={handleInputChange}
+                      placeholder='Та ажил мэргэжлийнхээ хувьд бусдаас юугаараа давуу вэ?'
+                      rows={3}
+                      className='w-full resize-none rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <Briefcase className='h-4 w-4' />
+                      Мэргэшилтэй холбоотой бусад чадварууд
+                    </label>
+                    <input
+                      type='text'
+                      name='skill'
+                      value={formData.skill}
+                      onChange={handleInputChange}
+                      placeholder='Мэргэшилтэй холбоотой бусад чадварууд'
+                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <MessageSquare className='h-4 w-4' />
+                      Гадаад хэлний мэдлэгийн түвшин
+                    </label>
+                    <input
+                      type='text'
+                      name='level'
+                      value={formData.level}
+                      onChange={handleInputChange}
+                      placeholder='Гадаад хэлний мэдлэгийн түвшин'
+                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
+                  </div>
+
+                  <div className='space-y-2'>
+                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                      <MessageSquare className='h-4 w-4' />
+                      Товч танилцуулга
+                    </label>
+                    <textarea
+                      name='shortSummary'
+                      value={formData.shortSummary}
+                      onChange={handleInputChange}
+                      placeholder='Товч танилцуулга'
+                      rows={4}
+                      className='w-full resize-none rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -404,7 +291,7 @@ export default function JobOpenings() {
                   disabled={loading}
                   className='w-full transform rounded-xl bg-gradient-to-r from-[#113f52] to-[#113f52] py-4 px-8 text-lg font-semibold text-white shadow-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
                 >
-                  {loading ? "Илгээж байна..." : "Өргөдөл илгээх"}
+                  {loading ? "Илгээж байна..." : "Илгээх"}
                 </button>
               </div>
             </div>

@@ -1,18 +1,118 @@
 "use client"
 
-import { Phone, MapPin, Mail, MessageCircle } from "lucide-react"
+import { useState } from "react"
+import { Phone, MapPin, Mail, MessageCircle, Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useCmsPosts } from "@/sdk/queries/cms"
+import { gql, useMutation } from "@apollo/client"
+
+const WIDGETS_SAVE_LEAD = gql`
+  mutation widgetsSaveLead(
+    $formId: String!
+    $submissions: [FieldValueInput]
+    $browserInfo: JSON!
+    $cachedCustomerId: String
+  ) {
+    widgetsSaveLead(
+      formId: $formId
+      submissions: $submissions
+      browserInfo: $browserInfo
+      cachedCustomerId: $cachedCustomerId
+    ) {
+      status
+      conversationId
+      customerId
+      errors {
+        fieldId
+        code
+        text
+        __typename
+      }
+      __typename
+    }
+  }
+`
 
 export default function ContactComponent() {
-  const { posts, loading } = useCmsPosts({
+  const { posts, loading: postsLoading } = useCmsPosts({
     tagIds: ["P_ga05OkoXh2uQDdlCwho"],
   })
 
   const post = posts[0]
+
+  const [formData, setFormData] = useState({
+    name: "",
+    ovog: "",
+    email: "",
+    phone: "",
+    message: "",
+  })
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [notification, setNotification] = useState<string | null>(null)
+
+  const [saveLead, { loading: submitLoading }] = useMutation(WIDGETS_SAVE_LEAD)
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async () => {
+    if (
+      !formData.name ||
+      !formData.ovog ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.message
+    ) {
+      setNotification("Мэдээллийг бүрэн оруулна уу!")
+      return
+    }
+    try {
+      const browserInfo = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+      }
+      const submissions = [
+        { _id: "name", type: "text", value: String(formData.name) },
+        { _id: "ovog", type: "text", value: String(formData.ovog) },
+        {
+          _id: "email",
+          type: "text",
+          value: String(formData.email),
+        },
+        { _id: "phone", type: "text", value: String(formData.phone) },
+        { _id: "message", type: "text", value: String(formData.message) },
+      ]
+      await saveLead({
+        variables: {
+          formId: "GzfV3n9o6fuDbx4Ey3xzK",
+          submissions,
+          browserInfo,
+          cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",
+        },
+      })
+      setShowSuccessModal(true)
+      setFormData({
+        name: "",
+        ovog: "",
+        email: "",
+        phone: "",
+        message: "",
+      })
+      setNotification(null)
+    } catch (err) {
+      setNotification("Алдаа гарлаа. Дахин оролдоно уу.")
+    }
+  }
+
   return (
     <div className='min-h-screen bg-gray-50'>
       <div className='bg-white border-b'>
@@ -122,6 +222,9 @@ export default function ContactComponent() {
                       Нэр
                     </label>
                     <Input
+                      name='name'
+                      value={formData.name}
+                      onChange={handleInputChange}
                       placeholder='Таны нэр'
                       className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
                     />
@@ -131,6 +234,9 @@ export default function ContactComponent() {
                       Овог
                     </label>
                     <Input
+                      name='ovog'
+                      value={formData.ovog}
+                      onChange={handleInputChange}
                       placeholder='Таны овог'
                       className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
                     />
@@ -143,6 +249,9 @@ export default function ContactComponent() {
                   </label>
                   <Input
                     type='email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder='example@gmail.com'
                     className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
                   />
@@ -154,6 +263,9 @@ export default function ContactComponent() {
                   </label>
                   <Input
                     type='tel'
+                    name='phone'
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     placeholder='+976 99119911'
                     className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
                   />
@@ -164,6 +276,9 @@ export default function ContactComponent() {
                     Мессеж
                   </label>
                   <Textarea
+                    name='message'
+                    value={formData.message}
+                    onChange={handleInputChange}
                     placeholder='Бид танд хэрхэн тусалж чадахаа хэлээрэй...'
                     rows={5}
                     className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
@@ -171,13 +286,42 @@ export default function ContactComponent() {
                 </div>
 
                 <Button
-                  type='submit'
+                  type='button'
+                  onClick={handleSubmit}
+                  disabled={submitLoading}
                   className='w-full bg-[#113f52] hover:bg-[#113f52]/80 text-white font-medium py-3'
                 >
-                  Мессеж илгээх
+                  {submitLoading ? "Илгээж байна..." : "Илгээх"}
                 </Button>
               </form>
             </Card>
+
+            {showSuccessModal && (
+              <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
+                <div className='mx-auto w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl transform transition-all duration-300 scale-100'>
+                  <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-green-400 to-green-500 shadow-lg'>
+                    <Check className='h-10 w-10 text-white' />
+                  </div>
+
+                  <h2 className='mb-4 text-2xl font-bold text-gray-800'>
+                    Амжилттай илгээлээ!
+                  </h2>
+
+                  <p className='mb-8 text-gray-600 leading-relaxed'>
+                    Өргөдөл гаргасанд баярлалаа. Бид таны хүсэлтийг хүлээн авсан
+                    бөгөөд хянан үзэх болно. Та удахгүй имэйлээр хариу хүлээн
+                    авах болно.
+                  </p>
+
+                  <button
+                    onClick={() => setShowSuccessModal(false)}
+                    className='rounded-xl bg-gradient-to-r from-[#113f52] to-[#113f52] px-8 py-3 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-200'
+                  >
+                    Дуусгах
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
