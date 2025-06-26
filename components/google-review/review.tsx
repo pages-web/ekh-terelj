@@ -14,19 +14,7 @@ const Review = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
-  const isLocal =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1")
-
   useEffect(() => {
-    if (isLocal) {
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return
-    }
-
     const script = document.createElement("script")
     script.src = "https://widgets.sociablekit.com/google-reviews/widget.js"
     script.async = true
@@ -50,8 +38,6 @@ const Review = () => {
         overflow: hidden;
         max-height: 500px;
       }
-      
-      /* Override widget styles to match your design */
       .sk-ww-google-reviews iframe {
         border-radius: 12px !important;
         max-height: 500px !important;
@@ -67,7 +53,7 @@ const Review = () => {
         style.parentNode.removeChild(style)
       }
     }
-  }, [isLocal])
+  }, [])
 
   const staticReviews = [
     {
@@ -154,7 +140,8 @@ const Review = () => {
               </div>
             )}
 
-            {!isLoading && (isLocal || hasError) && (
+            {/* Swiper үргэлж render хийнэ */}
+            {!isLoading && (
               <div className='w-full pb-12'>
                 <Swiper
                   modules={[Navigation, Pagination, Autoplay]}
@@ -221,11 +208,10 @@ const Review = () => {
               </div>
             )}
 
-            {!isLocal && !hasError && (
+            {/* Google Reviews widget-ийг Swiper-ийн доор харуулж болно */}
+            {!isLoading && !hasError && (
               <div
-                className={`sk-ww-google-reviews transition-opacity duration-500 ${
-                  isLoading ? "opacity-0" : "opacity-100"
-                }`}
+                className={`sk-ww-google-reviews transition-opacity duration-500 opacity-100`}
                 data-embed-id='25571033'
                 style={{ maxHeight: "500px", overflow: "hidden" }}
               />
