@@ -1,7 +1,8 @@
-// components/Review.tsx
+// Review.tsx
+
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import "swiper/css"
@@ -33,7 +34,8 @@ const Review = () => {
 
   return (
     <section className='w-full py-16 lg:py-24 review-section'>
-      <div className='container mx-auto px-4'>
+      {/* container классыг хасаж, w-full max-w-none нэмнэ */}
+      <div className='w-full max-w-none px-0'>
         <div className='text-center mb-12'>
           <h2 className='text-3xl lg:text-4xl font-bold text-gray-900 mb-4'>
             Зочдын сэтгэгдэл
@@ -43,7 +45,8 @@ const Review = () => {
           </p>
         </div>
 
-        <div className='max-h-[600px] overflow-y-auto scroll-smooth'>
+        {/* Swiper wrapper-д w-full max-w-none нэмнэ */}
+        <div className='w-full max-w-none max-h-[600px] overflow-y-auto scroll-smooth'>
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={20}
@@ -68,7 +71,7 @@ const Review = () => {
                 spaceBetween: 24,
               },
             }}
-            className='reviews-swiper'
+            className='reviews-swiper w-full max-w-none'
           >
             <SwiperSlide>
               <div className='h-[450px] overflow-y-auto scroll-smooth border rounded-xl bg-white p-4'>
