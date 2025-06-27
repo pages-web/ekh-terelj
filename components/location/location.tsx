@@ -31,7 +31,7 @@ export default function Location() {
         <div className='space-y-6'>
           <div className='h-[400px] w-full rounded-xl overflow-hidden shadow-lg border'>
             <Image
-              src='/images/location.png'
+              src='/images/plan_zurag.jpg'
               alt='location'
               width={500}
               height={500}

@@ -1,7 +1,6 @@
 import { OperationVariables, useQuery } from "@apollo/client"
 import { queries } from "../graphql/cms"
 import { ICmsPost, ICmsPostTag } from "@/types/cms"
-import useRooms from "./rooms"
 
 export const useCmsPosts = (variables?: OperationVariables) => {
   const { data, loading } = useQuery(queries.CmsPosts, {
