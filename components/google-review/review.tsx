@@ -34,12 +34,10 @@ const Review = () => {
     <section className='w-full py-16 lg:py-24 review-section'>
       <div className='w-full px-0'>
         <div className='text-center mb-12'>
-          <h2 className='text-3xl lg:text-4xl font-bold text-gray-900 mb-4'>
-            Зочдын сэтгэгдэл
+          <h2 className='text-3xl lg:text-3xl font-bold text-gray-900 mb-4'>
+            Эх Тэрэлжид амарсан зочдын сэтгэлд хоногшсон дурсамж
+            <br /> үнэн бодит туршлагуудтай танилцана уу.
           </h2>
-          <p className='text-gray-600 max-w-2xl mx-auto'>
-            Манай зочид буудалд амарч байсан зочдын сэтгэгдлүүд
-          </p>
         </div>
 
         <div className='w-full max-w-none max-h-[600px] overflow-y-auto scroll-smooth'>

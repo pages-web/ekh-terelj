@@ -2,15 +2,12 @@
 
 import { useState } from "react"
 import {
-  Upload,
-  ChevronDown,
   Check,
   User,
   Mail,
   Phone,
   Briefcase,
-  MessageSquare,
-  FileText,
+  MessageCircle,
 } from "lucide-react"
 import { gql, useMutation } from "@apollo/client"
 
@@ -43,13 +40,10 @@ const WIDGETS_SAVE_LEAD = gql`
 
 export default function JobOpenings() {
   const [formData, setFormData] = useState({
-    jobName: "",
-    maritalStatus: "",
-    education: "",
-    advantage: "",
-    skill: "",
-    level: "",
-    shortSummary: "",
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
   })
 
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -67,13 +61,10 @@ export default function JobOpenings() {
 
   const handleSubmit = async () => {
     if (
-      !formData.jobName ||
-      !formData.maritalStatus ||
-      !formData.education ||
-      !formData.advantage ||
-      !formData.skill ||
-      !formData.level ||
-      !formData.shortSummary
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.message
     ) {
       setNotification("Мэдээллийг бүрэн оруулна уу!")
       return
@@ -84,25 +75,18 @@ export default function JobOpenings() {
         language: navigator.language,
       }
       const submissions = [
-        { _id: "jobName", type: "text", value: String(formData.jobName) },
+        { _id: "name", type: "text", value: String(formData.name) },
         {
-          _id: "maritalStatus",
-          type: "text",
-          value: String(formData.maritalStatus),
+          _id: "email",
+          type: "email",
+          value: String(formData.email),
         },
-        { _id: "education", type: "text", value: String(formData.education) },
-        { _id: "advantage", type: "text", value: String(formData.advantage) },
-        { _id: "skill", type: "text", value: String(formData.skill) },
-        { _id: "level", type: "text", value: String(formData.level) },
-        {
-          _id: "shortSummary",
-          type: "text",
-          value: String(formData.shortSummary),
-        },
+        { _id: "phone", type: "text", value: String(formData.phone) },
+        { _id: "message", type: "text", value: String(formData.message) },
       ]
       await saveLead({
         variables: {
-          formId: "jQ9egMCPP0aSQpa7NNSed",
+          formId: "Im7_eAG82jwvy1-CZROik",
           submissions,
           browserInfo,
           cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",
@@ -110,13 +94,10 @@ export default function JobOpenings() {
       })
       setShowSuccessModal(true)
       setFormData({
-        jobName: "",
-        maritalStatus: "",
-        education: "",
-        advantage: "",
-        skill: "",
-        level: "",
-        shortSummary: "",
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
       })
       setNotification(null)
     } catch (err) {
@@ -161,104 +142,61 @@ export default function JobOpenings() {
                 <div className='space-y-6'>
                   <div className='space-y-2'>
                     <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <Briefcase className='h-4 w-4' />
-                      Таны сонирхож буй ажлын нэр:
-                    </label>
-                    <input
-                      type='text'
-                      name='jobName'
-                      value={formData.jobName}
-                      onChange={handleInputChange}
-                      placeholder='Таны сонирхож буй ажлын нэр'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
                       <User className='h-4 w-4' />
-                      Гэр бүлийн байдал
+                      Таны нэр:
                     </label>
                     <input
                       type='text'
-                      name='maritalStatus'
-                      value={formData.maritalStatus}
+                      name='name'
+                      value={formData.name}
                       onChange={handleInputChange}
-                      placeholder='Гэр бүлийн байдал'
+                      placeholder='Таны нэр'
                       className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
                     />
                   </div>
 
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <FileText className='h-4 w-4' />
-                      Боловсрол
-                    </label>
-                    <input
-                      type='text'
-                      name='education'
-                      value={formData.education}
-                      onChange={handleInputChange}
-                      placeholder='Боловсрол'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
+                  <div className='flex gap-4'>
+                    <div className='space-y-2 w-1/2'>
+                      <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                        <Mail className='h-4 w-4' />
+                        Таны и-мэйл хаяг
+                      </label>
+                      <input
+                        type='text'
+                        name='email'
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder='Таны и-мэйл хаяг'
+                        className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                      />
+                    </div>
+
+                    <div className='space-y-2 w-1/2'>
+                      <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+                        <Phone className='h-4 w-4' />
+                        Таны утасны дугаар
+                      </label>
+                      <input
+                        type='text'
+                        name='phone'
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder='Таны утасны дугаар'
+                        className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
+                      />
+                    </div>
                   </div>
 
                   <div className='space-y-2'>
                     <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <Briefcase className='h-4 w-4' />
-                      Та ажил мэргэжлийнхээ хувьд бусдаас юугаараа давуу вэ?
+                      <MessageCircle className='h-4 w-4' />
+                      Таны хүсэлт
                     </label>
                     <textarea
-                      name='advantage'
-                      value={formData.advantage}
+                      name='message'
+                      value={formData.message}
                       onChange={handleInputChange}
-                      placeholder='Та ажил мэргэжлийнхээ хувьд бусдаас юугаараа давуу вэ?'
-                      rows={3}
-                      className='w-full resize-none rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <Briefcase className='h-4 w-4' />
-                      Мэргэшилтэй холбоотой бусад чадварууд
-                    </label>
-                    <input
-                      type='text'
-                      name='skill'
-                      value={formData.skill}
-                      onChange={handleInputChange}
-                      placeholder='Мэргэшилтэй холбоотой бусад чадварууд'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <MessageSquare className='h-4 w-4' />
-                      Гадаад хэлний мэдлэгийн түвшин
-                    </label>
-                    <input
-                      type='text'
-                      name='level'
-                      value={formData.level}
-                      onChange={handleInputChange}
-                      placeholder='Гадаад хэлний мэдлэгийн түвшин'
-                      className='w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
-                    />
-                  </div>
-
-                  <div className='space-y-2'>
-                    <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
-                      <MessageSquare className='h-4 w-4' />
-                      Товч танилцуулга
-                    </label>
-                    <textarea
-                      name='shortSummary'
-                      value={formData.shortSummary}
-                      onChange={handleInputChange}
-                      placeholder='Товч танилцуулга'
+                      placeholder='Таны хүсэлт'
                       rows={4}
                       className='w-full resize-none rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 placeholder-gray-400 outline-none transition-all duration-200 focus:border-[#113f52] focus:ring-4 focus:ring-[#113f52]/10 hover:border-gray-300'
                     />
@@ -266,25 +204,7 @@ export default function JobOpenings() {
                 </div>
               </div>
 
-              <div className='space-y-6 pt-6 border-t border-gray-200'>
-                <div className='rounded-xl bg-gray-50 p-4 text-center text-sm leading-relaxed text-gray-600'>
-                  <span>Маягтыг илгээснээр та манай </span>
-                  <a
-                    href='#'
-                    className='font-medium text-[#113f52] underline hover:text-[#113f52]'
-                  >
-                    нууцлалын бодлого
-                  </a>
-                  <span>, </span>
-                  <a
-                    href='#'
-                    className='font-medium text-[#113f52] underline hover:text-[#113f52]'
-                  >
-                    Үйлчилгээний нөхцөл
-                  </a>
-                  <span>-тэй зөвшөөрч байна</span>
-                </div>
-
+              <div className='space-y-6 pt-4 border-t border-gray-200'>
                 <button
                   type='button'
                   onClick={handleSubmit}
@@ -310,8 +230,8 @@ export default function JobOpenings() {
               </h2>
 
               <p className='mb-8 text-gray-600 leading-relaxed'>
-                Өргөдөл гаргасанд баярлалаа. Бид таны хүсэлтийг хүлээн авсан
-                бөгөөд хянан үзэх болно. Та удахгүй имэйлээр хариу хүлээн авах
+                Хүсэлт гаргасанд баярлалаа. Бид таны хүсэлтийг хүлээн авсан
+                бөгөөд хянан үзэх болно. Таньд удахгүй имэйлээр хариу илгээх
                 болно.
               </p>
 

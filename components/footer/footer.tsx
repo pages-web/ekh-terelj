@@ -15,15 +15,16 @@ export default function Footer() {
   return (
     <footer className='bg-gray-50 border-t border-gray-200 pt-16 pb-8 text-gray-700 mt-28'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12'>
           <div className='lg:col-span-1'>
             <div className='mb-6'>
               <Image
                 src='/images/ekh-terelj-logo.png'
                 alt='Ikh Terelj Resort Logo'
                 height={80}
-                width={120}
-                className='h-16 w-auto'
+                width={110}
+                quality={100}
+                className='h-16 w-28'
               />
             </div>
             <p className='text-sm text-gray-600 leading-relaxed mb-6'>
@@ -55,24 +56,6 @@ export default function Footer() {
             </h3>
             <ul className='space-y-3'>
               {menuItems.slice(0, 6).map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className='text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200'
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className='lg:col-span-1'>
-            <h3 className='text-lg font-semibold text-gray-900 mb-6'>
-              Үйлчилгээ
-            </h3>
-            <ul className='space-y-3'>
-              {menuItems.slice(6).map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
@@ -124,24 +107,10 @@ export default function Footer() {
         </div>
 
         <div className='border-t border-gray-200 mt-12 pt-8'>
-          <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+          <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
             <p className='text-sm text-gray-500'>
               © 2025 Их Тэрэлж Resort. Бүх эрх хуулиар хамгаалагдсан.
             </p>
-            <div className='flex gap-6'>
-              <Link
-                href='/privacy'
-                className='text-sm text-gray-500 hover:text-gray-700 transition-colors'
-              >
-                Нууцлалын бодлого
-              </Link>
-              <Link
-                href='/terms'
-                className='text-sm text-gray-500 hover:text-gray-700 transition-colors'
-              >
-                Үйлчилгээний нөхцөл
-              </Link>
-            </div>
           </div>
         </div>
       </div>

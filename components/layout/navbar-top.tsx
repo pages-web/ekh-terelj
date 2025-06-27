@@ -38,14 +38,13 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
   return (
     <header className='z-50 sticky top-0 w-full bg-white border-b'>
       <div className='flex justify-between items-center container mx-auto py-3 px-4'>
-        <Link href='/' aria-label='Homepage' className='w-[170px] h-[60px]'>
+        <Link href='/' aria-label='Homepage' className='w-[130px] h-[60px]'>
           <Image
-            src='/images/logo-ekh-terelj.png'
+            src='/images/ekh-terelj-logo-resized.png'
             height={60}
-            width={170}
+            width={130}
             quality={100}
             alt='Logo'
-            className='w-full h-full object-contain'
           />
         </Link>
 

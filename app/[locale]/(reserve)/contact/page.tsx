@@ -93,7 +93,7 @@ export default function ContactComponent() {
       ]
       await saveLead({
         variables: {
-          formId: "GzfV3n9o6fuDbx4Ey3xzK",
+          formId: "WNx4z1Cr-Gt6tyEKn4fzB",
           submissions,
           browserInfo,
           cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",
@@ -279,7 +279,7 @@ export default function ContactComponent() {
                     name='message'
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder='Бид танд хэрхэн тусалж чадахаа хэлээрэй...'
+                    placeholder='Нэмэлт мэдээлэл...'
                     rows={5}
                     className='border-gray-300 focus:border-[#113f52] focus:ring-[#113f52]'
                   />
@@ -308,9 +308,8 @@ export default function ContactComponent() {
                   </h2>
 
                   <p className='mb-8 text-gray-600 leading-relaxed'>
-                    Өргөдөл гаргасанд баярлалаа. Бид таны хүсэлтийг хүлээн авсан
-                    бөгөөд хянан үзэх болно. Та удахгүй имэйлээр хариу хүлээн
-                    авах болно.
+                    Хүсэлт илгээсэн. Бид таны хүсэлтийг хүлээн авсан бөгөөд
+                    хянан үзэх болно. Таньд удахгүй имэйлээр хариу илгээх болно.
                   </p>
 
                   <button

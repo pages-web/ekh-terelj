@@ -19,10 +19,9 @@ export const metadata: Metadata = {
   title: "Эх тэрэлж",
   description: "Эх тэрэлж",
   icons: {
-    icon: [{ url: "/images/logo2.png", href: "/images/logo2.png", media: "" }],
+    icon: "/images/logo2.png",
   },
 }
-
 export default async function RootLayout({
   children,
   params,
