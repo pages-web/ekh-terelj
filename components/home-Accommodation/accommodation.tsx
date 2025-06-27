@@ -134,9 +134,9 @@ export default function Rooms() {
                           <div className='flex items-baseline gap-1'>
                             <span className='text-xl font-bold text-gray-900'>
                               {category.customFieldsMap?.room_post?.price
-                                ? category.customFieldsMap?.room_post?.price.toLocaleString() +
+                                ? category.customFieldsMap?.room_post?.price?.toLocaleString() +
                                   "₮"
-                                : "N/A"}
+                                : ""}
                             </span>
                           </div>
                           <p className='text-xs text-gray-500'>
