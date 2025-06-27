@@ -190,7 +190,7 @@ export default function GrandSuiteListing() {
                         {post.customFieldsMap?.room_post?.price}
                       </span>
                       <span className='text-2xl font-bold text-gray-700'>
-                        ₮
+                        {post.customFieldsMap?.room_post?.price && "₮"}
                       </span>
                     </div>
                     <div className='text-gray-600 font-semibold mb-4 text-lg'>
@@ -223,7 +223,9 @@ export default function GrandSuiteListing() {
                       <span className='text-white text-sm'>🏨</span>
                     </div>
                     <h3 className='text-xl font-bold text-gray-900'>
-                      Өрөөний мэдээлэл
+                      {post._id === "S2M8Q14Ihj_vXyJne5a5H"
+                        ? "Рестораны мэдээлэл"
+                        : "Өрөөний мэдээлэл"}
                     </h3>
                   </div>
                   <div

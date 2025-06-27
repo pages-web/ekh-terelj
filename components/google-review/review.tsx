@@ -68,7 +68,7 @@ const Review = () => {
             className='reviews-swiper w-full max-w-none'
           >
             <SwiperSlide>
-              <div className='h-[450px] overflow-y-auto scroll-smooth border rounded-xl bg-white p-4'>
+              <div className='h-[500px] overflow-y-auto scroll-smooth border rounded-xl bg-white p-4'>
                 <div
                   className='sk-ww-google-reviews'
                   data-embed-id='25571033'
