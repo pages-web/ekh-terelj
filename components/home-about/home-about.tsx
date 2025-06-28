@@ -6,6 +6,7 @@ import { useCmsPosts } from "@/sdk/queries/cms"
 export default function AboutSection() {
   const { posts, loading } = useCmsPosts({
     tagIds: ["wVx0BObZxZJ94IaJrhGPe"],
+    perPage: 1000,
   })
 
   const post = posts[0]

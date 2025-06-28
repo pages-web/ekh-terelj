@@ -7,6 +7,7 @@ import { useCmsPosts } from "@/sdk/queries/cms"
 export default function Location() {
   const { posts } = useCmsPosts({
     tagIds: ["T8h18F9ksswcZBxU-LGeI"],
+    perPage: 1000,
   })
 
   const post = posts[0]

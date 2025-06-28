@@ -66,7 +66,7 @@ export default function GrandSuiteListing() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50'>
-      <div className='relative overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900'>
+      <div className='relative overflow-hidden bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800'>
         <div className='absolute inset-0 bg-black/20'></div>
         <div className='relative container mx-auto px-4 py-20 text-center'>
           <div className='max-w-4xl mx-auto space-y-6'>

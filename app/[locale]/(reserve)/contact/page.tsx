@@ -39,6 +39,7 @@ const WIDGETS_SAVE_LEAD = gql`
 export default function ContactComponent() {
   const { posts, loading: postsLoading } = useCmsPosts({
     tagIds: ["P_ga05OkoXh2uQDdlCwho"],
+    perPage: 1000,
   })
 
   const post = posts[0]
@@ -161,9 +162,9 @@ export default function ContactComponent() {
                     <div>
                       <h3 className='font-semibold text-gray-900'>Байршил</h3>
                       <p className='text-gray-600'>
-                        Горхи тэрэлжийн байгалийн үзэсгэлэнт газар,
-                        <br />
-                        Улаанбаатараас 49км-т байршилтай
+                        Улаанбаатар хотоос 49км,
+                        <br /> Тэрэлжийн гүүрнээс цааш 7км-т төв зам дагуу
+                        байршилтай.
                       </p>
                     </div>
                   </div>

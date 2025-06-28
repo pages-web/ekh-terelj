@@ -13,11 +13,12 @@ import { CalendarIcon, UserIcon } from "lucide-react"
 const News = () => {
   const { posts, loading } = useCmsPosts({
     tagIds: ["JzuOHkUDjmbF09GXfd6LD"],
+    perPage: 1000,
   })
 
   const { posts: postTitle } = useCmsPosts({
     tagIds: ["al_xtO3Adddd1b_XMt1Vo"],
-    limit: 1,
+    perPage: 1000,
   })
 
   const Info = postTitle[0]

@@ -73,12 +73,11 @@ const CurrentUser = () => {
   return (
     <Button
       variant={"outline"}
-      className='rounded-full text-black flex gap-2'
+      className='text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700'
       asChild
     >
       <Link href='/login'>
-        <UserIcon className='h-5 w-5 stroke-black' />
-        <span>Нэвтрэх</span>
+        <UserIcon className='h-5 w-5' />
       </Link>
     </Button>
   )

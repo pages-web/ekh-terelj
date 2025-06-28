@@ -7,6 +7,7 @@ import { Loading } from "@/components/ui/loading"
 const Tourist = () => {
   const { posts, loading } = useCmsPosts({
     tagIds: ["xRGMNDkODeYklziGG1N1l"],
+    perPage: 1000,
   })
 
   const post = posts[0]

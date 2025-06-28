@@ -19,16 +19,16 @@ export default function Footer() {
           <div className='lg:col-span-1'>
             <div className='mb-6'>
               <Image
-                src='/images/ekh-terelj-logo.png'
+                src='/images/logo_main.png'
                 alt='Ikh Terelj Resort Logo'
                 height={80}
-                width={110}
+                width={150}
                 quality={100}
-                className='h-16 w-28'
+                className='h-16 w-32'
               />
             </div>
             <p className='text-sm text-gray-600 leading-relaxed mb-6'>
-              Монголын гайхамшигтай байгалийн дунд байрлах Их Тэрэлж Resort-д
+              Монголын гайхамшигтай байгалийн дунд байрлах Эх Тэрэлж Resort-д
               тансаг байдал болон амар амгалангийн мэдрэмжийг мэдрээрэй.
             </p>
 
@@ -79,9 +79,8 @@ export default function Footer() {
                   className='text-gray-400 mt-1 flex-shrink-0'
                 />
                 <p className='text-sm text-gray-600'>
-                  Тэрэлжийн Үндэсний Цэцэрлэгт Хүрээлэн
-                  <br />
-                  Улаанбаатар, Монгол
+                  Улаанбаатар хотоос 49км, Тэрэлжийн гүүрнээс цааш 7км-т төв зам
+                  дагуу байршилтай.
                 </p>
               </div>
               <div className='flex items-center gap-3'>

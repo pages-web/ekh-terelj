@@ -3,15 +3,8 @@
 import { Link } from "@/i18n/routing"
 import Image from "../ui/image"
 import { Button } from "@/components/ui/button"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { Menu } from "lucide-react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Menu, Facebook, Instagram } from "lucide-react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -29,6 +22,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
   const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
     useCmsPosts({
       categoryId: "1s1knKVOLplWPaIGkDnFd",
+      perPage: 1000,
     })
 
   const roomCategories = allGrandSuitePosts.filter((post) =>
@@ -36,43 +30,54 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
   )
 
   return (
-    <header className='z-50 sticky top-0 w-full bg-white border-b'>
-      <div className='flex justify-between items-center container mx-auto py-3 px-4'>
-        <Link href='/' aria-label='Homepage' className='w-[130px] h-[60px]'>
+    <header className='z-50 sticky top-0 w-full bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 shadow-xl backdrop-blur-md border-b border-gray-700/50'>
+      <div className='flex justify-between items-center container mx-auto py-4 px-6'>
+        <Link
+          href='/'
+          aria-label='Homepage'
+          className='w-[140px] h-[65px] transition-transform duration-300 hover:scale-105'
+        >
           <Image
-            src='/images/ekh-terelj-logo-resized.png'
-            height={60}
-            width={130}
+            src='/images/logo_main.png'
+            height={65}
+            width={140}
             quality={100}
             alt='Logo'
+            className='drop-shadow-lg'
           />
         </Link>
 
-        <div className='flex justify-between gap-2'>
+        <div className='flex justify-between gap-3 items-center'>
           <div className='hidden md:flex justify-between items-center'>
             <NavigationMenu>
-              <NavigationMenuList>
+              <NavigationMenuList className='gap-1'>
                 {menuItems.map((item, index) => (
                   <NavigationMenuItem key={index}>
                     {item.extra === "Accomodation" ? (
-                      <NavigationMenuTrigger>
+                      <NavigationMenuTrigger className='!text-white hover:bg-slate-800 hover:!text-white focus:!text-white active:!text-white data-[state=open]:bg-slate-800 data-[state=open]:!text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium !bg-transparent'>
                         {item.label}
                       </NavigationMenuTrigger>
                     ) : (
                       <NavigationMenuLink
                         href={item.href}
-                        className={cn(navigationMenuTriggerStyle(), "w-full")}
+                        className={cn(
+                          navigationMenuTriggerStyle(),
+                          "bg-transparent text-white hover:bg-slate-800 hover:text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium"
+                        )}
                       >
                         {item.label}
                       </NavigationMenuLink>
                     )}
 
                     {item.extra === "Accomodation" && (
-                      <NavigationMenuContent className=' p-2 flex flex-col gap-2 '>
+                      <NavigationMenuContent className='p-4 flex flex-col gap-2 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 border border-gray-600 rounded-lg shadow-lg min-w-[280px]'>
                         {roomCategories &&
                           roomCategories.map((category, index) => (
                             <NavigationMenuLink
-                              className={navigationMenuTriggerStyle()}
+                              className={cn(
+                                navigationMenuTriggerStyle(),
+                                "text-white hover:text-white hover:bg-slate-700/80 transition-all duration-300 rounded-lg px-4 py-3 font-medium bg-transparent hover:backdrop-blur-sm"
+                              )}
                               href={`/room-detail/${category._id}`}
                               key={index}
                             >
@@ -86,31 +91,76 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
+
+          <div className='hidden md:flex gap-3 ml-6'>
+            <a
+              href='https://www.facebook.com/ekhterel'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='Facebook'
+              className='text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700'
+            >
+              <Facebook size={18} />
+            </a>
+            <a
+              href='https://www.instagram.com/ekhtereljresort/'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='Instagram'
+              className='text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700'
+            >
+              <Instagram size={18} />
+            </a>
+          </div>
+
           {children}
           <div className='md:hidden'>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant='ghost' size='icon' aria-label='Open menu'>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  aria-label='Open menu'
+                  className='text-white hover:bg-slate-800 transition-all duration-300 rounded-lg'
+                >
                   <Menu className='h-6 w-6' />
                 </Button>
               </SheetTrigger>
-              <SheetContent side='right' className='w-64 p-6 overflow-y-auto'>
-                <SheetHeader>
-                  <SheetTitle className='text-xl font-semibold text-black'>
-                    Menu
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className='flex flex-col gap-4 mt-6'>
+              <SheetContent
+                side='right'
+                className='w-72 p-6 overflow-y-auto bg-slate-900 border-l border-gray-600'
+              >
+                <nav className='flex flex-col gap-3 mt-6'>
                   {menuItems.map((item) => (
                     <Link
                       href={item.href}
                       aria-label={item.label}
-                      className='text-black text-base font-medium hover:underline'
+                      className='text-white text-base font-medium hover:text-white transition-all duration-300 py-3 px-4 rounded-lg hover:bg-slate-800'
                       key={item.href}
                     >
                       {item.label}
                     </Link>
                   ))}
+                  <div className='flex gap-4 mt-8 pt-6 border-t border-gray-600'>
+                    <a
+                      href='https://www.facebook.com/ekhterel'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      aria-label='Facebook'
+                      className='text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700'
+                    >
+                      <Facebook size={20} />
+                    </a>
+                    <a
+                      href='https://www.instagram.com/ekhtereljresort/'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      aria-label='Instagram'
+                      className='text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700'
+                    >
+                      <Instagram size={20} />
+                    </a>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>

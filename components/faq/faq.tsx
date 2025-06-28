@@ -11,7 +11,7 @@ import { useCmsPosts } from "@/sdk/queries/cms"
 export default function FAQPage() {
   const { posts: allFaqPosts, loading: faqPostsLoading } = useCmsPosts({
     categoryId: "FxxII_vEiiY_1YTMmFg1b",
-    perPage: 50,
+    perPage: 1000,
   })
 
   const faqPosts = allFaqPosts.filter((post) =>

@@ -4,7 +4,6 @@ import BookingNavbarTopContent from "../booking-navbar-top-content/booking-navba
 import Footer from "../footer/footer"
 import CurrentUser from "@/containers/auth/current-user"
 import CheckDealDuration from "./checkDealDuration"
-import QRMenuFloat from "../qr-menu-float/qr-menu-float"
 
 const DefaultLayout = ({
   children,
@@ -22,7 +21,6 @@ const DefaultLayout = ({
       <CheckDealDuration />
       {children}
       <Footer />
-      <QRMenuFloat />
     </>
   )
 }

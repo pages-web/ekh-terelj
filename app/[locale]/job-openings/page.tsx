@@ -112,9 +112,7 @@ export default function JobOpenings() {
           <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-[#113f52] to-[#113f52] shadow-lg'>
             <Briefcase className='h-10 w-10 text-white' />
           </div>
-          <h1 className='mb-4 text-4xl font-bold text-gray-800'>
-            Ажилын анкет
-          </h1>
+          <h1 className='mb-4 text-4xl font-bold text-gray-800'>Ажлын анкет</h1>
           <p className='text-lg text-gray-600'>
             Манай багт нэгдэх боломжийг бүү алдаарай
           </p>

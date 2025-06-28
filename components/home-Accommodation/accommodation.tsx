@@ -54,16 +54,22 @@ export default function Rooms() {
 
   const { posts, loading: postsLoading } = useCmsPosts({
     tagIds: ["wVx0BObZxZJ94IaJrhGPe"],
+    perPage: 1000,
   })
 
   const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
     useCmsPosts({
       categoryId: "1s1knKVOLplWPaIGkDnFd",
+      perPage: 1000,
     })
 
-  const grandSuitePosts = allGrandSuitePosts.filter((post) =>
-    post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd")
-  )
+  const grandSuitePosts = allGrandSuitePosts
+    .filter((post) => post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd"))
+    .sort((a, b) => {
+      const indexA = a.customFieldsMap?.room_post?.index || 999
+      const indexB = b.customFieldsMap?.room_post?.index || 999
+      return indexA - indexB
+    })
 
   const post = posts[0]
 
