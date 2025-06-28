@@ -38,16 +38,14 @@ const CustomerFeedback = () => {
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
         <div className='flex flex-col items-center text-center'>
-          <div className='bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 rounded-lg border border-gray-600 p-8 mb-6 max-w-md w-full shadow-xl'>
-            <div className='w-32 h-32 mx-auto mb-4 bg-white rounded-xl p-3 shadow-lg border border-gray-300 overflow-hidden'>
-              <Image
-                src={qrMenuPost?.thumbnail?.url || "/images/qrmenu.png"}
-                alt='QR Menu'
-                width={120}
-                height={120}
-                className='w-full h-full object-contain rounded-lg'
-              />
-            </div>
+          <div className='w-52 h-52'>
+            <Image
+              src={qrMenuPost?.thumbnail?.url || "/images/feedback.png"}
+              alt='QR Menu'
+              width={120}
+              height={120}
+              className='w-full h-full object-contain rounded-lg'
+            />
           </div>
 
           <h3 className='text-2xl font-bold mb-4 text-gray-800'>
@@ -67,16 +65,14 @@ const CustomerFeedback = () => {
 
         <div className='flex flex-col items-center text-center'>
           <div className='relative mb-6'>
-            <div className='bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 rounded-lg border border-gray-600 p-6 max-w-md w-full shadow-xl'>
-              <div className='w-32 h-32 mx-auto bg-white rounded-xl p-3 shadow-lg border border-gray-300 overflow-hidden'>
-                <Image
-                  src={foodMenuPost?.thumbnail?.url || "/images/qrmenu.png"}
-                  alt='Food Menu'
-                  width={120}
-                  height={120}
-                  className='w-full h-full object-contain rounded-lg'
-                />
-              </div>
+            <div className='w-52 h-52'>
+              <Image
+                src={foodMenuPost?.thumbnail?.url || "/images/food_menu.jpg"}
+                alt='Food Menu'
+                width={120}
+                height={120}
+                className='w-full h-full object-contain rounded-lg'
+              />
             </div>
           </div>
 
