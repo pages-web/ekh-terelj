@@ -28,7 +28,7 @@ export default function Footer() {
               />
             </div>
             <p className='text-sm text-gray-600 leading-relaxed mb-6'>
-              Монголын гайхамшигтай байгалийн дунд байрлах Эх Тэрэлж Рэсорт-д
+              Монголын гайхамшигтай байгалийн дунд байрлах Эх Тэрэлж Ресорт-д
               тансаг байдал болон амар амгалангийн мэдрэмжийг мэдрээрэй.
             </p>
 
@@ -107,7 +107,7 @@ export default function Footer() {
 
         <div className='border-t border-gray-200 mt-12 pt-8'>
           <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
-            <p className='text-sm text-gray-500'>© 2025 Эх Тэрэлж Рэсорт</p>
+            <p className='text-sm text-gray-500'>© 2025 Эх Тэрэлж Ресорт</p>
           </div>
         </div>
       </div>
