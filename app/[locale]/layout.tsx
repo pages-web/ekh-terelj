@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "Эх тэрэлж",
   description: "Эх тэрэлж",
   icons: {
-    icon: "/images/logo2.png",
+     icon: "/images/1x1.png",
   },
 }
 export default async function RootLayout({
