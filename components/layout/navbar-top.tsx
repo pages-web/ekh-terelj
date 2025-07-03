@@ -29,6 +29,14 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
     post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd")
   )
 
+  const sortedRoomCategories = [...roomCategories].sort((a, b) => {
+    const aIndex = a.customFieldsMap?.room_post?.index ?? 999;
+    const bIndex = b.customFieldsMap?.room_post?.index ?? 999;
+    return aIndex - bIndex;
+  });
+  
+  
+
   return (
     <header className='z-50 sticky top-0 w-full bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 shadow-xl backdrop-blur-md border-b border-gray-700/50'>
       <div className='flex justify-between items-center container mx-auto py-4 px-6'>
@@ -71,8 +79,8 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
 
                     {item.extra === "Accomodation" && (
                       <NavigationMenuContent className='p-4 flex flex-col gap-2 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 border border-gray-600 rounded-lg shadow-lg min-w-[280px]'>
-                        {roomCategories &&
-                          roomCategories.map((category, index) => (
+                        {sortedRoomCategories &&
+                          sortedRoomCategories.map((category, index) => (
                             <NavigationMenuLink
                               className={cn(
                                 navigationMenuTriggerStyle(),
