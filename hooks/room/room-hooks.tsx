@@ -7,8 +7,8 @@ import {
 import { IExtra, IProduct, IRoom } from "@/types/products";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { useToast } from "../others/use-toast";
 import { RESET } from "jotai/utils";
+import { toast } from "sonner";
 
 export const useAddRoomExtras = ({ extra }: { extra: IExtra }) => {
   const [isAdd, setIsAdd] = useState<boolean>(true);
@@ -51,7 +51,6 @@ export const useSelectRoom = ({ room }: { room: IRoom }) => {
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [, addSelectedRoom] = useAtom(addSelectedRoomAtom);
 
-  const { toast } = useToast();
   const HandleSelectRoom = () => {
     setSelectedRoom({
       ...selectedRoom,
@@ -60,11 +59,7 @@ export const useSelectRoom = ({ room }: { room: IRoom }) => {
     addSelectedRoom(reserveGuestAndRoom.room);
     setSelectedRoom(RESET);
     selectedRooms.length >= reserveGuestAndRoom.room &&
-      toast({
-        variant: "destructive",
-        title: "It's full",
-        description: "You can't add more rooms",
-      });
+      toast.error("It's full", { description: "You can't add more rooms" });
   };
 
   return { HandleSelectRoom };

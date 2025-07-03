@@ -119,19 +119,6 @@ const Orders = () => {
                         <span
                           className={`text-textxs px-2 py-1 rounded-lg bg-[#95fea0] text-[#1d6824]`}
                         >
-                          {/* ${
-                              tags?.filter((tag: any) =>
-                                deal.tagIds.includes(tag._id)
-                              )
-                                ? "bg-[#95fea0] text-[#1d6824]"
-                                : "bg-[#c7ffcd] text-secondary"
-                            } */}
-                            
-                          {/* {tags?.filter((tag: any) =>
-                            deal.tagIds.includes(tag._id)
-                          )
-                            ? "Fullpaid"
-                            : "Prepaid"} */}
                           Paid
                         </span>
                       ) : (

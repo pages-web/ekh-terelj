@@ -22,9 +22,9 @@ const Step = ({
         size={"icon"}
         className={`w-6 h-6 md:h-9 md:w-9 text-[12px] md:text-[15px] rounded-full ${
           isDone
-            ? "bg-secondary hover:bg-secondary"
+            ? ""
             : isCurrent
-            ? "bg-secondary hover:bg-secondary"
+            ? ""
             : // : isNext
               // ? ""
               "bg-[#DADCE0] hover:bg-[#DADCE0]"
@@ -35,9 +35,9 @@ const Step = ({
       <p
         className={`md:w-[100px] text-[10px] md:text-sm font-bold text-center ${
           isDone
-            ? "text-secondary"
+            ? ""
             : isCurrent
-            ? "text-secondary"
+            ? ""
             : // : isNext
               // ? "text-primary"
               "text-[#3c4043]/80"

@@ -116,35 +116,6 @@ const BookingNavbarTopContent = () => {
           </PopoverContent>
         </Popover>
       </div>
-
-      <div className="w-full lg:w-[50%] grid grid-cols-4 md:grid-cols-3 items-center gap-6 ">
-        <h1 className="text-textxl font-bold col-span-4 md:col-span-1">
-          Booking for:
-        </h1>
-        <Link
-          href={"https://www.booking.com/"}
-          className="w-full col-span-2 md:col-span-1"
-        >
-          <Image
-            src="/images/booking.png"
-            width={300}
-            height={83}
-            className="w-full"
-          />
-        </Link>
-
-        <Link
-          href={"https://www.expedia.com/"}
-          className="w-full col-span-2 md:col-span-1"
-        >
-          <Image
-            src="/images/expedia.png"
-            width={300}
-            height={83}
-            className="w-full"
-          />
-        </Link>
-      </div>
     </div>
   );
 };

@@ -1,37 +1,28 @@
 import { useState } from "react";
 import Image from "../ui/image";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { CreditCard } from "lucide-react";
-import { selectedMethodCardAtom } from "@/store/payments";
+import { IPayment } from "@/types/payments";
+import { selectedPaymentAtom } from "@/store/payments";
 
-type Props = {
-  title: string;
-  description?: string;
-  methodName?: string;
-  imgSrc?: string;
-};
+const PaymentMethodCard = ({ payment }: { payment: IPayment }) => {
+  const [selectedPayment, setSelectedPayment] = useAtom(selectedPaymentAtom);
 
-const PaymentMethodCard = ({ title, imgSrc }: Props) => {
-  const [selectedMethodCard, setSelectedMethodCard] = useAtom(
-    selectedMethodCardAtom
-  );
   return (
     <div className="w-[120px] flex flex-col gap-2 items-center">
       <div
-        className={`hover:bg-black/20 shadow-md duration-200 h-[80px] w-full flex items-center justify-center gap-4 border rounded-lg px-6 py-3 cursor-pointer  ${
-          selectedMethodCard === title
-            ? "border-secondary shadow-md border-2"
-            : "border-black/10"
+        className={`hover:bg-black/20 shadow-md duration-200 h-[80px] w-full flex items-center justify-center gap-4 border rounded-lg px-6 py-3 cursor-pointer ${
+          payment.kind === selectedPayment && "border-primary border-2"
         }`}
-        onClick={() => setSelectedMethodCard(title)}
+        onClick={() => setSelectedPayment(payment.kind)}
       >
         <div className={`h-full max-h-[40px]`}>
-          {title === "Qpay" ? (
+          {payment.kind === "qpayQuickqr" ? (
             <Image
               width={128}
               height={128}
               className="h-full w-full"
-              src={imgSrc || "/images/payments/qpay.png"}
+              src={"/images/payments/qpay.png"}
               quality={100}
             />
           ) : (
@@ -39,7 +30,6 @@ const PaymentMethodCard = ({ title, imgSrc }: Props) => {
           )}
         </div>
       </div>
-      <p>{title}</p>
     </div>
   );
 };

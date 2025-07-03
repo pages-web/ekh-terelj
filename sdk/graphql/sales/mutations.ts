@@ -130,6 +130,25 @@ const addLabel = gql`
   }
 `;
 
+const addTag = gql`
+  mutation tagsAdd(
+    $name: String!
+    $type: String!
+    $colorCode: String
+    $parentId: String
+  ) {
+    tagsAdd(
+      name: $name
+      type: $type
+      colorCode: $colorCode
+      parentId: $parentId
+    ) {
+      _id
+      __typename
+    }
+  }
+`;
+
 const mutations = {
   dealsAdd,
   dealsEdit,
@@ -138,5 +157,6 @@ const mutations = {
   addPayment,
   changeDeal,
   addLabel,
+  addTag,
 };
 export default mutations;

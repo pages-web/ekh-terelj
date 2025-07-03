@@ -35,5 +35,5 @@ export const removeSelectedRoomAtom = atom(
 );
 
 export const selectedExtras: any = [];
-export const dealIdAtom = atomWithStorage<string>("dealId", "");
+export const dealIdAtom = atomWithStorage<string | null>("dealId", null);
 export const dealDurationAtom = atom<number>(1800);

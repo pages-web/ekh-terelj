@@ -65,13 +65,6 @@ const OrderDetail = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="flex gap-2">
-              <Button variant={"secondary"}>Print full version</Button>
-              <Button variant={"secondary"}>
-                Save your confirmation to phone
-              </Button>
-            </div> */}
           </div>
 
           <div className="w-full flex flex-col gap-6 border rounded-lg p-6 shadow-md">

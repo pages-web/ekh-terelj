@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useCmsPosts } from "@/sdk/queries/cms"
-import { gql, useMutation } from "@apollo/client"
+import { gql, useMutation, useQuery } from "@apollo/client"
 
 const WIDGETS_SAVE_LEAD = gql`
   mutation widgetsSaveLead(
@@ -36,15 +36,90 @@ const WIDGETS_SAVE_LEAD = gql`
   }
 `
 
+const GET_FORM_DETAIL = gql`
+query FormDetail($id: String!) {
+  formDetail(_id: $id) {
+    _id
+    name
+    title
+    code
+    type
+    description
+    buttonText
+    numberOfPages
+    status
+    googleMapApiKey
+    integrationId
+    fields {
+      _id
+      associatedFieldId
+      associatedField {
+        _id
+        contentType
+        __typename
+      }
+      column
+      content
+      contentType
+      contentTypeId
+      description
+      field
+      isRequired
+      order
+      pageNumber
+      productCategoryId
+      regexValidation
+      text
+      options
+      type
+      validation
+      logicAction
+      logics {
+        fieldId
+        logicOperator
+        logicValue
+        __typename
+      }
+      __typename
+    }
+    visibility
+    leadData
+    languageCode
+    departmentIds
+    brandId
+    brand {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}`
+
 export default function ContactComponent() {
   const { posts, loading: postsLoading } = useCmsPosts({
     tagIds: ["P_ga05OkoXh2uQDdlCwho"],
     perPage: 1000,
   })
 
+  const {data} = useQuery(GET_FORM_DETAIL, {
+    variables: {
+      id: "WNx4z1Cr-Gt6tyEKn4fzB"
+    }
+  })
+
+  
+
   const post = posts[0]
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    [key: string]: string;
+    name: string;
+    ovog: string;
+    email: string;
+    phone: string;
+    message: string;
+  }>({
     name: "",
     ovog: "",
     email: "",
@@ -57,6 +132,17 @@ export default function ContactComponent() {
 
   const [saveLead, { loading: submitLoading }] = useMutation(WIDGETS_SAVE_LEAD)
 
+  // Map field types to formData keys
+  const fieldTypeToFormKey: Record<string, string> = {
+    firstName: "name",
+    lastName: "ovog",
+    email: "email",
+    phone: "phone",
+    message: "message",
+  }
+
+  const fields = data?.formDetail?.fields || [];
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -66,35 +152,28 @@ export default function ContactComponent() {
   }
 
   const handleSubmit = async () => {
-    if (
-      !formData.name ||
-      !formData.ovog ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.message
-    ) {
-      setNotification("Мэдээллийг бүрэн оруулна уу!")
-      return
+    const missing = fields.some((field: any) => {
+      const key = fieldTypeToFormKey[field.type];
+      return field.isRequired && !formData[key];
+    });
+    if (missing) {
+      setNotification("Мэдээллийг бүрэн оруулна уу!");
+      return;
     }
     try {
       const browserInfo = {
         userAgent: navigator.userAgent,
         language: navigator.language,
       }
-      const submissions = [
-        { _id: "name", type: "text", value: String(formData.name) },
-        { _id: "ovog", type: "text", value: String(formData.ovog) },
-        {
-          _id: "email",
-          type: "text",
-          value: String(formData.email),
-        },
-        { _id: "phone", type: "text", value: String(formData.phone) },
-        { _id: "message", type: "text", value: String(formData.message) },
-      ]
+      const submissions = fields.map((field: any) => ({
+        _id: field._id,
+        type: field.type,
+        text: field.text,
+        value: formData[fieldTypeToFormKey[field.type]] || "",
+      }));
       await saveLead({
         variables: {
-          formId: "WNx4z1Cr-Gt6tyEKn4fzB",
+          formId: data.formDetail._id,
           submissions,
           browserInfo,
           cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",

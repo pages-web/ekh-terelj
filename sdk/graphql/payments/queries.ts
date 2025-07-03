@@ -9,7 +9,16 @@ const payments = gql`
       status
       config
       createdAt
-      __typename
+    }
+  }
+`;
+
+const paymentsPublic = gql`
+  query PaymentsPublic($kind: String, $ids: [String]) {
+    paymentsPublic(kind: $kind, _ids: $ids) {
+      _id
+      kind
+      name
     }
   }
 `;
@@ -36,5 +45,5 @@ const invoiceDetail = gql`
   }
 `;
 
-const queries = { payments, invoiceDetail };
+const queries = { payments, invoiceDetail, paymentsPublic };
 export default queries;

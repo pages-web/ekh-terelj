@@ -1,11 +1,7 @@
 "use client";
 import BookingLayout from "../../booking-layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import {
-  reserveCompletedAtom,
-  reserveDateAtom,
-  reserveGuestAndRoomAtom,
-} from "@/store/reserve";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@apollo/client";
@@ -24,7 +20,6 @@ const YourDetails = () => {
   const currentConfig = useAtomValue(currentConfigAtom);
   const setReserveGuestAndRoom = useSetAtom(reserveGuestAndRoomAtom);
   const setSelectedRooms = useSetAtom(selectedRoomsAtom);
-  const setReserveCompleted = useSetAtom(reserveCompletedAtom);
   const setDate = useSetAtom(reserveDateAtom);
   const setDealId = useSetAtom(dealIdAtom);
   const { data: categoriesData } = useQuery(roomQueries.roomCategories, {
@@ -52,7 +47,6 @@ const YourDetails = () => {
   );
 
   useEffect(() => {
-    setReserveCompleted(false);
     setSelectedRooms(RESET);
     setReserveGuestAndRoom(RESET);
     setDate(RESET);
@@ -90,13 +84,6 @@ const YourDetails = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="flex gap-2">
-              <Button variant={"secondary"}>Print full version</Button>
-              <Button variant={"secondary"}>
-                Save your confirmation to phone
-              </Button>
-            </div> */}
           </div>
 
           <div className="w-full flex flex-col gap-6 border rounded-lg p-6 shadow-md">

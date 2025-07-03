@@ -25,13 +25,13 @@ const SelectedRoomCard = () => {
             onClick={() => removeRoom(product.room._id)}
           >
             <div className="flex gap-4">
-              <h1 className="w-20 text-textsm">Room {index + 1}:</h1>
+              <h1 className="w-20 text-textsm">Өрөө {index + 1}:</h1>
               <div className="w-full flex justify-between">
                 <div>
                   <h2>{product.room?.category?.name}</h2>
                   <span className="text-textsm text-black/60">
                     {formatNumberWithCommas(product.room?.unitPrice)}₮ x{" "}
-                    {nights} nights
+                    {nights} шөнө
                   </span>
                 </div>
                 <h2>
@@ -53,7 +53,7 @@ const SelectedRoomCard = () => {
                     ))}
                     <h2>{product.room?.category?.name}</h2>
                     <span className="text-textsm text-black/60">
-                      {product.room?.unitPrice}₮ x {nights} nights
+                      {product.room?.unitPrice}₮ x {nights} шөнө
                     </span>
                   </div>
                 </div>
@@ -97,11 +97,8 @@ const SelectedRoomCard = () => {
 
       <div className="flex flex-col gap-2">
         {selectedRooms.length === reserveGuestAndRoom.room && (
-          <Button
-            variant={"secondary"}
-            onClick={() => router.push("/booking/your-details")}
-          >
-            Done
+          <Button onClick={() => router.push("/booking/your-details")}>
+            Захиалах
           </Button>
         )}
       </div>

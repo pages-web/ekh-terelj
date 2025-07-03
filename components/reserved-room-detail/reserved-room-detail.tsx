@@ -10,7 +10,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { format, formatDistance } from "date-fns";
 import { useRouter } from "@/i18n/routing";
-import { paymentTypeAtom, totalAmountAtom } from "@/store/payments";
+import { isPrePaymentAtom, totalAmountAtom } from "@/store/payments";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { selectedRoomsAtom } from "@/store/rooms";
 
@@ -31,13 +31,13 @@ const ReservedRoomDetail = () => {
   const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [date, setDate] = useAtom(reserveDateAtom);
-  const paymentType = useAtomValue(paymentTypeAtom);
+  const isPrePayment = useAtomValue(isPrePaymentAtom);
   const [totalAmount, setTotalAmount] = useAtom(totalAmountAtom);
   // const totalPrice = selectedRoom.unitPrice * dateDiff;
   // const taxes = (totalPrice * 10) / 100;
   // const fee = (totalPrice * 2) / 100;
 
-  const paymentTypeDivider = paymentType === "full" ? 1 : 2;
+  const paymentTypeDivider = !isPrePayment ? 1 : 2;
 
   const nights = parseInt(
     date?.from && date?.to && formatDistance(date?.from, date?.to)
@@ -50,7 +50,7 @@ const ReservedRoomDetail = () => {
         0
       ) / paymentTypeDivider
     );
-  }, [selectedRooms, paymentType]);
+  }, [selectedRooms, isPrePayment]);
 
   return (
     <div className="w-full flex flex-col gap-6">

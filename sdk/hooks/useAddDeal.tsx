@@ -1,30 +1,36 @@
 import { currentUserAtom } from "@/store/auth";
 import { useAtomValue, useSetAtom } from "jotai";
 import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
-import { reserveCompletedAtom, reserveInfoAtom } from "@/store/reserve";
+import { reserveInfoAtom } from "@/store/reserve";
 import { IStage } from "@/types/sales";
-import { paymentTypeAtom } from "@/store/payments";
 import { useMutation } from "@apollo/client";
 import { mutations } from "../graphql/sales";
 import { useLabels, useStages, useTags } from "../queries/sales";
-import { useLabelAdd } from "../mutations/sales";
+import {
+  useLabelAdd,
+  useAddTag,
+  useAddPrePaymentTag,
+} from "../mutations/sales";
 import { useState } from "react";
+import { isPrePaymentAtom } from "@/store/payments";
 
 const useAddDeal = () => {
-  const [addDeal, { loading }] = useMutation(mutations.dealsAdd);
+  const [addDeal, { data, loading: addDealLoading }] = useMutation(
+    mutations.dealsAdd
+  );
   const { addLabel } = useLabelAdd();
-  const selectedRooms = useAtomValue(selectedRoomsAtom);
+  const { addPrePaymentTag, loading: addTagLoading } = useAddPrePaymentTag();
   const { to, from, nights, adults, children } = useAtomValue(reserveInfoAtom);
   const { firstName, lastName, erxesCustomerId } =
     useAtomValue(currentUserAtom) || {};
-  const paymentType = useAtomValue(paymentTypeAtom);
 
-  const setReserveCompleted = useSetAtom(reserveCompletedAtom);
+  const selectedRooms = useAtomValue(selectedRoomsAtom);
+  const isPrePayment = useAtomValue(isPrePaymentAtom);
   const setDealId = useSetAtom(dealIdAtom);
 
   const { stages } = useStages();
   const { labels } = useLabels();
-  // const { tags } = useTags();
+  const { tags } = useTags();
 
   const selectedRoomsByMutation = selectedRooms.map(({ room }) => ({
     productId: room?._id,
@@ -55,7 +61,25 @@ const useAddDeal = () => {
     }))
   );
 
-  const handleAddDeal = ({ description }: { description?: string }) => {
+  const handleAddDeal = async ({ description }: { description?: string }) => {
+    let labelId = labels.find((l: any) => l.name.toLowerCase() === "web")?._id;
+
+    if (!labelId) {
+      const result = await addLabel({
+        variables: { name: "Web", colorCode: "#eb144c" },
+      });
+      labelId = result.data?.salesPipelineLabelsAdd?._id;
+    }
+
+    let tagId = tags?.find((tag) =>
+      isPrePayment ? tag.name === "Pre payment" : tag.name === "Full payment"
+    )?._id;
+
+    if (!tagId) {
+      const result = await addPrePaymentTag(isPrePayment);
+      tagId = result.data?.tagsAdd?._id;
+    }
+
     const variables = {
       name: `${firstName} ${lastName}`,
       customerIds: [erxesCustomerId],
@@ -64,25 +88,25 @@ const useAddDeal = () => {
       startDate: from,
       closeDate: to,
       description: `${description}`,
-      labelIds: [
-        labels.find((l: any) => l.name.toLowerCase() === "web")?._id ||
-          addLabel({
-            variables: { name: "Web", colorCode: "#eb144c" },
-            onCompleted: (data) => data.salesPipelineLabelsAdd?._id,
-          }),
-      ],
+      labelIds: [labelId],
+      tagIds: [tagId],
     };
 
-    addDeal({
+    setDealId(null);
+
+    await addDeal({
       variables,
       onCompleted: (deal) => {
-        setReserveCompleted(true);
         setDealId(deal.dealsAdd?._id);
       },
     });
+
+    const newDealId = data?.dealsAdd?._id;
+
+    return newDealId;
   };
 
-  return { handleAddDeal, addDeal, loading };
+  return { handleAddDeal, loading: addDealLoading || addTagLoading };
 };
 
 export default useAddDeal;

@@ -34,29 +34,10 @@ export const ChildrenWithTitle = ({
 const ReserveSelectDate = () => {
   const [date] = useAtom(reserveDateAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
-  const [active, setActive] = useState(0);
   const { adults, children, room } = reserveGuestAndRoom || "";
 
   return (
     <div className="w-full flex flex-col p-6 gap-8 rounded-[12px] bg-white border shadow-lg">
-      {/* <div className="flex gap-6 items-center">
-        <h2>Filter:</h2>
-        <div className="flex no-scrollbar overflow-x-scroll gap-3">
-          {filters.map((filter) => {
-            return (
-              <Button
-                variant={filter.id === active ? "default" : "outline"}
-                onClick={() => {
-                  setActive(filter.id);
-                }}
-              >
-                {filter.name}
-              </Button>
-            );
-          })}
-        <div className="flex no-scrollbar overflow
-        </div>
-      </div> */}
       <div className="w-full flex flex-col lg:flex-row justify-between items-end gap-6 ">
         <ChildrenWithTitle title="Check-in">
           <Popover>
@@ -82,27 +63,6 @@ const ReserveSelectDate = () => {
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
-        {/* 
-        <ChildrenWithTitle title="Check-out">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  "justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <MapPin className="mr-2 min-h-5 min-w-5" />
-                {date?.to ? format(date.to, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
-              <DateForm />
-            </PopoverContent>
-          </Popover>
-        </ChildrenWithTitle> */}
 
         <ChildrenWithTitle title="Room">
           <Popover>

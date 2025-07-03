@@ -18,18 +18,6 @@ export const reserveDateAtom = atomWithStorage<DateRange | any>("reserveDate", {
   from: null,
 });
 
-export const reserveUserAtom = atomWithStorage<IReserveUser>("reserveUser", {
-  speaking: "",
-  firstname: "",
-  lastname: "",
-  mail: "",
-  phone: "",
-  description: "",
-});
-
-export const reserveCompletedAtom = atom<boolean>(false);
-export const confirmBookingViewAtom = atom<string>("confirm");
-
 export const nightsAtom = atom((get) => {
   const date = get(reserveDateAtom);
   return parseInt(

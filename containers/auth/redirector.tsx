@@ -11,6 +11,8 @@ const Redirector = () => {
   const router = useRouter();
   const from = useSearchParams().get("from");
 
+  console.log(user, "user");
+
   useEffect(() => {
     if (user) {
       router.push(from ? from : "/");

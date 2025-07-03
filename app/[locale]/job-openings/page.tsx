@@ -9,7 +9,8 @@ import {
   Briefcase,
   MessageCircle,
 } from "lucide-react"
-import { gql, useMutation } from "@apollo/client"
+import { gql, useMutation, useQuery } from "@apollo/client"
+import React from "react"
 
 const WIDGETS_SAVE_LEAD = gql`
   mutation widgetsSaveLead(
@@ -38,22 +39,95 @@ const WIDGETS_SAVE_LEAD = gql`
   }
 `
 
+const GET_FORM_DETAIL = gql`
+query FormDetail($id: String!) {
+  formDetail(_id: $id) {
+    _id
+    name
+    title
+    code
+    type
+    description
+    buttonText
+    numberOfPages
+    status
+    googleMapApiKey
+    integrationId
+    fields {
+      _id
+      associatedFieldId
+      associatedField {
+        _id
+        contentType
+        __typename
+      }
+      column
+      content
+      contentType
+      contentTypeId
+      description
+      field
+      isRequired
+      order
+      pageNumber
+      productCategoryId
+      regexValidation
+      text
+      options
+      type
+      validation
+      logicAction
+      logics {
+        fieldId
+        logicOperator
+        logicValue
+        __typename
+      }
+      __typename
+    }
+    visibility
+    leadData
+    languageCode
+    departmentIds
+    brandId
+    brand {
+      _id
+      name
+      __typename
+    }
+    __typename
+  }
+}`
+
 export default function JobOpenings() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
+  const { data } = useQuery(GET_FORM_DETAIL, {
+    variables: {
+      id: "Im7_eAG82jwvy1-CZROik"
+    }
   })
 
+  const fields = data?.formDetail?.fields || [];
+
+  const initialFormData = fields.reduce((acc: any, field: any) => {
+    acc[field._id] = "";
+    return acc;
+  }, {});
+
+  const [formData, setFormData] = useState<any>(initialFormData);
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [notification, setNotification] = useState<string | null>(null)
-
   const [saveLead, { loading }] = useMutation(WIDGETS_SAVE_LEAD)
+
+  React.useEffect(() => {
+    setFormData(fields.reduce((acc: any, field: any) => {
+      acc[field._id] = "";
+      return acc;
+    }, {}));
+  }, [fields.length]);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
+    setFormData((prev: any) => ({
       ...prev,
       [name]: value,
     }))
@@ -74,19 +148,19 @@ export default function JobOpenings() {
         userAgent: navigator.userAgent,
         language: navigator.language,
       }
+      const getFieldId = (type: string) => {
+        const field = fields.find((f: any) => f.type === type)
+        return field?._id || type
+      }
       const submissions = [
-        { _id: "name", type: "text", value: String(formData.name) },
-        {
-          _id: "email",
-          type: "email",
-          value: String(formData.email),
-        },
-        { _id: "phone", type: "text", value: String(formData.phone) },
-        { _id: "message", type: "text", value: String(formData.message) },
+        { _id: getFieldId("text"), type: "text", text: "Таны нэр:", value: formData.name },
+        { _id: getFieldId("email"), type: "email", text: "Таны и-мэйл хаяг", value: formData.email },
+        { _id: getFieldId("phone"), type: "phone", text: "Таны утасны дугаар", value: formData.phone },
+        { _id: getFieldId("text2"), type: "text", text: "Таны хүсэлт", value: formData.message },
       ]
       await saveLead({
         variables: {
-          formId: "Im7_eAG82jwvy1-CZROik",
+          formId: data.formDetail._id,
           submissions,
           browserInfo,
           cachedCustomerId: "-5wwdBJSWeBaOrgvEmXDW",

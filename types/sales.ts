@@ -114,3 +114,10 @@ export interface IPaymentType {
   title: string;
   type: string;
 }
+
+export interface ITag {
+  _id: string;
+  colorCode: string;
+  name: string;
+  type: string;
+}
