@@ -13,6 +13,7 @@ import {
 } from "../mutations/sales";
 import { useState } from "react";
 import { isPrePaymentAtom } from "@/store/payments";
+import { useInvoiceCreate } from "../mutations/payments";
 
 const useAddDeal = () => {
   const [addDeal, { data, loading: addDealLoading }] = useMutation(
@@ -20,6 +21,8 @@ const useAddDeal = () => {
   );
   const { addLabel } = useLabelAdd();
   const { addPrePaymentTag, loading: addTagLoading } = useAddPrePaymentTag();
+  const { handleInvoiceCreate, loading } = useInvoiceCreate();
+
   const { to, from, nights, adults, children } = useAtomValue(reserveInfoAtom);
   const { firstName, lastName, erxesCustomerId } =
     useAtomValue(currentUserAtom) || {};
@@ -61,7 +64,11 @@ const useAddDeal = () => {
     }))
   );
 
-  const handleAddDeal = async ({ description }: { description?: string }) => {
+  const handleAddDeal = async ({
+    description,
+  }: {
+    description?: string;
+  }): Promise<string> => {
     let labelId = labels.find((l: any) => l.name.toLowerCase() === "web")?._id;
 
     if (!labelId) {
@@ -94,12 +101,7 @@ const useAddDeal = () => {
 
     setDealId(null);
 
-    await addDeal({
-      variables,
-      onCompleted: (deal) => {
-        setDealId(deal.dealsAdd?._id);
-      },
-    });
+    const { data } = await addDeal({ variables }); // ✅ Now awaiting and getting `data` correctly
 
     const newDealId = data?.dealsAdd?._id;
 

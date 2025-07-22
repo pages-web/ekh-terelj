@@ -77,47 +77,18 @@ const CheckoutForm = () => {
       await editDeal({
         variables: { id: dealId, stageId: canceledStageId },
       });
+    }
 
-      const newDealId = await handleAddDeal({ description });
+    const newDealId = await handleAddDeal({ description });
 
+    if (newDealId) {
       router.push(`/profile/bookings/${newDealId}`);
     } else {
-      const newDealId = await handleAddDeal({ description });
-      router.push(`/profile/bookings/${newDealId}`);
+      console.error("newDealId is undefined");
     }
   }
 
   const loading = addDealLoading || editDealLoading;
-
-  // const handleButtonClick = () => {
-  //   setIsLoading(true);
-
-  //   // Simulate a delay for loading
-  //   setTimeout(async () => {
-  //     createInvoice({
-  //       variables: {
-  //         amount: totalAmount,
-  //         customerId: paymentsData[0]._id,
-  //         customerType: "customer",
-  //         contentType: "deal",
-  //         contentTypeId: dealId,
-  //         description: `Room reservation - ${reserveUser.mail}`,
-  //         paymentIds: [paymentsData[0]._id],
-  //         phone: reserveUser.phone,
-  //       },
-  //       onCompleted: (invoice) => {
-  //         transactionAdd({
-  //           variables: {
-  //             invoiceId: invoice.invoiceCreate._id,
-  //             paymentId: paymentsData[0]?._id,
-  //             amount: totalAmount,
-  //           },
-  //         });
-  //       },
-  //     });
-  //     setIsLoading(false);
-  //   }, 3000);
-  // };
 
   const accordions = [
     {

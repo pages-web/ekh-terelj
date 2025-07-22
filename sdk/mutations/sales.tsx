@@ -3,6 +3,7 @@ import { mutations } from "../graphql/sales";
 import { useAtomValue } from "jotai";
 import { currentConfigAtom } from "@/store/config";
 import { useTags } from "../queries/sales";
+import { IFullDeal } from "@/types/sales";
 
 export const useLabelAdd = () => {
   const currentConfig = useAtomValue(currentConfigAtom);
@@ -34,4 +35,19 @@ export const useAddPrePaymentTag = () => {
   };
 
   return { addPrePaymentTag, loading };
+};
+
+export const useChangeStage = (dealDetail: IFullDeal) => {
+  const [changeStage, { data, loading }] = useMutation(mutations.dealsEdit);
+
+  const handleChangeStage = (stageId: string) => {
+    return changeStage({
+      variables: { ...dealDetail, id: dealDetail._id, stageId },
+    });
+  };
+
+  return {
+    handleChangeStage,
+    loading,
+  };
 };

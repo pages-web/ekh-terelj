@@ -45,5 +45,13 @@ const invoiceDetail = gql`
   }
 `;
 
-const queries = { payments, invoiceDetail, paymentsPublic };
+const invoiceIdByDealId = gql`
+  query InvoiceIdByDealId($contentType: String, $contentTypeId: String) {
+    invoices(contentType: $contentType, contentTypeId: $contentTypeId) {
+      _id
+    }
+  }
+`;
+
+const queries = { payments, invoiceDetail, paymentsPublic, invoiceIdByDealId };
 export default queries;

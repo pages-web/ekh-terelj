@@ -46,7 +46,9 @@ export interface IDealPreview {
   customers: ICustomer[];
 }
 
-export interface IFullDeal extends IDealDetail, IDealPreview {}
+export interface IFullDeal extends IDealDetail, IDealPreview {
+  number: string;
+}
 
 // Define the valid stage codes
 export type StageCode =
