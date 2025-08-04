@@ -89,7 +89,7 @@ export default function VerifyPage() {
               <p className="text-gray-600">Холбоос буруу эсвэл хугацаа дууссан байж магадгүй.</p>
               <button
                 onClick={() => router.push('/signup')}
-                className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Дахин бүртгүүлэх
               </button>
