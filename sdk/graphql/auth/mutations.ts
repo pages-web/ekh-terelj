@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const login = gql`
   mutation ClientPortalLogin(
@@ -170,6 +170,15 @@ const socialPayLogin = gql`
   }
 `;
 
+const confirmInvitation = gql`
+  mutation ClientPortalConfirmInvitation($token: String) {
+    clientPortalConfirmInvitation(token: $token) {
+      _id
+      clientPortalId
+    }
+  }
+`;
+
 const mutations = {
   login,
   logout,
@@ -185,6 +194,7 @@ const mutations = {
   googleLogin,
   changePhone,
   socialPayLogin,
+  confirmInvitation,
 };
 
 export default mutations;

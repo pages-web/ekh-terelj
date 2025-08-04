@@ -3,12 +3,12 @@ import mutations from "../graphql/auth/mutations";
 import { toast } from "sonner";
 import { onError } from "@/lib/utils";
 
-export const useVerifyUser = () => {
-  const [verifyUser, { loading }] = useMutation(mutations.userVerify, {
+export const useConfirmInvitation = () => {
+  const [confirmInvitation, { loading }] = useMutation(mutations.confirmInvitation, {
     onCompleted: (data) => {
-      if (data?.clientPortalVerifyOTP) {
+      if (data?.clientPortalConfirmInvitation) {
         toast.success("Амжилттай баталгаажлаа!");
-        return true;
+        return data.clientPortalConfirmInvitation;
       } else {
         toast.error("Баталгаажуулахад алдаа гарлаа");
         return false;
@@ -21,5 +21,5 @@ export const useVerifyUser = () => {
     },
   });
 
-  return { verifyUser, loading };
+  return { confirmInvitation, loading };
 };

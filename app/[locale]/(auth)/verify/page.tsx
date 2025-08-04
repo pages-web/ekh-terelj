@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/routing';
-import { useVerifyUser } from '@/sdk/mutations/verify';
+import { useConfirmInvitation } from '@/sdk/mutations/verify';
 import { toast } from 'sonner';
 
 export default function VerifyPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [verificationStatus, setVerificationStatus] = useState<'pending' | 'success' | 'error'>('pending');
-  const { verifyUser, loading } = useVerifyUser();
+  const { confirmInvitation, loading } = useConfirmInvitation();
   const token = searchParams.get('token');
 
   useEffect(() => {
@@ -18,14 +18,13 @@ export default function VerifyPage() {
       if (!token) return;
 
       try {
-        const result = await verifyUser({
+        const result = await confirmInvitation({
           variables: {
-            userId: token,
-            emailOtp: token
+            token: token
           }
         });
 
-        if (result.data?.clientPortalVerifyOTP) {
+        if (result.data?.clientPortalConfirmInvitation) {
           setVerificationStatus('success');
 
           setTimeout(() => {
@@ -35,7 +34,7 @@ export default function VerifyPage() {
           setVerificationStatus('error');
         }
       } catch (error) {
-        console.error('Баталгаажуулах үед алдаа гарлаа:', error);
+        console.error('Урилга баталгаажуулах үед алдаа гарлаа:', error);
         setVerificationStatus('error');
       }
     };
@@ -47,14 +46,14 @@ export default function VerifyPage() {
     }
 
     handleVerification();
-  }, [token, verifyUser, router]);
+  }, [token, confirmInvitation, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Имэйл баталгаажуулах
+            Баталгаажуулах
           </h2>
         </div>
 
@@ -62,7 +61,7 @@ export default function VerifyPage() {
           {(verificationStatus === 'pending' || loading) && (
             <div className="space-y-4">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-600 mx-auto"></div>
-              <p className="text-gray-600">Баталгаажуулж байна...</p>
+              <p className="text-gray-600">баталгаажуулж байна...</p>
             </div>
           )}
 
@@ -86,7 +85,7 @@ export default function VerifyPage() {
                 </svg>
               </div>
               <p className="text-red-600 font-medium">Баталгаажуулахад алдаа гарлаа</p>
-              <p className="text-gray-600">Холбоос буруу эсвэл хугацаа дууссан байж магадгүй.</p>
+              <p className="text-gray-600">холбоос буруу эсвэл хугацаа дууссан байж магадгүй.</p>
               <button
                 onClick={() => router.push('/signup')}
                 className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

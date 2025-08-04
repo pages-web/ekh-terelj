@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForgotPassword } from "@/sdk/mutations/auth"
 import { LoadingIcon } from "@/components/ui/loading"
-import { CheckCircle2Icon, Mail, ArrowLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { Link } from "@/i18n/routing"
 
 const formSchema = z.object({
@@ -43,12 +43,6 @@ const ForgotForm = () => {
   if (success) {
     return (
       <div className="text-center space-y-6">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 rounded-full flex items-center justify-center">
-          <CheckCircle2Icon
-            className="text-green-600 dark:text-green-400 h-8 w-8 animate-pulse"
-            strokeWidth={1.5}
-          />
-        </div>
 
         <div className="space-y-3">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
