@@ -32,7 +32,7 @@ const HomeBooking = () => {
 
   return (
     <div>
-      <div className="lg:h-[85vh] relative overflow-hidden p-5 lg:p-10 my-10 rounded-3xl flex items-end">
+      <div className="lg:h-[85vh] relative overflow-hidden p-5 lg:p-10 my-10 rounded-3xl">
         <div className="h-full w-full absolute inset-0 z-0">
           {images.length > 0 ? (
             <Swiper
@@ -86,17 +86,17 @@ const HomeBooking = () => {
           )}
         </div>
 
-        <div className="w-full z-20 space-y-9 relative text-center">
-          <div className="text-center text-white">
+        <div className="lg:w-[50%] z-20 space-y-9 relative flex items-end text-center lg:text-start lg:items-center lg:justify-end justify-center h-full">
+          <div className="text-white">
             {/* <button className='border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10'>
             Book
           </button> */}
-            <h1 className="font-medium text-[35px] md:text-[50px] leading-tight text-center">
+            <h1 className="font-bold text-[35px] md:text-[55px] leading-tight">
               <span>{line1}</span>
               <br />
               <span>{line2}</span>
             </h1>
-            <p className="text-lg">
+            <p className="text-md lg:text-lg max-w-xl text-white/80">
               {post?.excerpt ||
                 "Find your perfect stay with ease explore a wide range of rooms, grab great deals, and book your ideal getaway today."}
             </p>

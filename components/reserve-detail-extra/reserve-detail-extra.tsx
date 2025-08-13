@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { RESET } from "jotai/utils";
-import { selectedRoomAtom } from "@/store/rooms";
 import { useAddRoomExtras } from "@/hooks/room/room-hooks";
 
 const ReserveDetailExtra = (extra: IExtra) => {
