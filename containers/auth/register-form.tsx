@@ -19,7 +19,7 @@ import { Link } from "@/i18n/routing"
 import { useRegister } from "@/sdk/mutations/auth"
 import { toast } from "sonner"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { InfoIcon } from "lucide-react"
+import { InfoIcon, User, Mail, Phone, Lock } from "lucide-react"
 import { useRouter } from "@/i18n/routing"
 import { passwordZod, phoneZod } from "@/lib/zod"
 import { LoadingIcon } from "@/components/ui/loading"
@@ -27,7 +27,7 @@ import { LoadingIcon } from "@/components/ui/loading"
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "Нэрээ оруулна уу" }),
   lastName: z.string().optional(),
-  email: z.string().email(),
+  email: z.string().email({ message: "Зөв имэйл хаяг оруулна уу" }),
   phone: phoneZod,
   password: passwordZod,
 })
@@ -50,127 +50,171 @@ const RegisterForm = () => {
     register({
       variables: { ...values, clientPortalId },
       onCompleted() {
-        toast.success("Congratulations, You registered successfully", {
+        toast.success("Бүртгэл амжилттай!", {
           description: "Таны имэйл рүү баталгаажуулах холбоос илгээлээ.",
         })
         router.push("/login")
       },
     })
   }
+
   return (
     <Form {...form}>
-      {/* md:grid grid-cols-2 space-y-4 md:space-y-0 gap-y-6 gap-x-3 relative */}
       <form
-        className='grid grid-cols-2 gap-3'
+        className="space-y-6"
         onSubmit={form.handleSubmit(onSubmit)}
       >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  Нэр *
+                </FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Input
+                      placeholder="Бат"
+                      {...field}
+                      autoComplete="given-name"
+                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  Овог
+                </FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Input
+                      placeholder="Дорж"
+                      {...field}
+                      autoComplete="family-name"
+                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Contact Fields */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  Имэйл *
+                </FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Input
+                      placeholder="bataa@example.com"
+                      {...field}
+                      autoComplete="email"
+                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  Утасны дугаар *
+                </FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Input
+                      placeholder="99112233"
+                      {...field}
+                      autoComplete="tel"
+                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
-          name='firstName'
+          name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                Нууц үг *
+              </FormLabel>
               <FormControl>
-                <Input
-                  placeholder='John'
-                  {...field}
-                  autoComplete='given-name'
-                />
+                <div className="relative group">
+                  <Password
+                    {...field}
+                    autoComplete="new-password"
+                    containerClassName="bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus-within:ring-2 focus-within:ring-purple-500/20 focus-within:border-purple-500 transition-all duration-200"
+                    className="pl-12 h-12 text-base bg-transparent border-none focus-visible:ring-0"
+                  />
+                </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs" />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name='lastName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='Doe'
-                  {...field}
-                  autoComplete='family-name'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='john@doe.com'
-                  {...field}
-                  autoComplete='email'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='phone'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='0000 0000'
-                  {...field}
-                  autoComplete='tel-national'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='password'
-          render={({ field }) => (
-            <FormItem className='col-span-2'>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Password {...field} autoComplete='new-password' />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className='w-full col-span-2' size='lg' disabled={loading}>
-          {loading && <LoadingIcon />}
-          Sign Up
+
+        <Button
+          className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
+          disabled={loading}
+        >
+          {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
+          {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
         </Button>
-        <Alert className='col-span-2'>
-          <InfoIcon className='h-4 w-4' />
-          <AlertTitle className='text-textsm'>Caution!</AlertTitle>
-          <AlertDescription className='text-textxs'>
-            By clicking Sign Up, you agree to our{" "}
+
+        <Alert className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800/50 rounded-xl">
+          <InfoIcon className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+          <AlertTitle className="text-sm font-semibold text-slate-800 dark:text-slate-300">
+            Нууцлал ба нөхцөл
+          </AlertTitle>
+          <AlertDescription className="text-xs mt-1 text-slate-700 dark:text-slate-400">
+            Бүртгэл үүсгэснээр та манай{" "}
             <Button
-              variant='link'
+              variant="link"
               asChild
-              className='h-auto px-0 py-0 mx-1 text-foreground'
-              size='sm'
+              className="h-auto px-0 py-0 text-xs underline text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 font-medium"
             >
-              <Link href='/terms-of-service'>Privacy Policy </Link>
+              <Link href="#">Нууцлалын бодлого</Link>
             </Button>{" "}
-            болон{" "}
+            and{" "}
             <Button
-              variant='link'
+              variant="link"
               asChild
-              className='h-auto px-0 py-0 mx-1 text-foreground'
-              size='sm'
+              className="h-auto px-0 py-0 text-xs underline text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 font-medium"
             >
-              <Link href='/terms-of-service'>Terms of Service.</Link>
+              <Link href="#">Үйлчилгээний нөхцөл</Link>
             </Button>
+            -ийг зөвшөөрсөнд тооцно.
           </AlertDescription>
         </Alert>
       </form>
