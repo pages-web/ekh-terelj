@@ -93,7 +93,7 @@ const NewsDetail = () => {
                 height={600}
                 className='w-full h-[500px] object-cover'
               />
-              <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
+              <div className='absolute inset-0 bg-primary via-transparent to-transparent' />
 
               <div className='absolute top-6 left-6'>
                 <Card className='bg-white/95 backdrop-blur-sm border-0 shadow-lg'>

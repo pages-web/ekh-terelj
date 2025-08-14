@@ -59,7 +59,7 @@ const ForgotForm = () => {
         <div className="space-y-3 pt-4">
           <Button
             asChild
-            className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl"
+            className="w-full h-12 bg-primary text-white font-semibold rounded-xl"
           >
             <Link href="/login">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -120,7 +120,7 @@ const ForgotForm = () => {
         <div className="space-y-4">
           <Button
             type="submit"
-            className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
+            className="w-full h-12 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
             disabled={loading}
           >
             {loading && <LoadingIcon className="mr-2 h-5 w-5" />}

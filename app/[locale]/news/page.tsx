@@ -66,7 +66,7 @@ const News = () => {
                   height={300}
                   className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out'
                 />
-                <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent' />
+                <div className='absolute inset-0 bg-primary via-transparent to-transparent' />
                 <div className='absolute top-4 left-4'>
                   <Badge className='bg-white/90 text-gray-800 backdrop-blur-sm border-0 text-xs font-medium px-3 py-1'>
                     Мэдээ

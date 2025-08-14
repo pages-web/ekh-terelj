@@ -1,16 +1,14 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { IFullDeal } from "@/types/sales";
 import { useInvoiceCreate } from "@/sdk/mutations/payments";
 import { useInvoiceIdByDealId } from "@/sdk/queries/payments";
-import { Loading } from "../ui/loading";
+import { IDealDetail, IFullDeal } from "@/types/sales";
+import { Button } from "../ui/button";
 
 const PaymentDetail = ({
   dealDetail,

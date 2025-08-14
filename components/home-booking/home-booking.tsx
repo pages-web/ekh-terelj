@@ -86,10 +86,10 @@ const HomeBooking = () => {
           )}
         </div>
 
-        <div className="lg:w-[50%] z-20 space-y-9 relative flex items-end text-center lg:text-start lg:items-center lg:justify-end justify-center h-full">
+        <div className="lg:w-[50%] z-20 space-y-9 relative flex items-end text-center lg:text-start lg:items-end lg:justify-end justify-center h-[90%]">
           <div className="text-white">
             {/* <button className='border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10'>
-            Book
+            Bookƒ
           </button> */}
             <h1 className="font-bold text-[35px] md:text-[55px] leading-tight">
               <span>{line1}</span>

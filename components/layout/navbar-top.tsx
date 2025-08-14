@@ -36,7 +36,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
   });
 
   return (
-    <header className="z-50 sticky top-0 w-full bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 shadow-xl backdrop-blur-md border-b border-gray-700/50">
+    <header className="z-50 sticky top-0 w-full bg-primary shadow-xl backdrop-blur-md">
       <div className="flex justify-between items-center container mx-auto py-4 px-6">
         <Link
           href="/"
@@ -76,7 +76,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                     )}
 
                     {item.extra === "Accomodation" && (
-                      <NavigationMenuContent className="p-4 flex flex-col gap-2 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 border border-gray-600 rounded-lg shadow-lg min-w-[280px]">
+                      <NavigationMenuContent className="p-4 flex flex-col gap-2 bg-primary border border-gray-600 rounded-lg shadow-lg min-w-[280px]">
                         {sortedRoomCategories &&
                           sortedRoomCategories.map((category, index) => (
                             <NavigationMenuLink
@@ -104,7 +104,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700"
+              className="text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-primary hover:bg-slate-700"
             >
               <Facebook size={18} />
             </a>
@@ -113,7 +113,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700"
+              className="text-white/90 hover:text-white transition-all duration-300 p-3 rounded-lg bg-primary hover:bg-slate-700"
             >
               <Instagram size={18} />
             </a>

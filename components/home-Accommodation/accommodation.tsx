@@ -113,14 +113,14 @@ export default function Rooms() {
                             onError={() => handleImageError(category._id)}
                             loading="lazy"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                       ) : (
                         <FallbackImage name={category.title} />
                       )}
 
                       {imageUrl && !hasImageError && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       )}
                     </div>
 

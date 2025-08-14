@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useSearchParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,27 +14,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useResetPassword } from "@/sdk/mutations/auth"
-import { LoadingIcon } from "@/components/ui/loading"
-import { CheckCircle2Icon, ArrowLeft, Eye, EyeOff } from "lucide-react"
-import { Link } from "@/i18n/routing"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useResetPassword } from "@/sdk/mutations/auth";
+import { LoadingIcon } from "@/components/ui/loading";
+import { CheckCircle2Icon, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { Link } from "@/i18n/routing";
 
-const formSchema = z.object({
-  password: z.string().min(6, { message: "Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой" }),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Нууц үг таарахгүй байна",
-  path: ["confirmPassword"],
-})
+const formSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: "Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Нууц үг таарахгүй байна",
+    path: ["confirmPassword"],
+  });
 
 const ResetPasswordForm = () => {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const token = searchParams.get("token")
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,25 +46,25 @@ const ResetPasswordForm = () => {
       password: "",
       confirmPassword: "",
     },
-  })
+  });
 
-  const { loading, resetPassword, success } = useResetPassword()
+  const { loading, resetPassword, success } = useResetPassword();
 
   useEffect(() => {
     if (!token) {
-      router.push("/login")
+      router.push("/login");
     }
-  }, [token, router])
+  }, [token, router]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!token) return
+    if (!token) return;
 
     resetPassword({
       variables: {
         newPassword: values.password,
-        token
+        token,
       },
-    })
+    });
   }
 
   if (success) {
@@ -76,23 +80,22 @@ const ResetPasswordForm = () => {
               Нууц үг амжилттай солигдлоо
             </h3>
             <p className="text-base text-gray-600 dark:text-gray-300">
-              Таны нууц үг амжилттай шинэчлэгдлээ. Одоо шинэ нууц үгээрээ нэвтэрч орно уу.
+              Таны нууц үг амжилттай шинэчлэгдлээ. Одоо шинэ нууц үгээрээ
+              нэвтэрч орно уу.
             </p>
           </div>
 
           <div className="pt-4">
             <Button
               asChild
-              className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl"
+              className="w-full h-12 bg-primary text-white font-semibold rounded-xl"
             >
-              <Link href="/login">
-                Нэвтрэх
-              </Link>
+              <Link href="/login">Нэвтрэх</Link>
             </Button>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (!token) {
@@ -111,11 +114,9 @@ const ResetPasswordForm = () => {
           <div className="space-y-3 pt-4">
             <Button
               asChild
-              className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl"
+              className="w-full h-12 bg-primary text-white font-semibold rounded-xl"
             >
-              <Link href="/forgot">
-                Дахин оролдох
-              </Link>
+              <Link href="/forgot">Дахин оролдох</Link>
             </Button>
 
             <Button
@@ -131,7 +132,7 @@ const ResetPasswordForm = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -207,7 +208,9 @@ const ResetPasswordForm = () => {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-12 px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4 text-gray-400" />
@@ -225,7 +228,7 @@ const ResetPasswordForm = () => {
           <div className="space-y-4">
             <Button
               type="submit"
-              className="w-full h-12 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
+              className="w-full h-12 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-base"
               disabled={loading}
             >
               {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
@@ -246,7 +249,7 @@ const ResetPasswordForm = () => {
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default ResetPasswordForm
+export default ResetPasswordForm;
