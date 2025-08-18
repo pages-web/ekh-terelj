@@ -207,7 +207,7 @@ export default function GrandSuiteListing() {
                     </div>
                     {post._id === "S2M8Q14Ihj_vXyJne5a5H" && (
                       <Link
-                        href={"https://qrmenu.mn/menu/Nzg4menu"}
+                        href={"https://qrmenu.mn/menu/Nzg4"}
                         target="_blank"
                       >
                         <Button>Меню үзэх</Button>

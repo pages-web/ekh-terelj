@@ -148,8 +148,9 @@ export default function Rooms() {
                             </span>
                           </div>
                           <p className="text-xs text-gray-500">
-                            {category.customFieldsMap?.room_post?.hour_rate ||
-                              "N/A"}
+                            {/* {category.customFieldsMap?.room_post?.hour_rate ||
+                              "N/A"} */}
+                            Нэг хоногийн үнэ
                           </p>
                         </div>
 
