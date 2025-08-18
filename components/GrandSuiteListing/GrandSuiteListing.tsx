@@ -193,7 +193,9 @@ export default function GrandSuiteListing() {
                           post.customFieldsMap?.room_post?.price.toLocaleString()}
                         {post.customFieldsMap?.room_post?.price2 &&
                           "/" +
-                            post.customFieldsMap?.room_post?.price2.toLocaleString()}
+                            Number(
+                              post.customFieldsMap?.room_post?.price2
+                            ).toLocaleString()}
                       </span>
                       <span className="text-2xl font-bold text-gray-700">
                         {post.customFieldsMap?.room_post?.price && "₮"}
