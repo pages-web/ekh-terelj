@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   env: {
     NEXT_PUBLIC_MAIN_API_DOMAIN: "https://ekhterelj.api.erxes.io/gateway",
+    NEXT_PUBLIC_SAAS_DOMAIN: "https://ekhterelj.app.erxes.io",
     NEXT_PUBLIC_CP_ID: "TzO81SoQJOc2QQzOU1gBQ",
     NEXT_PUBLIC_PMS_TOKEN: "WDhfiVSLriHkdzMd9Eaa2vgCpTiEgObD",
     NEXT_PUBLIC_APP_TOKEN:

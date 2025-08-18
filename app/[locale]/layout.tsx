@@ -15,13 +15,36 @@ const roboto = Roboto({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Эх тэрэлж",
-  description: "Эх тэрэлж",
-  icons: {
-    icon: "/images/1x1.png",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // const { config } = await getconf();
+  // const { pdomain, name, description, uiOptions } = config || {};
+
+  const pdomain = process.env.NEXT_PUBLIC_SAAS_DOMAIN;
+  const name = "Ekh terelj";
+  const description =
+    "Бид тав тухтай, аюулгүй орчинд, эрүүл, амт чанартай хоол, найрсаг үйлчилгээгээрээ үнэнч үйлчлүүлэгчидтэй болохыг зорин ажилладаг.";
+
+  return {
+    metadataBase: new URL(pdomain || "https://www.erxes.io"),
+    title: name,
+    description,
+    openGraph: {
+      title: name,
+      description,
+      images: [
+        {
+          url: "/images/bgImage.jpg",
+          width: 800,
+          height: 600,
+          alt: name,
+        },
+      ],
+      url: pdomain,
+      type: "website",
+    },
+  };
+}
+
 export default async function RootLayout({
   children,
   params,

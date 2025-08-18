@@ -6,6 +6,7 @@ import Accommodation from "@/components/home-Accommodation/accommodation";
 import HomeBooking from "@/components/home-booking/home-booking";
 import FAQ from "@/components/faq/faq";
 import CustomerFeedback from "@/components/customer-feedback/customer-feedback";
+import Image from "@/components/ui/image";
 
 export default function HomePage() {
   return (
