@@ -113,31 +113,30 @@ export default function GrandSuiteListing() {
           )}
 
           <div className="grid grid-cols-2 gap-3 lg:gap-6">
-            {post?.images &&
-              post.images.slice(0, 4).map((attachment, idx) => (
-                <Dialog key={idx}>
-                  <DialogTrigger>
-                    <Image
-                      key={idx}
-                      src={attachment.url}
-                      alt={post.title}
-                      width={300}
-                      height={200}
-                      className="rounded-xl shadow w-full h-full aspect-video"
-                    />
-                  </DialogTrigger>
-                  <DialogContent>
-                    <Image
-                      key={idx}
-                      src={attachment.url}
-                      alt={post.title}
-                      width={300}
-                      height={200}
-                      className="rounded-xl shadow w-full h-full aspect-video"
-                    />
-                  </DialogContent>
-                </Dialog>
-              ))}
+            {post?.images?.map((attachment, idx) => (
+              <Dialog key={idx}>
+                <DialogTrigger>
+                  <Image
+                    key={idx}
+                    src={attachment.url}
+                    alt={post.title}
+                    width={300}
+                    height={200}
+                    className="rounded-xl shadow w-full h-full aspect-video"
+                  />
+                </DialogTrigger>
+                <DialogContent>
+                  <Image
+                    key={idx}
+                    src={attachment.url}
+                    alt={post.title}
+                    width={300}
+                    height={200}
+                    className="rounded-xl shadow w-full h-full aspect-video"
+                  />
+                </DialogContent>
+              </Dialog>
+            ))}
           </div>
         </div>
 

@@ -97,6 +97,7 @@ export default function Rooms() {
             grandSuitePosts?.map((category, index) => {
               const imageUrl = category.thumbnail?.url;
               const hasImageError = imageErrors[category._id];
+              const isLast = index === grandSuitePosts.length - 1;
 
               return (
                 <Link href={`/room-detail/${category._id}`} key={index}>
@@ -147,11 +148,16 @@ export default function Rooms() {
                                 : ""}
                             </span>
                           </div>
-                          <p className="text-xs text-gray-500">
-                            {/* {category.customFieldsMap?.room_post?.hour_rate ||
-                              "N/A"} */}
+                          {/* <p className="text-xs text-gray-500">
+                            {category.customFieldsMap?.room_post?.hour_rate ||
+                              "N/A"}
                             Нэг хоногийн үнэ
-                          </p>
+                          </p> */}
+                          {!isLast && (
+                            <p className="text-xs text-gray-500">
+                              Нэг хоногийн үнэ
+                            </p>
+                          )}
                         </div>
 
                         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900 text-white group-hover:bg-gray-800 transition-colors">
