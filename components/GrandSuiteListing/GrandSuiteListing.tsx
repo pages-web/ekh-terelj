@@ -88,58 +88,35 @@ export default function GrandSuiteListing() {
       </div>
 
       <div className="container mx-auto px-4 py-16 space-y-16">
-        <div className="grid-cols-2 gap-3 lg:gap-6 lg:grid hidden">
-          {post?.thumbnail && (
-            <Dialog>
-              <DialogTrigger>
-                <Image
-                  src={post?.thumbnail?.url}
-                  alt={post?.thumbnail.name}
-                  width={800}
-                  height={500}
-                  className="rounded-2xl shadow-md w-full aspect-video"
-                />
-              </DialogTrigger>
-              <DialogContent>
-                <Image
-                  src={post?.thumbnail?.url}
-                  alt={post?.thumbnail.name}
-                  width={800}
-                  height={500}
-                  className="rounded-2xl shadow-md w-full aspect-video"
-                />
-              </DialogContent>
-            </Dialog>
-          )}
-
-          <div className="grid grid-cols-2 gap-3 lg:gap-6">
-            {post?.images?.map((attachment, idx) => (
+        {/* ✅ Desktop grid (5 col × 2 row, 10 зураг хүртэл) */}
+        <div className="hidden lg:grid grid-cols-5 gap-3 lg:gap-6">
+          {[post?.thumbnail, ...(post?.images ?? [])]
+            .slice(0, 10) // зөвхөн эхний 10 зураг авах
+            .map((attachment, idx) => (
               <Dialog key={idx}>
                 <DialogTrigger>
                   <Image
-                    key={idx}
-                    src={attachment.url}
-                    alt={post.title}
+                    src={attachment?.url}
+                    alt={`Suite image ${idx + 1}`}
                     width={300}
                     height={200}
-                    className="rounded-xl shadow w-full h-full aspect-video"
+                    className="rounded-xl shadow-md w-full aspect-video object-cover"
                   />
                 </DialogTrigger>
                 <DialogContent>
                   <Image
-                    key={idx}
-                    src={attachment.url}
-                    alt={post.title}
-                    width={300}
-                    height={200}
-                    className="rounded-xl shadow w-full h-full aspect-video"
+                    src={attachment?.url}
+                    alt={`Suite image ${idx + 1}`}
+                    width={800}
+                    height={500}
+                    className="rounded-2xl shadow-md w-full aspect-video object-contain"
                   />
                 </DialogContent>
               </Dialog>
             ))}
-          </div>
         </div>
 
+        {/* ✅ Mobile carousel */}
         {post?.images && (
           <Carousel
             className="lg:hidden"
@@ -150,8 +127,9 @@ export default function GrandSuiteListing() {
             ]}
           >
             <CarouselContent>
-              {[post?.thumbnail, ...(post?.images ?? [])].map(
-                (attachment, idx) => (
+              {[post?.thumbnail, ...(post?.images ?? [])]
+                .slice(0, 10) // mobile дээр ч зөвхөн 10 зураг
+                .map((attachment, idx) => (
                   <CarouselItem key={idx}>
                     <Dialog>
                       <DialogTrigger>
@@ -160,22 +138,21 @@ export default function GrandSuiteListing() {
                           alt={`Suite thumbnail ${idx + 1}`}
                           width={300}
                           height={200}
-                          className="rounded-xl shadow w-full h-full aspect-video"
+                          className="rounded-xl shadow-md w-full aspect-video object-cover"
                         />
                       </DialogTrigger>
                       <DialogContent>
                         <Image
                           src={attachment?.url}
                           alt={`Suite thumbnail ${idx + 1}`}
-                          width={300}
-                          height={200}
-                          className="rounded-xl shadow w-full h-full aspect-video"
+                          width={800}
+                          height={500}
+                          className="rounded-2xl shadow-md w-full aspect-video object-contain"
                         />
                       </DialogContent>
                     </Dialog>
                   </CarouselItem>
-                )
-              )}
+                ))}
             </CarouselContent>
           </Carousel>
         )}
