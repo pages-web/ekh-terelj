@@ -34,10 +34,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: name,
       images: [
         {
-          url: `${pdomain}/images/logo-terelj.png`,
+          url: "https://ekhterelj.mn/images/logo-terelj.png",
           width: 1200,
           height: 630,
-          alt: name,
         },
       ],
       type: "website",
