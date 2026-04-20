@@ -16,35 +16,40 @@ const roboto = Roboto({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  // const { config } = await getconf();
-  // const { pdomain, name, description, uiOptions } = config || {};
+  const pdomain =
+    process.env.NEXT_PUBLIC_SAAS_DOMAIN || "https://ekhtterelj.mn";
 
-  const pdomain = process.env.NEXT_PUBLIC_SAAS_DOMAIN;
   const name = "Ekh terelj";
   const description =
     "Бид тав тухтай, аюулгүй орчинд, эрүүл, амт чанартай хоол, найрсаг үйлчилгээгээрээ үнэнч үйлчлүүлэгчидтэй болохыг зорин ажилладаг.";
 
   return {
-    metadataBase: new URL(pdomain || "https://www.erxes.io"),
+    metadataBase: new URL(pdomain),
     title: name,
     description,
     openGraph: {
       title: name,
       description,
+      url: `${pdomain}/en`,
+      siteName: name,
       images: [
         {
-          url: "/images/bgImage.jpg",
-          width: 800,
-          height: 600,
+          url: `${pdomain}/images/logo-terelj.png`,
+          width: 1200,
+          height: 630,
           alt: name,
         },
       ],
-      url: pdomain,
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: name,
+      description,
+      images: [`${pdomain}/images/logo-terelj.png`],
     },
   };
 }
-
 export default async function RootLayout({
   children,
   params,
