@@ -16,8 +16,7 @@ const roboto = Roboto({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const pdomain =
-    process.env.NEXT_PUBLIC_SAAS_DOMAIN || "https://ekhtterelj.mn";
+  const pdomain = process.env.NEXT_PUBLIC_SAAS_DOMAIN || "https://ekhterelj.mn";
 
   const name = "Ekh terelj";
   const description =
@@ -30,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: name,
       description,
-      url: `${pdomain}/en`,
+      url: `https://ekhterelj.mn/`,
       siteName: name,
       images: [
         {
