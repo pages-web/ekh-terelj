@@ -6,16 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useCmsPosts } from "@/sdk/queries/cms";
+import { useCmsPostsBySlug } from "@/hooks/useCmsPostsBySlug";
 
 export default function FAQPage() {
-  const { posts: allFaqPosts, loading: faqPostsLoading } = useCmsPosts({
-    categoryId: "FxxII_vEiiY_1YTMmFg1b",
-    perPage: 1000,
-  });
-
-  const faqPosts = allFaqPosts.filter((post) =>
-    post.categoryIds.includes("FxxII_vEiiY_1YTMmFg1b")
+  const { posts: faqPosts, loading: faqPostsLoading } = useCmsPostsBySlug(
+    "tuegeemel-asuult-hariult",
   );
 
   if (faqPostsLoading) {
@@ -50,7 +45,7 @@ export default function FAQPage() {
             <Accordion type="single" collapsible className="w-full space-y-4">
               {faqPosts.map((faqItem, index) => (
                 <AccordionItem
-                  key={index}
+                  key={faqItem._id || `faq-${index}`}
                   value={`item-${index}`}
                   className="bg-white rounded-xl border-0 shadow-sm overflow-hidden"
                 >
@@ -68,7 +63,7 @@ export default function FAQPage() {
                     <div className="ml-10 text-gray-700 leading-relaxed">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: faqItem.content,
+                          __html: faqItem.content || "",
                         }}
                         className="prose prose-sm max-w-none [&>p]:mb-3 [&>ul]:mb-3 [&>ol]:mb-3"
                       />

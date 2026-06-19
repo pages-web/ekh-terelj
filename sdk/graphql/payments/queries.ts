@@ -1,24 +1,13 @@
 import { gql } from "@apollo/client";
 
-const payments = gql`
-  query Payments {
-    payments {
+const paymentsPublic = gql`
+  query CpPayments($status: String, $kind: String) {
+    cpPayments(status: $status, kind: $kind) {
       _id
       name
       kind
       status
-      config
-      createdAt
-    }
-  }
-`;
-
-const paymentsPublic = gql`
-  query PaymentsPublic($kind: String, $ids: [String]) {
-    paymentsPublic(kind: $kind, _ids: $ids) {
-      _id
-      kind
-      name
+      sendEmailOnPayment
     }
   }
 `;
@@ -46,12 +35,14 @@ const invoiceDetail = gql`
 `;
 
 const invoiceIdByDealId = gql`
-  query InvoiceIdByDealId($contentType: String, $contentTypeId: String) {
-    invoices(contentType: $contentType, contentTypeId: $contentTypeId) {
-      _id
+  query CpInvoices($contentType: String, $contentTypeId: String) {
+    cpInvoices(contentType: $contentType, contentTypeId: $contentTypeId) {
+      list {
+        _id
+      }
     }
   }
 `;
 
-const queries = { payments, invoiceDetail, paymentsPublic, invoiceIdByDealId };
+const queries = { invoiceDetail, paymentsPublic, invoiceIdByDealId };
 export default queries;

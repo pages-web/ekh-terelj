@@ -4,13 +4,17 @@ import { useAtomValue } from "jotai";
 import { currentConfigAtom } from "@/store/config";
 import { useTags } from "../queries/sales";
 import { IFullDeal } from "@/types/sales";
+import { useCallback } from "react";
 
 export const useLabelAdd = () => {
   const currentConfig = useAtomValue(currentConfigAtom);
   const [addLabel, { data, loading }] = useMutation(mutations.addLabel, {
-    variables: { pipelineId: currentConfig?.pipelineConfig.pipelineId },
+    variables: {
+      cpSalesPipelineLabelsAddPipelineId2:
+        currentConfig?.pipelineConfig.pipelineId,
+    },
   });
-  return { addLabel, label: data?.salesPipelineLabelsAdd, loading };
+  return { addLabel, label: data?.cpSalesPipelineLabelsAdd, loading };
 };
 
 export const useAddTag = () => {
@@ -37,14 +41,21 @@ export const useAddPrePaymentTag = () => {
   return { addPrePaymentTag, loading };
 };
 
-export const useChangeStage = (dealDetail: IFullDeal) => {
+export const useChangeStage = (dealDetail?: IFullDeal) => {
   const [changeStage, { data, loading }] = useMutation(mutations.dealsEdit);
 
-  const handleChangeStage = (stageId: string) => {
-    return changeStage({
-      variables: { ...dealDetail, id: dealDetail._id, stageId },
-    });
-  };
+  const handleChangeStage = useCallback(
+    (stageId: string) => {
+      if (!dealDetail || !stageId) {
+        return;
+      }
+
+      return changeStage({
+        variables: { _id: dealDetail._id, stageId },
+      });
+    },
+    [changeStage, dealDetail],
+  );
 
   return {
     handleChangeStage,

@@ -10,16 +10,14 @@ export function cn(...inputs: ClassValue[]) {
 export const READ_FILE = "/read-file?key=";
 
 export const ERXES_SASS = "erxes-saas/";
+export const ERXES_READ_FILE_URL =
+  "https://ekhterelj-w917z.next.erxes.io/gateway/read-file?key=";
 
 export const readFile = (url: string = "") => {
-  if (url.startsWith(ERXES_SASS))
-    return process.env.NEXT_PUBLIC_MAIN_API_DOMAIN + READ_FILE + url;
+  if (!url) return "";
+  if (url.startsWith("/") || /^https?:\/\//.test(url)) return url;
 
-  if (url.includes(READ_FILE)) {
-    const apiUrl = url.split(READ_FILE)[0];
-    return url.replace(apiUrl, process.env.NEXT_PUBLIC_MAIN_API_DOMAIN || "");
-  }
-  return url;
+  return ERXES_READ_FILE_URL + url;
 };
 
 export const onError = (error: ApolloError) =>

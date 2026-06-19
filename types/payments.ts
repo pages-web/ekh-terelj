@@ -2,6 +2,8 @@ export interface IPayment {
   _id: string;
   name: string;
   kind: string;
+  status?: string;
+  sendEmailOnPayment?: boolean;
 }
 
 export interface IInvoice {

@@ -4,14 +4,14 @@ const rooms = gql`
   query rooms(
     $pipelineId: String
     $boardId: String
-    $categoryId: String
+    $categoryIds: [String]
     $perPage: Int
     $page: Int
   ) {
-    products(
+    cpProducts(
       pipelineId: $pipelineId
       boardId: $boardId
-      categoryId: $categoryId
+      categoryIds: $categoryIds
       perPage: $perPage
       page: $page
     ) {
@@ -49,7 +49,7 @@ const rooms = gql`
 
 const roomCategories = gql`
   query roomCategories($parentId: String) {
-    productCategories(parentId: $parentId) {
+    cpProductCategories(parentId: $parentId) {
       _id
       code
       name
@@ -63,13 +63,15 @@ const roomCategories = gql`
 `;
 
 const checkRooms = gql`
-  query PmsCheckRooms(
+  query CpPmsCheckRooms(
+    $skipStageIds: [String]
     $pipelineId: String!
     $endDate: Date
     $startDate: Date
     $ids: [String]
   ) {
-    pmsCheckRooms(
+    cpPmsCheckRooms(
+      skipStageIds: $skipStageIds
       pipelineId: $pipelineId
       endDate: $endDate
       startDate: $startDate
@@ -77,32 +79,30 @@ const checkRooms = gql`
     ) {
       _id
       name
+      shortName
       type
       code
       status
       unitPrice
       categoryId
+      propertiesData
+      createdAt
+      tagIds
+      vendorId
+      scopeBrandIds
       uom
+      subUoms
+      currency
       description
-      attachment {
-        url
-        name
-        size
-        type
-      }
-      attachmentMore {
-        url
-        name
-        size
-        type
-      }
-      category {
-        _id
-        code
-        name
-        order
-        description
-      }
+      barcodes
+      variants
+      barcodeDescription
+      hasSimilarity
+      cursor
+      inventories
+      discounts
+      remainder
+      discount
     }
   }
 `;

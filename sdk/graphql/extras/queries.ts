@@ -12,24 +12,34 @@ const uoms = gql`
 `;
 
 const extras = gql`
-  query Extras(
-    $categoryId: String
+  query CpProducts(
+    $categoryIds: [String]
     $searchValue: String
+    $tagIds: [String]
     $perPage: Int
     $page: Int
-    $ids: [String]
   ) {
-    products(
-      type: "product"
-      categoryId: $categoryId
+    cpProducts(
+      categoryIds: $categoryIds
       searchValue: $searchValue
+      tagIds: $tagIds
       perPage: $perPage
       page: $page
-      ids: $ids
     ) {
       _id
       name
+      shortName
+      description
+      categoryId
       unitPrice
+      attachment {
+        url
+        name
+      }
+      attachmentMore {
+        url
+        name
+      }
     }
   }
 `;

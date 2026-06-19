@@ -11,7 +11,7 @@ const ExtraServices = () => {
   const { products: extras } = useGetProducts({
     variables: {
       perPage: 10,
-      categoryId: currentConfig?.extraProductCategories[0],
+      categoryIds: [currentConfig?.extraProductCategories[0]],
     },
   });
 

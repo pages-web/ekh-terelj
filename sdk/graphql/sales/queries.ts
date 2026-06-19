@@ -1,5 +1,33 @@
 import { gql } from "@apollo/client";
 
+const productFields = `
+  _id
+  name
+  shortName
+  status
+  code
+  type
+  description
+  barcodes
+  variants
+  barcodeDescription
+  unitPrice
+  categoryId
+  propertiesData
+  createdAt
+  tagIds
+  vendorId
+  scopeBrandIds
+  uom
+  subUoms
+  currency
+  hasSimilarity
+  inventories
+  discounts
+  remainder
+  discount
+`;
+
 const pmsRooms = gql`
   query PmsRooms(
     $pipelineId: String!
@@ -17,7 +45,6 @@ const pmsRooms = gql`
     ) {
       _id
       name
-      products
       stage {
         code
       }
@@ -60,50 +87,18 @@ const deals = gql`
       sortField: $sortField
       sortDirection: $sortDirection
     ) {
-      products
-      unUsedAmount
-      amount
-      customFieldsData
       _id
-      name
-      companies
-      customers
-      stage
-      labels
-      isComplete
-      startDate
-      closeDate
       createdAt
-      modifiedAt
-      score
-      number
-      stageChangedDate
-      tagIds
-      customProperties
-      status
-      branchIds
-      branches {
-        _id
-        title
-        parentId
-        supervisorId
-        code
-        order
-        userIds
-        userCount
-        status
-        address
-        radius
-        workhours
-        phoneNumber
-        email
-        links
+      products {
+        ${productFields}
       }
-      departmentIds
-      assignedUserIds
-      order
-      createdUserId
-      number
+      productsData
+      stage {
+        _id
+        code
+        name
+      }
+      startDate
     }
   }
 `;
@@ -117,7 +112,10 @@ const dealDetail = gql`
         lastName
         firstName
       }
-      products
+      products {
+        ${productFields}
+      }
+      productsData
       stageId
       name
       description
@@ -145,33 +143,54 @@ const dealPreview = gql`
 `;
 
 const dealFullDetail = gql`
-  query DealFullDetail($id: String!) {
-    dealDetail(_id: $id) {
-      _id
-      stageId
-      name
-      customers {
+query CpDealByIds($_ids: [String]) {
+    cpDeals(_ids: $_ids) {
+      list {
         _id
-        lastName
-        firstName
-        primaryPhone
-        primaryEmail
-      }
-      products
-      labels {
         name
+        number
+        stageId
+        description
+        tagIds
+        productsData
+        paymentsData
+        mobileAmount
+        mobileAmounts
+        createdAt
+        modifiedAt
+        startDate
+        closeDate
+        pipeline {
+          _id
+          name
+          paymentIds
+          paymentTypes
+        }
+        stage {
+          _id
+          name
+          order
+        }
+        products {
+          _id
+          name
+          code
+          unitPrice
+        }
+        customers {
+          _id
+          firstName
+          primaryPhone
+        }
       }
-      paymentsData
-      amount
-      tagIds
-      number
+      totalCount
     }
   }
 `;
 
 const salesPipelineLabels = gql`
   query SalesPipelineLabels($pipelineId: String) {
-    salesPipelineLabels(pipelineId: $pipelineId) {
+    cpSalesPipelineLabels(pipelineId: $pipelineId) {
       _id
       name
     }
@@ -179,10 +198,32 @@ const salesPipelineLabels = gql`
 `;
 
 const stages = gql`
-  query SalesStages($pipelineId: String) {
-    salesStages(pipelineId: $pipelineId) {
+  query CpSalesStages(
+    $pipelineId: String
+    $pipelineIds: [String]
+    $isAll: Boolean
+  ) {
+    cpSalesStages(
+      pipelineId: $pipelineId
+      pipelineIds: $pipelineIds
+      isAll: $isAll
+    ) {
       _id
+      name
+      pipelineId
+      visibility
       code
+      memberIds
+      canMoveMemberIds
+      canEditMemberIds
+      probability
+      status
+      formId
+      age
+      defaultTick
+      order
+      createdAt
+      type
     }
   }
 `;
@@ -199,22 +240,16 @@ const tags = gql`
   query Tags(
     $type: String
     $searchValue: String
-    $tagIds: [String]
     $parentId: String
     $ids: [String]
     $excludeIds: Boolean
-    $page: Int
-    $perPage: Int
   ) {
-    tags(
+    cpTags(
       type: $type
       searchValue: $searchValue
-      tagIds: $tagIds
       parentId: $parentId
       ids: $ids
       excludeIds: $excludeIds
-      page: $page
-      perPage: $perPage
     ) {
       _id
       name

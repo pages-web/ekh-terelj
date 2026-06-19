@@ -1,18 +1,9 @@
-import { BedDouble, CircleAlert, Star, User } from "lucide-react";
 import Image from "../ui/image";
-import { Separator } from "../ui/separator";
-import { ICategory, IProduct } from "@/types/products";
-import { useLocale } from "next-intl";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { IProduct } from "@/types/products";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 
 const SelectRoomProductCard = ({ ...room }: IProduct) => {
-  const category = room.category;
+  const title = room.name || room.category?.name;
 
   return (
     <div className="text-start space-y-3 cursor-pointer group">
@@ -20,6 +11,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
         <div className="w-full h-full">
           <Image
             src={room.attachment?.url || ""}
+            alt={title || "Room"}
             width={1200}
             height={1200}
             className="w-full h-full object-cover group-hover:blur-sm duration-300 brightness-90"
@@ -34,7 +26,7 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
             room.attachment?.url ? "text-white" : "text-black"
           } font-semibold`}
         >
-          {category?.name}
+          {title}
         </h3>
       </div>
 

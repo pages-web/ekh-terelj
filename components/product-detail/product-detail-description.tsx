@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 import { PropsWithChildren, ReactNode } from "react";
 import IconWithTitle from "../icon-with-title/icon-with-title";
+import { useTranslations } from "next-intl";
 
 const ProductDetailDescription = () => {
+  const t = useTranslations("Content");
   const Tab = ({ value, children }: PropsWithChildren & { value: string }) => {
     return (
       <TabsTrigger
@@ -23,10 +25,10 @@ const ProductDetailDescription = () => {
   };
 
   const tabs = [
-    { value: "overview", children: "Overview" },
-    { value: "included", children: "What's included" },
-    { value: "faq", children: "FAQ" },
-    { value: "policies", children: "Policies" },
+    { value: "overview", children: t("overview") },
+    { value: "included", children: t("included") },
+    { value: "faq", children: t("faq") },
+    { value: "policies", children: t("policies") },
   ];
   const facilities = [
     { title: "1 King Bed", icon: <BedDouble className="w-6 h-6" /> },
@@ -52,7 +54,7 @@ const ProductDetailDescription = () => {
       </TabsList>
       <TabsContent value="overview" className="space-y-12">
         <div className="flex flex-col gap-6">
-          <h3 className="text-displaysm">Overview</h3>
+          <h3 className="text-displaysm">{t("overview")}</h3>
           <p className="line-clamp-4 text-textsm">
             Luxury eco-certified hotel refurbished in 2019 and located near
             Sükhbaatar Square located close to National Academic Theatre of
@@ -66,7 +68,7 @@ const ProductDetailDescription = () => {
           </p>
         </div>
         <div className="space-y-6">
-          <h3 className="text-displaysm">Room best facilities</h3>
+          <h3 className="text-displaysm">{t("roomFacilities")}</h3>
           <div className="grid grid-cols-3 gap-6">
             {facilities.map((facility, index) => {
               return (
@@ -80,9 +82,9 @@ const ProductDetailDescription = () => {
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="included">{`What's included`}</TabsContent>
-      <TabsContent value="faq">FAQ</TabsContent>
-      <TabsContent value="policies">Policies</TabsContent>
+      <TabsContent value="included">{t("included")}</TabsContent>
+      <TabsContent value="faq">{t("faq")}</TabsContent>
+      <TabsContent value="policies">{t("policies")}</TabsContent>
     </Tabs>
   );
 };

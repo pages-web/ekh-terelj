@@ -5,8 +5,12 @@ import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
 import LoginForm from "@/containers/auth/login-form";
 import { Lock } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-const Login = () => {
+const Login = async () => {
+  const t = await getTranslations("Auth");
+  const tCommon = await getTranslations("Common");
+
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
@@ -15,10 +19,10 @@ const Login = () => {
             <Lock className="h-6 w-6 text-white" />
           </div>
           <h1 className="text-3xl font-bold bg-primary dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-            Тавтай морилно уу
+            {t("welcomeBackShort")}
           </h1>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Үргэлжлүүлэхийн тулд акаунтаараа нэвтэрнэ үү
+            {t("memberAccount")}
           </p>
         </div>
 
@@ -44,13 +48,13 @@ const Login = () => {
 
         <div className="text-center mt-8">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Акаунт байхгүй юу?{" "}
+            {t("noAccount")}{" "}
             <Button
               variant="link"
               className="font-semibold p-0 h-auto text-sm bg-primary bg-clip-text text-transparent hover:from-slate-900 hover:to-slate-800"
               asChild
             >
-              <Link href="/signup">Бүртгүүлэх</Link>
+              <Link href="/signup">{tCommon("signup")}</Link>
             </Button>
           </p>
         </div>

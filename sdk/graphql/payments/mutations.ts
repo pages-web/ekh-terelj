@@ -1,32 +1,8 @@
 import { gql } from "@apollo/client";
 
 const invoiceCreate = gql`
-  mutation InvoiceCreate(
-    $amount: Float!
-    $phone: String
-    $email: String
-    $description: String
-    $customerId: String
-    $customerType: String
-    $contentType: String
-    $contentTypeId: String
-    $redirectUri: String
-    $paymentIds: [String]
-    $data: JSON
-  ) {
-    invoiceCreate(
-      amount: $amount
-      phone: $phone
-      email: $email
-      description: $description
-      customerId: $customerId
-      customerType: $customerType
-      contentType: $contentType
-      contentTypeId: $contentTypeId
-      redirectUri: $redirectUri
-      paymentIds: $paymentIds
-      data: $data
-    ) {
+  mutation InvoiceCreate($input: InvoiceInput!) {
+    invoiceCreate(input: $input) {
       _id
       invoiceNumber
       amount
@@ -50,18 +26,8 @@ const invoiceCreate = gql`
 `;
 
 const transactionsAdd = gql`
-  mutation TransactionsAdd(
-    $invoiceId: String!
-    $paymentId: String!
-    $amount: Float!
-    $details: JSON
-  ) {
-    paymentTransactionsAdd(
-      invoiceId: $invoiceId
-      paymentId: $paymentId
-      amount: $amount
-      details: $details
-    ) {
+  mutation TransactionsAdd($input: PaymentTransactionInput!) {
+    paymentTransactionsAdd(input: $input) {
       _id
       amount
       invoiceId
@@ -75,8 +41,8 @@ const transactionsAdd = gql`
 `;
 
 const checkInvoice = gql`
-  mutation InvoicesCheck($id: String!) {
-    invoicesCheck(_id: $id)
+  mutation CpInvoicesCheck($id: String!) {
+    cpInvoicesCheck(_id: $id)
   }
 `;
 

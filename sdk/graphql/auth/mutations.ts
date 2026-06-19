@@ -1,46 +1,51 @@
 import { gql } from "@apollo/client";
 
 const login = gql`
-  mutation ClientPortalLogin(
-    $clientPortalId: String!
-    $login: String!
-    $password: String!
+  mutation ClientPortalUserLoginWithCredentials(
+    $email: String
+    $phone: String
+    $password: String
   ) {
-    clientPortalLogin(
-      clientPortalId: $clientPortalId
-      login: $login
+    clientPortalUserLoginWithCredentials(
+      email: $email
+      phone: $phone
       password: $password
     )
   }
 `;
 
 const createUser = gql`
-  mutation ClientPortalRegister(
-    $clientPortalId: String
+  mutation ClientPortalUserRegister(
     $email: String
+    $phone: String
+    $password: String
     $firstName: String
     $lastName: String
-    $password: String
-    $phone: String
-    $companyName: String
-    $companyRegistrationNumber: String
-    $type: String
-    $username: String
-    $avatar: String
+    $userType: CPUserType
   ) {
-    clientPortalRegister(
-      clientPortalId: $clientPortalId
+    clientPortalUserRegister(
       email: $email
+      phone: $phone
+      password: $password
       firstName: $firstName
       lastName: $lastName
-      password: $password
-      phone: $phone
-      companyName: $companyName
-      companyRegistrationNumber: $companyRegistrationNumber
-      type: $type
-      username: $username
-      avatar: $avatar
-    )
+      userType: $userType
+    ) {
+      _id
+      email
+      phone
+      firstName
+      lastName
+      isVerified
+      isEmailVerified
+      isPhoneVerified
+    }
+  }
+`;
+
+const requestOTP = gql`
+  mutation ClientPortalUserRequestOTP($identifier: String!) {
+    clientPortalUserRequestOTP(identifier: $identifier)
   }
 `;
 
@@ -123,8 +128,27 @@ const userChangePassword = gql`
   }
 `;
 const userVerify = gql`
-  mutation ClientPortalVerifyOTP($userId: String!, $emailOtp: String) {
-    clientPortalVerifyOTP(userId: $userId, emailOtp: $emailOtp)
+  mutation ClientPortalUserVerify(
+    $userId: String
+    $email: String
+    $phone: String
+    $code: String!
+  ) {
+    clientPortalUserVerify(
+      userId: $userId
+      email: $email
+      phone: $phone
+      code: $code
+    ) {
+      _id
+      email
+      phone
+      firstName
+      lastName
+      isVerified
+      isEmailVerified
+      isPhoneVerified
+    }
   }
 `;
 
@@ -183,6 +207,7 @@ const mutations = {
   login,
   logout,
   createUser,
+  requestOTP,
   getCode,
   userEdit,
   resetPassword,

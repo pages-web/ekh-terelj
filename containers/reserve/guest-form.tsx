@@ -1,7 +1,5 @@
 "use client";
-import { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
 import { useAtom } from "jotai";
 import CountField from "@/components/count-field/count-field";
 import { PopoverClose } from "@/components/ui/popover";
@@ -18,6 +16,7 @@ import {
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { reserveGuestAndRoomAtom } from "@/store/reserve";
+import { useTranslations } from "next-intl";
 const FormSchema = z.object({
   pet: z.boolean().default(false),
   room: z.number().min(0),
@@ -26,14 +25,16 @@ const FormSchema = z.object({
 });
 
 const GuestForm = () => {
+  const t = useTranslations("Booking");
+  const tCommon = useTranslations("Common");
   const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       pet: reserveGuestAndRoom?.pet || false,
-      room: reserveGuestAndRoom?.room || 0,
-      adults: reserveGuestAndRoom?.adults || 0,
+      room: reserveGuestAndRoom?.room || 1,
+      adults: reserveGuestAndRoom?.adults || 1,
       children: reserveGuestAndRoom?.children || 0,
     },
   });
@@ -47,14 +48,14 @@ const GuestForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex flex-col gap-6 ">
           <div className="flex flex-col gap-3">
-            <h2 className="text-textxl">Guests</h2>
+            <h2 className="text-textxl">{t("guests")}</h2>
             <FormField
               control={form.control}
               name="adults"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CountField title="Adults" field={field} />
+                    <CountField title={t("adults")} field={field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -65,7 +66,7 @@ const GuestForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CountField title="Children" field={field} />
+                    <CountField title={t("children")} field={field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -78,9 +79,9 @@ const GuestForm = () => {
             render={({ field }) => (
               <FormItem className="flex flex-row items-end justify-between space-x-3 space-y-0 rounded-md">
                 <div>
-                  <FormLabel className="font-bold">Pet friendly</FormLabel>
+                  <FormLabel className="font-bold">{t("petFriendly")}</FormLabel>
                   <FormDescription>
-                    Only show stays that allow pets
+                    {t("petFriendlyDescription")}
                   </FormDescription>
                 </div>
                 <FormControl>
@@ -96,7 +97,7 @@ const GuestForm = () => {
           />
 
           <PopoverClose type="submit" className="self-end">
-            <Button className="w-fit">Apply</Button>
+            <Button className="w-fit">{tCommon("apply")}</Button>
           </PopoverClose>
         </div>
       </form>

@@ -16,31 +16,29 @@ import {
 } from "@/components/ui/navigation-menu";
 import { menuItems } from "@/lib/menuItems";
 import { cn } from "@/lib/utils";
-import { useCmsPosts } from "@/sdk/queries/cms";
+import { useGetProducts } from "@/sdk/queries/extras";
+import { IProduct } from "@/types/products";
+import { useTranslations } from "next-intl";
+
+const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA";
 
 export function NavbarTop({ children }: { children?: React.ReactNode }) {
-  const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
-    useCmsPosts({
-      categoryId: "1s1knKVOLplWPaIGkDnFd",
-      perPage: 1000,
+  const tCommon = useTranslations("Common");
+  const tNav = useTranslations("Nav");
+  const { products: sortedRoomCategories }: { products: IProduct[] } =
+    useGetProducts({
+      variables: {
+        categoryIds: [ACCOMMODATION_CATEGORY_ID],
+        perPage: 1000,
+      },
     });
-
-  const roomCategories = allGrandSuitePosts.filter((post) =>
-    post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd")
-  );
-
-  const sortedRoomCategories = [...roomCategories].sort((a, b) => {
-    const aIndex = a.customFieldsMap?.room_post?.index ?? 999;
-    const bIndex = b.customFieldsMap?.room_post?.index ?? 999;
-    return aIndex - bIndex;
-  });
 
   return (
     <header className="z-50 sticky top-0 w-full bg-primary shadow-xl backdrop-blur-md">
       <div className="flex justify-between items-center container mx-auto py-4 px-6">
         <Link
           href="/"
-          aria-label="Homepage"
+          aria-label={tCommon("homepage")}
           className="-mt-4 w-[140px] h-[65px] transition-transform duration-300 hover:scale-105"
         >
           <Image
@@ -48,20 +46,20 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
             height={1080}
             width={1920}
             quality={100}
-            alt="Logo"
+            alt={tCommon("logoAlt")}
             className="drop-shadow-lg"
           />
         </Link>
 
         <div className="flex justify-between gap-3 items-center">
-          <div className="hidden lg:flex justify-between items-center">
+          <div className="max-lg:hidden lg:flex justify-between items-center">
             <NavigationMenu>
               <NavigationMenuList className="gap-1">
                 {menuItems.map((item, index) => (
                   <NavigationMenuItem key={index}>
                     {item.extra === "Accomodation" ? (
                       <NavigationMenuTrigger className="!text-white hover:bg-slate-800 hover:!text-white focus:!text-white active:!text-white data-[state=open]:bg-slate-800 data-[state=open]:!text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium !bg-transparent">
-                        {item.label}
+                        {tNav(item.labelKey)}
                       </NavigationMenuTrigger>
                     ) : (
                       <NavigationMenuLink
@@ -71,7 +69,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                           "bg-transparent text-white hover:bg-slate-800 hover:text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium"
                         )}
                       >
-                        {item.label}
+                          {tNav(item.labelKey)}
                       </NavigationMenuLink>
                     )}
 
@@ -87,7 +85,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                               href={`/room-detail/${category._id}`}
                               key={index}
                             >
-                              {category.title}
+                              {category.name}
                             </NavigationMenuLink>
                           ))}
                       </NavigationMenuContent>
@@ -98,7 +96,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
             </NavigationMenu>
           </div>
 
-          <div className="hidden lg:flex gap-3 ml-6">
+          <div className="max-lg:hidden lg:flex gap-3 ml-6">
             <a
               href="https://www.facebook.com/ekhterel"
               target="_blank"
@@ -120,7 +118,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
           </div>
 
           {children}
-          <div className="lg:hidden">
+          <div className="lg:!hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -140,11 +138,11 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                   {menuItems.map((item) => (
                     <Link
                       href={item.href}
-                      aria-label={item.label}
+                      aria-label={tNav(item.labelKey)}
                       className="text-white text-base font-medium hover:text-white transition-all duration-300 py-3 px-4 rounded-lg hover:bg-slate-800"
                       key={item.href}
                     >
-                      {item.label}
+                      {tNav(item.labelKey)}
                     </Link>
                   ))}
                   <div className="flex gap-4 mt-8 pt-6 border-t border-gray-600">

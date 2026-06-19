@@ -4,8 +4,30 @@ import Link from "next/link";
 import Image from "../ui/image";
 import Heading from "../heading/heading";
 import { useCmsPosts } from "@/sdk/queries/cms";
-import { useRoomsAndCategories } from "@/sdk/queries/rooms";
 import { useState } from "react";
+import { useGetProducts } from "@/sdk/queries/extras";
+import { IProduct } from "@/types/products";
+
+const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA";
+
+const getDescriptionText = (description?: string) => {
+  if (!description) return "";
+
+  try {
+    const blocks = JSON.parse(description);
+    if (!Array.isArray(blocks)) return description;
+
+    return blocks
+      .flatMap(
+        (block: { content?: { text?: string }[] }) => block.content || [],
+      )
+      .map((content: { text?: string }) => content.text)
+      .filter(Boolean)
+      .join(" ");
+  } catch {
+    return description;
+  }
+};
 
 const RoomCardSkeleton = () => (
   <div className="w-full group relative overflow-hidden rounded-2xl bg-white shadow-md border border-gray-100 h-auto">
@@ -51,7 +73,7 @@ const FallbackImage = ({ name }: { name: string }) => (
 
 export default function Rooms() {
   const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>(
-    {}
+    {},
   );
 
   const { posts, loading: postsLoading } = useCmsPosts({
@@ -59,19 +81,15 @@ export default function Rooms() {
     perPage: 1000,
   });
 
-  const { posts: allGrandSuitePosts, loading: grandSuitePostsLoading } =
-    useCmsPosts({
-      categoryId: "1s1knKVOLplWPaIGkDnFd",
+  const {
+    products: grandSuitePosts,
+    loading: grandSuitePostsLoading,
+  }: { products: IProduct[]; loading: boolean } = useGetProducts({
+    variables: {
+      categoryIds: [ACCOMMODATION_CATEGORY_ID],
       perPage: 1000,
-    });
-
-  const grandSuitePosts = allGrandSuitePosts
-    .filter((post) => post.categoryIds.includes("1s1knKVOLplWPaIGkDnFd"))
-    .sort((a, b) => {
-      const indexA = a.customFieldsMap?.room_post?.index || 999;
-      const indexB = b.customFieldsMap?.room_post?.index || 999;
-      return indexA - indexB;
-    });
+    },
+  });
 
   const post = posts[0];
 
@@ -95,9 +113,11 @@ export default function Rooms() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {grandSuitePosts &&
             grandSuitePosts?.map((category, index) => {
-              const imageUrl = category.thumbnail?.url;
+              const imageUrl = category.attachment?.url;
+
               const hasImageError = imageErrors[category._id];
               const isLast = index === grandSuitePosts.length - 1;
+              const description = getDescriptionText(category.description);
 
               return (
                 <Link href={`/room-detail/${category._id}`} key={index}>
@@ -110,30 +130,26 @@ export default function Rooms() {
                             width={600}
                             height={400}
                             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                            alt={category.title}
+                            alt={category.name}
                             onError={() => handleImageError(category._id)}
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                       ) : (
-                        <FallbackImage name={category.title} />
-                      )}
-
-                      {imageUrl && !hasImageError && (
-                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <FallbackImage name={category.name} />
                       )}
                     </div>
 
                     <div className="p-5 space-y-3">
                       <div className="space-y-1">
                         <h3 className="text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors line-clamp-1">
-                          {category.title}
+                          {category.name}
                         </h3>
                         <p
                           className="text-sm text-gray-500 line-clamp-2"
                           dangerouslySetInnerHTML={{
-                            __html: category.excerpt || "",
+                            __html: description,
                           }}
                         />
                       </div>
@@ -142,9 +158,8 @@ export default function Rooms() {
                         <div>
                           <div className="flex items-baseline gap-1">
                             <span className="text-xl font-bold text-gray-900">
-                              {category.customFieldsMap?.room_post?.price
-                                ? category.customFieldsMap?.room_post?.price?.toLocaleString() +
-                                  "₮"
+                              {category.unitPrice
+                                ? category.unitPrice.toLocaleString() + "₮"
                                 : ""}
                             </span>
                           </div>

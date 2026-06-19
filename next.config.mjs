@@ -5,12 +5,12 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_MAIN_API_DOMAIN: "https://ekhterelj.api.erxes.io/gateway",
-    NEXT_PUBLIC_SAAS_DOMAIN: "https://ekhterelj.app.erxes.io",
+    ERXES_API_URL: "https://ekhterelj-w917z.next.erxes.io/gateway/graphql",
+    ERXES_API_URL_MAIN: "https://ekhterelj-w917z.next.erxes.io/gateway/graphql",
     NEXT_PUBLIC_CP_ID: "TzO81SoQJOc2QQzOU1gBQ",
-    NEXT_PUBLIC_PMS_TOKEN: "WDhfiVSLriHkdzMd9Eaa2vgCpTiEgObD",
-    NEXT_PUBLIC_APP_TOKEN:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOnsibmFtZSI6IldlYiIsImNyZWF0ZWRBdCI6IjIwMjUtMDQtMTZUMDI6MTE6NTYuODA4WiIsInVzZXJHcm91cElkIjoiNEVIeWRUREFpczJMZFFuWm4iLCJleHBpcmVEYXRlIjoiMjAyNS0wNS0xNlQwMzo0NToyOC41MzJaIiwibm9FeHBpcmUiOnRydWUsImFsbG93QWxsUGVybWlzc2lvbiI6dHJ1ZSwiX2lkIjoib3pDMVBPcDY3bzVVME4wbTNaaFozIiwiX192IjowfSwiaWF0IjoxNzQ0Nzc1MTM2fQ.P0_-fV4i3A4eQ0kSv_h67s_Esk5WNlTteHfYZT_g6iQ",
+    NEXT_PUBLIC_PMS_TOKEN: "pyNBV0rXuAR4Csx7-6MoU",
+    ERXES_APP_TOKEN:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRQb3J0YWxJZCI6IjRXd050eHUxUHowM3RGSHN4YllnWCIsImlhdCI6MTc4MDIzODU3Mn0.uK7N2f92sO9O1yP19TuKYVTzpLRyyBfWlCTCpwo25tI",
   },
 };
 

@@ -5,13 +5,17 @@ import {
   Facebook,
   FacebookIcon,
   InstagramIcon,
-  YoutubeIcon,
   Phone,
   Mail,
   MapPin,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const tCommon = useTranslations("Common");
+  const tFooter = useTranslations("Footer");
+  const tNav = useTranslations("Nav");
+
   return (
     <footer className="bg-primary pt-16 pb-8 text-gray-700 mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,15 +24,14 @@ export default function Footer() {
             <div className="mb-6">
               <Image
                 src="/images/logo_white.png"
-                alt="Ikh Terelj Resort Logo"
+                alt={tCommon("logoAlt")}
                 height={80}
                 width={150}
                 quality={100}
               />
             </div>
             <p className="text-sm text-white/80 leading-relaxed mb-6">
-              Монголын гайхамшигтай байгалийн дунд байрлах Эх Тэрэлж Ресорт-д
-              тансаг байдал болон амар амгалангийн мэдрэмжийг мэдрээрэй.
+              {tFooter("description")}
             </p>
 
             <div className="flex gap-4">
@@ -51,16 +54,16 @@ export default function Footer() {
 
           <div className="lg:col-span-1">
             <h3 className="text-lg font-semibold text-white mb-6">
-              Холбоосууд
+              {tFooter("links")}
             </h3>
             <ul className="space-y-3">
               {menuItems.slice(0, 6).map((item) => (
-                <li key={item.label}>
+                <li key={item.labelKey}>
                   <Link
                     href={item.href}
                     className="text-sm text-white/80 hover:text-white transition-colors duration-200"
                   >
-                    {item.label}
+                    {tNav(item.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -69,7 +72,7 @@ export default function Footer() {
 
           <div className="lg:col-span-1">
             <h3 className="text-lg font-semibold text-white mb-6">
-              Холбоо барих
+              {tFooter("contact")}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
@@ -78,8 +81,7 @@ export default function Footer() {
                   className="text-white/80 mt-1 flex-shrink-0"
                 />
                 <p className="text-sm text-white/80 hover:text-white transition-colors">
-                  Улаанбаатар хотоос 49км, Тэрэлжийн гүүрнээс цааш 7км-т төв зам
-                  дагуу байршилтай.
+                  {tFooter("address")}
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -106,7 +108,7 @@ export default function Footer() {
 
         <div className="border-t border-white/30 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-            <p className="text-sm text-white/60">© 2025 Эх Тэрэлж Ресорт</p>
+            <p className="text-sm text-white/60">{tFooter("copyright")}</p>
           </div>
         </div>
       </div>

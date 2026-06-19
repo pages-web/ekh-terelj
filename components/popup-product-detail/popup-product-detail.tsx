@@ -25,10 +25,15 @@ import {
 } from "../ui/EmblaCarouselDotButton/EmblaCarouselDotButton";
 import { EmblaCarouselType } from "embla-carousel";
 import { IProduct } from "@/types/products";
+import { CmsContent } from "../contentRender";
+import { getProductDescriptionHtml } from "@/lib/product-description";
 
 const PopupProductDetail = ({ ...room }: IProduct) => {
   const category = room.category;
   const { name, description, attachment, attachmentMore } = room;
+  const overview = getProductDescriptionHtml(
+    description || category?.description,
+  );
   const images = [attachment, attachmentMore].flat();
   const facilities = [
     { title: "1 King Bed", icon: <BedDouble className="w-6 h-6" /> },
@@ -70,7 +75,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
   );
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="px-4 text-displayxs">{category?.name}</h1>
+      <h1 className="px-4 text-displayxs">{name || category?.name}</h1>
       <Carousel
         plugins={[plugin.current]}
         onMouseEnter={plugin.current.stop}
@@ -84,6 +89,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
                 <Image
                   // src={image?.url}
                   src="/images/product.png"
+                  alt={name || category?.name || "Room"}
                   width={1000}
                   height={800}
                   quality={100}
@@ -107,10 +113,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
       <div className="space-y-8">
         <div className="px-4 space-y-4">
           <h3 className="text-displayxs">Overview</h3>
-          <p
-            className="text-textsm"
-            dangerouslySetInnerHTML={{ __html: category?.description || "" }}
-          ></p>
+          <CmsContent html={overview} className="text-textsm" />
         </div>
         <div className="px-4 space-y-4">
           <h3 className="text-displayxs">Room best facilities</h3>

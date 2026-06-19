@@ -1,6 +1,5 @@
 import ReserveSelectDate from "../reserve-select-date/reserve-select-date";
 import Image from "../ui/image";
-import { useCmsPosts } from "@/sdk/queries/cms";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Loading } from "../ui/loading";
@@ -8,19 +7,22 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import { useTranslations } from "next-intl";
+import { usePageBySlug } from "@/hooks/usePageBySlug";
+
+const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "").trim();
 
 const HomeBooking = () => {
-  const { posts, loading } = useCmsPosts({
-    tagIds: ["EiBafCNFaCWnLCvKUajEb"],
-    perPage: 1000,
-  });
+  const t = useTranslations("Booking");
+  const { page, loading } = usePageBySlug("home-hero");
 
   if (loading) return <Loading />;
 
-  const post = posts[0];
-  const images = post?.images || [];
+  const images = page?.pageImages || [];
 
-  const title = post?.title || "FOR THOSE WHO WANTED ALL.";
+  const title = page?.name;
+
+  const excerpt = stripHtml(page?.description as string);
 
   const splitTitle = (text: string) => {
     const words = text.split(" ");
@@ -28,7 +30,7 @@ const HomeBooking = () => {
     return [words.slice(0, half).join(" "), words.slice(half).join(" ")];
   };
 
-  const [line1, line2] = splitTitle(title);
+  const [line1, line2] = splitTitle(title as string);
 
   return (
     <div>
@@ -67,7 +69,9 @@ const HomeBooking = () => {
                       height={920}
                       quality={100}
                       className="h-full w-full object-cover brightness-[.8]"
-                      alt={image.name || `Banner slide ${index + 1}`}
+                      alt={
+                        image.name || t("bannerSlideAlt", { index: index + 1 })
+                      }
                       priority={index === 0}
                     />
                   </div>
@@ -81,24 +85,21 @@ const HomeBooking = () => {
               height={920}
               quality={100}
               className="h-full md:w-full brightness-[.8]"
-              alt="Default banner"
+              alt={t("defaultBannerAlt")}
             />
           )}
         </div>
 
         <div className="lg:w-[50%] z-20 space-y-9 relative flex items-end text-center lg:text-start lg:items-end lg:justify-end justify-center h-[90%]">
           <div className="text-white">
-            {/* <button className='border border-white rounded-full px-4 py-1 text-sm backdrop-blur-3xl bg-[#EAECF0]/10'>
-            Bookƒ
-          </button> */}
             <h1 className="font-bold text-[35px] md:text-[55px] leading-tight">
               <span>{line1}</span>
               <br />
               <span>{line2}</span>
             </h1>
+            {/* Fix 3: replaced post?.excerpt with stripped page.description */}
             <p className="text-md lg:text-lg max-w-xl text-white/80">
-              {post?.excerpt ||
-                "Find your perfect stay with ease explore a wide range of rooms, grab great deals, and book your ideal getaway today."}
+              {excerpt}
             </p>
           </div>
         </div>
@@ -108,4 +109,5 @@ const HomeBooking = () => {
     </div>
   );
 };
+
 export default HomeBooking;

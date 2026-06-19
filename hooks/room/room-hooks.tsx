@@ -1,13 +1,11 @@
 import { reserveGuestAndRoomAtom } from "@/store/reserve";
 import {
-  addSelectedRoomAtom,
   selectedRoomAtom,
   selectedRoomsAtom,
 } from "@/store/rooms";
 import { IExtra, IProduct, IRoom } from "@/types/products";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { RESET } from "jotai/utils";
 import { toast } from "sonner";
 
 export const useAddRoomExtras = ({ extra }: { extra: IExtra }) => {
@@ -46,20 +44,34 @@ export const useAddRoomExtras = ({ extra }: { extra: IExtra }) => {
 };
 
 export const useSelectRoom = ({ room }: { room: IRoom }) => {
-  const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
   const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
-  const [, addSelectedRoom] = useAtom(addSelectedRoomAtom);
 
   const HandleSelectRoom = () => {
-    setSelectedRoom({
-      ...selectedRoom,
-      room: room,
-    });
-    addSelectedRoom(reserveGuestAndRoom.room);
-    setSelectedRoom(RESET);
-    selectedRooms.length >= reserveGuestAndRoom.room &&
+    if (reserveGuestAndRoom.room === 1) {
+      setSelectedRooms([{ room, extras: [] }]);
+      return;
+    }
+
+    if (
+      selectedRooms.some((selectedRoom) => selectedRoom.room?._id === room._id)
+    ) {
+      setSelectedRooms((rooms) =>
+        rooms.map((selectedRoom) =>
+          selectedRoom.room?._id === room._id
+            ? { ...selectedRoom, room }
+            : selectedRoom
+        )
+      );
+      return;
+    }
+
+    if (selectedRooms.length >= reserveGuestAndRoom.room) {
       toast.error("It's full", { description: "You can't add more rooms" });
+      return;
+    }
+
+    setSelectedRooms((rooms) => [...rooms, { room, extras: [] }]);
   };
 
   return { HandleSelectRoom };

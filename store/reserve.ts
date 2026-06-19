@@ -10,7 +10,7 @@ import { DateRange } from "react-day-picker";
 
 export const reserveGuestAndRoomAtom = atomWithStorage<IReserveGuestAndRoom>(
   "reserveGuestAndRoomAtom",
-  { pet: false, room: 0, adults: 0, children: 0 }
+  { pet: false, room: 1, adults: 1, children: 0 }
 );
 
 export const reserveDateAtom = atomWithStorage<DateRange | any>("reserveDate", {

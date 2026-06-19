@@ -4,13 +4,17 @@ import SelectProductCard from "@/components/select-product-card/select-product-c
 import { useCheckRooms } from "@/sdk/queries/rooms";
 import { reserveDateAtom } from "@/store/reserve";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Loading } from "../ui/loading";
 
 const SelectRoomProducts = ({ className }: { className?: string }) => {
   const [date] = useAtom(reserveDateAtom);
-  const { roomCategoriesByProduct, refetch, loading } = useCheckRooms({
-    variables: { startDate: date?.from, endDate: date?.to },
+  const variables = useMemo(
+    () => ({ startDate: date?.from, endDate: date?.to }),
+    [date?.from, date?.to],
+  );
+  const { rooms, refetch, loading } = useCheckRooms({
+    variables,
   });
 
   useEffect(() => {
@@ -31,7 +35,7 @@ const SelectRoomProducts = ({ className }: { className?: string }) => {
     );
   }
 
-  if (!roomCategoriesByProduct) {
+  if (rooms.length === 0) {
     return (
       <div className="w-full pt-40 flex justify-center font-bold">
         There are no available rooms for the selected date.
@@ -41,8 +45,8 @@ const SelectRoomProducts = ({ className }: { className?: string }) => {
 
   return (
     <div className={`grid lg:grid-cols-2 gap-y-3 gap-x-6 ${className}`}>
-      {roomCategoriesByProduct?.map((room, index) => {
-        return <SelectProductCard key={index} room={room} />;
+      {rooms?.map((room) => {
+        return <SelectProductCard key={room._id} room={room} />;
       })}
     </div>
   );

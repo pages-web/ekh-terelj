@@ -3,27 +3,27 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
 import { reserveInfoAtom } from "@/store/reserve";
 import { IStage } from "@/types/sales";
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { mutations } from "../graphql/sales";
+import { queries as roomQueries } from "../graphql/rooms";
 import { useLabels, useStages, useTags } from "../queries/sales";
-import {
-  useLabelAdd,
-  useAddTag,
-  useAddPrePaymentTag,
-} from "../mutations/sales";
-import { useState } from "react";
+import { useLabelAdd, useAddPrePaymentTag } from "../mutations/sales";
 import { isPrePaymentAtom } from "@/store/payments";
-import { useInvoiceCreate } from "../mutations/payments";
+import { currentConfigAtom } from "@/store/config";
 
 const useAddDeal = () => {
   const [addDeal, { data, loading: addDealLoading }] = useMutation(
-    mutations.dealsAdd
+    mutations.dealsAdd,
+  );
+  const [checkRooms, { loading: checkRoomsLoading }] = useLazyQuery(
+    roomQueries.checkRooms,
+    { fetchPolicy: "network-only" },
   );
   const { addLabel } = useLabelAdd();
   const { addPrePaymentTag, loading: addTagLoading } = useAddPrePaymentTag();
-  const { handleInvoiceCreate, loading } = useInvoiceCreate();
 
   const { to, from, nights, adults, children } = useAtomValue(reserveInfoAtom);
+  const currentConfig = useAtomValue(currentConfigAtom);
   const { firstName, lastName, erxesCustomerId } =
     useAtomValue(currentUserAtom) || {};
 
@@ -61,7 +61,7 @@ const useAddDeal = () => {
       information: {
         parentId: room?._id,
       },
-    }))
+    })),
   );
 
   const handleAddDeal = async ({
@@ -69,17 +69,59 @@ const useAddDeal = () => {
   }: {
     description?: string;
   }): Promise<string> => {
+    const pipelineId = currentConfig?.pipelineConfig?.pipelineId;
+    const selectedRoomIds = selectedRooms
+      .map(({ room }) => room?._id)
+      .filter(Boolean);
+
+    if (!from || !to) {
+      throw new Error("Pick a date before booking");
+    }
+
+    if (!pipelineId) {
+      throw new Error("Booking configuration is not ready");
+    }
+
+    if (selectedRoomIds.length === 0) {
+      throw new Error("Select a room before booking");
+    }
+
+    const { data: roomAvailabilityData } = await checkRooms({
+      variables: {
+        pipelineId,
+        ids: selectedRoomIds,
+        startDate: from,
+        endDate: to,
+      },
+    });
+
+    const availableRoomIds = new Set(
+      (roomAvailabilityData?.cpPmsCheckRooms ?? []).map(
+        (room: { _id: string }) => room._id,
+      ),
+    );
+    const unavailableRoom = selectedRooms.find(
+      ({ room }) => room?._id && !availableRoomIds.has(room._id),
+    );
+
+    if (unavailableRoom) {
+      throw new Error(
+        `${unavailableRoom.room?.name || "This room"} is already reserved for the selected date`,
+      );
+    }
+
     let labelId = labels.find((l: any) => l.name.toLowerCase() === "web")?._id;
+    console.log(labels, ";abes");
 
     if (!labelId) {
       const result = await addLabel({
         variables: { name: "Web", colorCode: "#eb144c" },
       });
-      labelId = result.data?.salesPipelineLabelsAdd?._id;
+      labelId = result.data?.cpSalesPipelineLabelsAdd?._id;
     }
 
     let tagId = tags?.find((tag) =>
-      isPrePayment ? tag.name === "Pre payment" : tag.name === "Full payment"
+      isPrePayment ? tag.name === "Pre payment" : tag.name === "Full payment",
     )?._id;
 
     if (!tagId) {
@@ -87,11 +129,17 @@ const useAddDeal = () => {
       tagId = result.data?.tagsAdd?._id;
     }
 
+    const targetStage = stages?.find((st: IStage) => st.code === "unconfirmed");
+
+    if (!targetStage?._id) {
+      throw new Error("Booking stage not found: unconfirmed");
+    }
+
     const variables = {
       name: `${firstName} ${lastName}`,
       customerIds: [erxesCustomerId],
       productsData: [...selectedRoomsByMutation, ...selectedExtrasByMutation],
-      stageId: stages?.find((st: IStage) => st.code === "unconfirmed")?._id,
+      stageId: targetStage._id,
       startDate: from,
       closeDate: to,
       description: `${description}`,
@@ -101,14 +149,17 @@ const useAddDeal = () => {
 
     setDealId(null);
 
-    const { data } = await addDeal({ variables }); // ✅ Now awaiting and getting `data` correctly
+    const { data } = await addDeal({ variables });
 
-    const newDealId = data?.dealsAdd?._id;
+    const newDealId = data?.cpDealsAdd?._id;
 
     return newDealId;
   };
 
-  return { handleAddDeal, loading: addDealLoading || addTagLoading };
+  return {
+    handleAddDeal,
+    loading: addDealLoading || addTagLoading || checkRoomsLoading,
+  };
 };
 
 export default useAddDeal;

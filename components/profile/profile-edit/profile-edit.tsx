@@ -16,13 +16,14 @@ import { Button } from "../../ui/button";
 import { useAtomValue } from "jotai";
 import { currentUserAtom } from "@/store/auth";
 import { useUserEdit } from "@/sdk/mutations/auth";
-
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string(),
-});
+import { useTranslations } from "next-intl";
 
 const ProfileEdit = () => {
+  const t = useTranslations("Forms");
+  const formSchema = z.object({
+    firstName: z.string().min(1, { message: t("firstNameRequired") }),
+    lastName: z.string(),
+  });
   const { firstName, lastName, _id } = useAtomValue(currentUserAtom) || {};
   const { editUser, loading } = useUserEdit();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,10 +49,10 @@ const ProfileEdit = () => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Firstname</FormLabel>
+              <FormLabel>{t("firstName")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="John"
+                  placeholder={t("firstNamePlaceholder")}
                   {...field}
                   autoComplete="given-name"
                 />
@@ -65,10 +66,10 @@ const ProfileEdit = () => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Lastname</FormLabel>
+              <FormLabel>{t("lastName")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Doe"
+                  placeholder={t("lastNamePlaceholder")}
                   {...field}
                   autoComplete="family-name"
                 />
@@ -78,7 +79,7 @@ const ProfileEdit = () => {
           )}
         />
 
-        <Button disabled={loading}>Save changes</Button>
+        <Button disabled={loading}>{t("saveChanges")}</Button>
       </form>
     </Form>
   );

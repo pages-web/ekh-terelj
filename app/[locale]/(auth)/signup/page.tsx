@@ -2,8 +2,12 @@ import { Button } from "@/components/ui/button";
 import RegisterForm from "@/containers/auth/register-form";
 import { Link } from "@/i18n/routing";
 import { User } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-const SignUp = () => {
+const SignUp = async () => {
+  const t = await getTranslations("Auth");
+  const tCommon = await getTranslations("Common");
+
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-lg">
@@ -12,7 +16,7 @@ const SignUp = () => {
             <User className="h-6 w-6 text-white" />
           </div>
           <h1 className="text-3xl font-bold bg-primary dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-            Бүртгэл үүсгэх
+            {t("createAccount")}
           </h1>
         </div>
 
@@ -22,13 +26,13 @@ const SignUp = () => {
 
         <div className="text-center mt-8">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Бүртгэлтэй юу?{" "}
+            {t("hasAccount")}{" "}
             <Button
               variant="link"
               className="font-semibold p-0 h-auto text-sm bg-primary bg-clip-text text-transparent hover:from-slate-900 hover:to-slate-700"
               asChild
             >
-              <Link href="/login">Нэвтрэх</Link>
+              <Link href="/login">{tCommon("login")}</Link>
             </Button>
           </p>
         </div>

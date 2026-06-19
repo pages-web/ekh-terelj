@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronUp, ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function SpaDetails() {
+  const t = useTranslations("Content");
   const [openSections, setOpenSections] = useState<boolean[]>([true, true]);
 
   const toggleSection = (index: number) => {
@@ -23,10 +25,9 @@ export default function SpaDetails() {
           <ChevronLeft size={24} />
         </button>
         <div className="text-center flex-1">
-          <h1 className="text-[30px] font-semibold">Hannam Spa house</h1>
+          <h1 className="text-[30px] font-semibold">{t("hannamSpaHouse")}</h1>
           <p className="text-sm text-gray-500">
-            World-class wellness in one of the best spas in Sydney nestled among
-            decades of architectural history
+            {t("wellnessIntro")}
           </p>
         </div>
         <div className="w-8" />
@@ -37,7 +38,7 @@ export default function SpaDetails() {
           <div className="rounded-2xl overflow-hidden">
             <Image
               src="/images/spa-hero.png"
-              alt="Main spa room"
+              alt={t("mainSpaRoomAlt")}
               width={800}
               height={500}
               className="w-full h-auto object-cover"
@@ -47,7 +48,7 @@ export default function SpaDetails() {
             <div className="rounded-2xl overflow-hidden">
               <Image
                 src="/images/spa-waterfall.png"
-                alt="Spa feature 1"
+                alt={t("spaFeatureAlt", { index: 1 })}
                 width={400}
                 height={300}
                 className="w-full h-auto object-cover"
@@ -56,7 +57,7 @@ export default function SpaDetails() {
             <div className="rounded-2xl overflow-hidden">
               <Image
                 src="/images/spa-lounge.png"
-                alt="Spa feature 2"
+                alt={t("spaFeatureAlt", { index: 2 })}
                 width={400}
                 height={300}
                 className="w-full h-auto object-cover"
@@ -66,20 +67,18 @@ export default function SpaDetails() {
         </div>
         <div className="space-y-6">
           <div>
-            <h2 className="font-semibold text-lg mb-2">A spa of one’s own</h2>
+            <h2 className="font-semibold text-lg mb-2">{t("spaOfOwn")}</h2>
             <p className="text-sm text-gray-600">
-              A world away from the streets of New York below, Aman New York’s
-              Spa Houses offer the ultimate peaceful escape...
+              {t("wellnessIntro")}
             </p>
           </div>
 
           <div>
             <h2 className="font-semibold text-lg mb-2">
-              Exclusive experiences
+              {t("exclusiveExperiences")}
             </h2>
             <p className="text-sm text-gray-600">
-              Available for half or full day private hire, Spa House experiences
-              include a selection of customised treatments...
+              {t("exclusiveExperiencesDescription")}
             </p>
           </div>
 
@@ -90,7 +89,7 @@ export default function SpaDetails() {
                 onClick={() => toggleSection(i)}
               >
                 <h3 className="font-medium text-base">
-                  Sample Half Day Banya Experience
+                  {t("sampleBanya")}
                 </h3>
                 {openSections[i] ? (
                   <ChevronUp size={20} />
@@ -101,9 +100,9 @@ export default function SpaDetails() {
 
               {openSections[i] && (
                 <ul className="mt-2 space-y-2 text-sm text-gray-600 list-disc pl-5">
-                  <li>One Banya sauna treatment per guest</li>
-                  <li>Body scrub and sensory shower experience</li>
-                  <li>60-minute custom full-body massage</li>
+                  <li>{t("banyaTreatment")}</li>
+                  <li>{t("bodyScrub")}</li>
+                  <li>{t("customMassage")}</li>
                 </ul>
               )}
             </div>

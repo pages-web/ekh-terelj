@@ -1,21 +1,23 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
-export default function ArvaPage() {
+export default async function ArvaPage() {
+  const t = await getTranslations("Content");
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <button className="mb-4 text-blue-500 hover:underline">←</button>
 
-      <h1 className="text-[28px] font-semibold text-center">The Arva</h1>
+      <h1 className="text-[28px] font-semibold text-center">{t("theArva")}</h1>
       <p className="text-center text-sm text-gray-600 mt-2">
         <a href="#" className="underline hover:text-gray-800">
-          Aman Tokyo is home to one of the widest selections of dining venues
-          found in any of the city`s hotels
+          {t("cuisine")}
         </a>
       </p>
 
       <div className="flex justify-center my-4">
         <button className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm">
-          Make an Enquiry
+          {t("makeEnquiry")}
         </button>
       </div>
 
@@ -31,7 +33,7 @@ export default function ArvaPage() {
           <div key={i} className="overflow-hidden rounded-xl">
             <Image
               src={src}
-              alt={`Arva Image ${i + 1}`}
+              alt={`${t("theArva")} ${i + 1}`}
               width={400}
               height={400}
               className="object-cover w-full h-full"

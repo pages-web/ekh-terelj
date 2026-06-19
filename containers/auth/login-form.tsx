@@ -1,9 +1,5 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -16,36 +12,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Password } from "@/components/ui/password"
 import { Link } from "@/i18n/routing"
-import { useLogin } from "@/sdk/mutations/auth"
 import { LoadingIcon } from "@/components/ui/loading"
-
-const formSchema = z.object({
-  login: z
-    .string()
-    .min(1, { message: "Нэвтрэх нэрээ оруулна уу" })
-    .regex(
-      /^[^\s@]+@[^\s@]+\.[^\s@]+|[0-9]{6,}$/,
-      "Буруу утас эсвэл цахим хаяг"
-    ),
-  password: z.string().min(1, { message: "Нууц үгээ оруулна уу" }),
-})
+import { useLoginForm } from "./use-login-form"
+import { useTranslations } from "next-intl"
 
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      login: "",
-      password: "",
-    },
-  })
-
-  const { login, loading, clientPortalId } = useLogin()
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    login({
-      variables: { ...values, clientPortalId },
-    })
-  }
+  const t = useTranslations("Auth")
+  const { form, loading, onSubmit } = useLoginForm()
 
   return (
     <Form {...form}>
@@ -56,13 +29,13 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                Имэйл эсвэл утасны дугаар
+                {t("loginIdentifier")}
               </FormLabel>
               <FormControl>
                 <div className="relative">
 
                   <Input
-                    placeholder="Имэйл эсвэл утсаа оруулна уу"
+                    placeholder={t("loginIdentifierPlaceholder")}
                     {...field}
                     autoComplete="off"
                     className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-base"
@@ -81,7 +54,7 @@ const LoginForm = () => {
             <FormItem>
               <div className="flex items-center justify-between mb-2">
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Нууц үг
+                  {t("password")}
                 </FormLabel>
                 <Button
                   asChild
@@ -89,7 +62,7 @@ const LoginForm = () => {
                   className="py-0 h-auto font-medium px-0 text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                   tabIndex={-1}
                 >
-                  <Link href="/forgot">Нууц үгээ мартсан уу?</Link>
+                  <Link href="/forgot">{t("forgotPasswordQuestion")}</Link>
                 </Button>
               </div>
               <FormControl>
@@ -113,7 +86,7 @@ const LoginForm = () => {
           disabled={loading}
         >
           {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
-          {loading ? "Нэвтэрч байна..." : "Нэвтрэх"}
+          {loading ? t("loggingIn") : t("login")}
         </Button>
       </form>
     </Form>

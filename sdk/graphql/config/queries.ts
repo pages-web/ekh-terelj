@@ -36,8 +36,8 @@ const PmsBranchList = gql`
 `;
 
 const PmsBranchDetail = gql`
-  query PmsBranchDetail($id: String!) {
-    pmsBranchDetail(_id: $id) {
+  query CpPmsBranchDetail($id: String!) {
+    cpPmsBranchDetail(_id: $id) {
       _id
       createdAt
       userId
@@ -68,6 +68,10 @@ const PmsBranchDetail = gql`
       roomCategories
       time
       discount
+      checkintime
+      checkouttime
+      checkinamount
+      checkoutamount
     }
   }
 `;

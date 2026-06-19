@@ -14,14 +14,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format, formatDistance } from "date-fns";
+import { format } from "date-fns";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { Separator } from "@/components/ui/separator";
 import { useLabels } from "@/sdk/queries/sales";
 import { useAtom, useAtomValue } from "jotai";
 import { currentConfigAtom } from "@/store/config";
+import { useTranslations } from "next-intl";
 
 const Orders = () => {
+  const tContent = useTranslations("Content");
+  const tBooking = useTranslations("Booking");
   const { currentUser } = useCurrentUser();
   const currentConfig = useAtomValue(currentConfigAtom);
   const { data } = useQuery(queries.deals, {
@@ -42,14 +45,14 @@ const Orders = () => {
   const { labels } = useLabels();
   const roomCategories = roomCategoriesData?.productCategories;
   const deals = data?.deals;
-  const stages = stagesData?.salesStages;
+  const stages = stagesData?.cpSalesStages;
 
   console.log(data);
 
   const router = useRouter();
   return (
     <div className="w-[80%] min-h-screen space-y-3 md:space-y-6 pt-6 md:pt-10 flex flex-col container">
-      <h1 className="text-displaysm font-bold">Bookings</h1>
+      <h1 className="text-displaysm font-bold">{tContent("bookings")}</h1>
       <Separator />
       {/* <Tabs defaultValue="all" className="w-[400px]">
         <TabsList className="gap-10">
@@ -84,16 +87,16 @@ const Orders = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
-                <TableHead>Created date</TableHead>
-                <TableHead>Check-in date</TableHead>
-                <TableHead>Payment</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Total price</TableHead>
+                <TableHead>{tBooking("createdDate")}</TableHead>
+                <TableHead>{tBooking("checkInDate")}</TableHead>
+                <TableHead>{tBooking("payment")}</TableHead>
+                <TableHead>{tBooking("status")}</TableHead>
+                <TableHead className="text-right">{tBooking("totalPrice")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data?.deals.length === 0 && (
-                <TableRow>{`There are no bookings :(`}</TableRow>
+                <TableRow>{tContent("noBookings")}</TableRow>
               )}
               {data?.deals.map((deal: any, index: number) => {
                 return (
@@ -112,38 +115,29 @@ const Orders = () => {
                     <TableCell>
                       {deal.stage.code === "unconfirmed" ? (
                         <span className="text-textxs text-[#726e34] bg-[#fcf37e] px-2 py-1 rounded-lg">
-                          Waiting
+                          {tContent("waiting")}
                         </span>
                       ) : deal.stage.code !== "unconfirmed" &&
                         deal.stage.code !== "canceled" ? (
                         <span
                           className={`text-textxs px-2 py-1 rounded-lg bg-[#95fea0] text-[#1d6824]`}
                         >
-                          Paid
+                          {tContent("paid")}
                         </span>
                       ) : (
                         <span className="text-textxs text-destructive bg-[#ffc0c0] px-2 py-1 rounded-lg">
-                          Canceled
+                          {tContent("canceled")}
                         </span>
                       )}
                     </TableCell>
                     <TableCell className="text-right">
                       MNT{" "}
                       {formatNumberWithCommas(
-                        deal?.products.reduce(
+                        deal?.productsData?.reduce(
                           (acc: any, item: any) =>
-                            acc +
-                            item.product.unitPrice *
-                              parseInt(
-                                deal?.products[0].startDate &&
-                                  deal?.products[0].endDate &&
-                                  formatDistance(
-                                    deal?.products[0].startDate,
-                                    deal?.products[0].endDate
-                                  )
-                              ),
+                            acc + (item.amount || 0),
                           0
-                        )
+                        ) || 0
                       )}
                       ₮
                     </TableCell>

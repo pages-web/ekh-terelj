@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Users, Clock, ParkingCircle } from "lucide-react";
+import Image from "next/image";
 
 const eventSpaces = [
   {
@@ -39,9 +40,11 @@ export default function Events() {
             key={space.title}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center"
           >
-            <img
+            <Image
               src={space.image}
               alt={space.title}
+              width={800}
+              height={500}
               className="w-full h-80 object-cover rounded-xl shadow-md"
             />
             <div className="space-y-4">

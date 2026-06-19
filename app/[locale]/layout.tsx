@@ -5,15 +5,7 @@ import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
 import Apollo from "./ApolloClient";
 import CurrentConfigProvider from "@/containers/config/currentConfig";
-import { Roboto } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "100", "200", "300", "800", "900"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const pdomain = process.env.NEXT_PUBLIC_SAAS_DOMAIN || "https://ekhterelj.mn";
@@ -59,17 +51,13 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} className={roboto.className}>
-      <body>
-        <NextIntlClientProvider messages={messages}>
-          <Apollo>
-            <CurrentConfigProvider>
-              <DefaultLayout locale={locale}>{children}</DefaultLayout>
-            </CurrentConfigProvider>
-          </Apollo>
-          <Toaster richColors closeButton />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <Apollo>
+        <CurrentConfigProvider>
+          <DefaultLayout locale={locale}>{children}</DefaultLayout>
+        </CurrentConfigProvider>
+      </Apollo>
+      <Toaster richColors closeButton />
+    </NextIntlClientProvider>
   );
 }

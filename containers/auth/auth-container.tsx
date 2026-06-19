@@ -14,12 +14,14 @@ import {
   Heart,
 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface AuthContainerProps {
   initialView?: "login" | "signup";
 }
 
 const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
+  const t = useTranslations("Auth");
   const [currentView, setCurrentView] = useState<"login" | "signup">(
     initialView
   );
@@ -66,7 +68,7 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                     ? "/images/gallery/terelj1.jpg"
                     : "/images/gallery/terelj15.jpg"
                 }
-                alt="Terelj Resort"
+                alt={t("tereljResort")}
                 fill
                 className="object-cover"
                 priority
@@ -89,20 +91,18 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                       <div className="flex items-center gap-2 lg:gap-3">
                         <Star className="h-5 w-5 lg:h-6 lg:w-6 text-yellow-400 fill-current" />
                         <span className="text-sm lg:text-base font-semibold text-blue-100">
-                          Premium Experience
+                          {t("premiumExperience")}
                         </span>
                       </div>
                       <div className="space-y-3 lg:space-y-4">
                         <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
-                          Welcome Back to
+                          {t("welcomeBack")}
                           <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                            Terelj Resort
+                            {t("tereljResort")}
                           </span>
                         </h1>
                         <p className="text-base lg:text-lg text-blue-100 leading-relaxed max-w-sm lg:max-w-md">
-                          Continue your luxurious journey with us and access
-                          exclusive member benefits in Mongolia&apos;s most
-                          beautiful destination.
+                          {t("loginIntro")}
                         </p>
                       </div>
                     </div>
@@ -114,11 +114,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            Secure Bookings
+                            {t("secureBookings")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Your reservations and personal data are protected
-                            with industry-leading security.
+                            {t("secureBookingsText")}
                           </p>
                         </div>
                       </div>
@@ -129,11 +128,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            VIP Member Benefits
+                            {t("vipBenefits")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Enjoy priority booking, special rates, and exclusive
-                            access to premium amenities.
+                            {t("vipBenefitsText")}
                           </p>
                         </div>
                       </div>
@@ -144,11 +142,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            Personalized Service
+                            {t("personalizedService")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Our team remembers your preferences for a truly
-                            personalized experience.
+                            {t("personalizedServiceText")}
                           </p>
                         </div>
                       </div>
@@ -160,19 +157,18 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                       <div className="flex items-center gap-2 lg:gap-3">
                         <Star className="h-5 w-5 lg:h-6 lg:w-6 text-yellow-400 fill-current" />
                         <span className="text-sm lg:text-base font-semibold text-blue-100">
-                          Join Our Family
+                          {t("joinFamily")}
                         </span>
                       </div>
                       <div className="space-y-3 lg:space-y-4">
                         <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
-                          Discover Paradise at
+                          {t("discoverParadise")}
                           <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                            Terelj Resort
+                            {t("tereljResort")}
                           </span>
                         </h1>
                         <p className="text-base lg:text-lg text-blue-100 leading-relaxed max-w-sm lg:max-w-md">
-                          Create your account and unlock exclusive access to
-                          Mongolia&apos;s premier luxury resort experience.
+                          {t("signupIntro")}
                         </p>
                       </div>
                     </div>
@@ -184,11 +180,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            Member Exclusive Rates
+                            {t("memberRates")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Save up to 25% on all bookings with special member
-                            pricing.
+                            {t("memberRatesText")}
                           </p>
                         </div>
                       </div>
@@ -199,11 +194,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            Priority Access
+                            {t("priorityAccess")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Be the first to book premium suites and exclusive
-                            experiences.
+                            {t("priorityAccessText")}
                           </p>
                         </div>
                       </div>
@@ -214,11 +208,10 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         </div>
                         <div className="space-y-1 lg:space-y-2">
                           <h3 className="text-sm lg:text-base font-bold text-white">
-                            Wellness & Spa Access
+                            {t("spaAccess")}
                           </h3>
                           <p className="text-xs lg:text-sm text-blue-100 leading-relaxed">
-                            Complimentary access to our world-class spa and
-                            wellness facilities.
+                            {t("spaAccessText")}
                           </p>
                         </div>
                       </div>
@@ -256,14 +249,14 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                     <LoginForm />
                     <div className="text-center space-y-4">
                       <p className="text-gray-600 text-sm">
-                        Don&apos;t have an account yet?
+                        {t("noAccount")}
                       </p>
                       <Button
                         onClick={switchToSignup}
                         variant="outline"
                         className="rounded-xl px-8 py-3 hover:bg-blue-50 border-2 border-blue-200 text-blue-600 font-semibold transition-all duration-200 hover:shadow-md hover:border-blue-300"
                       >
-                        Create Account <ArrowRight className="ml-2 h-4 w-4" />
+                        {t("createAccount")} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -272,14 +265,14 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                     <RegisterForm />
                     <div className="text-center space-y-4">
                       <p className="text-gray-600 text-sm">
-                        Already have an account?
+                        {t("hasAccount")}
                       </p>
                       <Button
                         onClick={switchToLogin}
                         variant="outline"
                         className="rounded-xl px-8 py-3 hover:bg-blue-50 border-2 border-blue-200 text-blue-600 font-semibold transition-all duration-200 hover:shadow-md hover:border-blue-300"
                       >
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Sign In
+                        <ArrowLeft className="mr-2 h-4 w-4" /> {t("signIn")}
                       </Button>
                     </div>
                   </div>
@@ -299,7 +292,7 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                   ? "/images/gallery/terelj1.jpg"
                   : "/images/gallery/terelj15.jpg"
               }
-              alt="Terelj Resort"
+              alt={t("tereljResort")}
               fill
               className="object-cover"
             />
@@ -316,18 +309,18 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                 <div className="flex items-center justify-center gap-2">
                   <Star className="h-6 w-6 text-yellow-400 fill-current" />
                   <span className="text-sm font-semibold text-blue-100">
-                    Premium Resort
+                    {t("premiumResort")}
                   </span>
                 </div>
                 <h1 className="text-2xl font-bold">
                   {currentView === "login"
-                    ? "Welcome Back!"
-                    : "Join Terelj Resort"}
+                    ? t("welcomeBackShort")
+                    : t("joinResort")}
                 </h1>
                 <p className="text-blue-100 text-sm leading-relaxed">
                   {currentView === "login"
-                    ? "Access your exclusive member account"
-                    : "Discover luxury in Mongolia&apos;s nature"}
+                    ? t("memberAccount")
+                    : t("natureLuxury")}
                 </p>
               </motion.div>
 
@@ -376,7 +369,7 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         variant="link"
                         className="text-blue-600 font-semibold"
                       >
-                        Don&apos;t have an account? Sign up
+                        {t("signupPrompt")}
                       </Button>
                     </div>
                   </div>
@@ -389,7 +382,7 @@ const AuthContainer = ({ initialView = "login" }: AuthContainerProps) => {
                         variant="link"
                         className="text-blue-600 font-semibold"
                       >
-                        Already have an account? Sign in
+                        {t("signinPrompt")}
                       </Button>
                     </div>
                   </div>

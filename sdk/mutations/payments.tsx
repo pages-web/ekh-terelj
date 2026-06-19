@@ -1,41 +1,95 @@
 import { useMutation } from "@apollo/client";
-import { useInvoiceIdByDealId, usePayments } from "../queries/payments";
+import { usePayments } from "../queries/payments";
 import { mutations } from "../graphql/payments";
 import { IFullDeal } from "@/types/sales";
 import { useCurrentUser } from "../queries/auth";
-import { useDealDetail } from "../queries/sales";
+
+type InvoiceCreateArgs = {
+  amount?: number;
+  currency?: string;
+  dealDetail: IFullDeal;
+  description?: string;
+  paymentId?: string;
+  redirectUri?: string;
+};
 
 export const useInvoiceCreate = () => {
   const { payments } = usePayments();
   const { currentUser } = useCurrentUser();
 
-  const paymentIds = payments.map((payment) => payment._id);
+  const fallbackPaymentIds = payments.map((payment) => payment._id);
 
   const [invoiceCreate, { data, loading }] = useMutation(
     mutations.invoiceCreate
   );
 
-  const handleInvoiceCreate = (dealDetail: IFullDeal) => {
-    const totalAmount = dealDetail?.products.reduce(
+  const handleInvoiceCreate = (args: IFullDeal | InvoiceCreateArgs) => {
+    const dealDetail = "_id" in args ? args : args.dealDetail;
+    const totalAmount = dealDetail?.productsData.reduce(
       (acc, item) => acc + item.amount,
       0
     );
-    const variables = {
-      amount: totalAmount,
+    const paymentIds = dealDetail.pipeline?.paymentIds?.length
+      ? dealDetail.pipeline.paymentIds
+      : fallbackPaymentIds;
+    const selectedPaymentIds =
+      "_id" in args || !args.paymentId ? paymentIds : [args.paymentId];
+
+    const input = {
+      amount: "_id" in args ? totalAmount : args.amount ?? totalAmount,
+      currency: "_id" in args ? "MNT" : args.currency ?? "MNT",
       phone: currentUser?.phone,
       email: currentUser?.email,
-      description: `${dealDetail.number} захиалгын төлбөр`,
+      description:
+        "_id" in args
+          ? `${dealDetail.number} захиалгын төлбөр`
+          : args.description || `${dealDetail.number} захиалгын төлбөр`,
       customerId: currentUser?.erxesCustomerId,
       customerType: "customer",
-      contentType: "sales:deals",
+      contentType: "sales:deal",
       contentTypeId: dealDetail._id,
-      paymentIds,
+      paymentIds: selectedPaymentIds,
+      ...(!("_id" in args) && args.redirectUri
+        ? { redirectUri: args.redirectUri }
+        : {}),
     };
 
-    return invoiceCreate({ variables });
+    return invoiceCreate({ variables: { input } });
   };
 
   const invoiceId = data?.invoiceCreate?._id || "";
 
   return { handleInvoiceCreate, loading, invoiceId };
+};
+
+export const useAddPaymentTransaction = () => {
+  const [transactionsAdd, { loading }] = useMutation(mutations.transactionsAdd);
+
+  const handleAddTransaction = (
+    invoiceId: string,
+    amount: number,
+    paymentId: string
+  ) => {
+    return transactionsAdd({
+      variables: {
+        input: {
+          invoiceId,
+          paymentId,
+          amount,
+        },
+      },
+    });
+  };
+
+  return { handleAddTransaction, loading };
+};
+
+export const useCheckInvoice = () => {
+  const [checkInvoice, { loading }] = useMutation(mutations.checkInvoice);
+
+  const handleCheckInvoice = (id: string) => {
+    return checkInvoice({ variables: { id } });
+  };
+
+  return { handleCheckInvoice, loading };
 };

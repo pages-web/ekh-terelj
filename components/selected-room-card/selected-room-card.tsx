@@ -5,8 +5,10 @@ import { Button } from "../ui/button";
 import { useRouter } from "@/i18n/routing";
 import { formatNumberWithCommas } from "@/lib/formatNumber";
 import { removeSelectedRoomAtom, selectedRoomsAtom } from "@/store/rooms";
+import { useTranslations } from "next-intl";
 
 const SelectedRoomCard = () => {
+  const t = useTranslations("Booking");
   const router = useRouter();
   const selectedRooms = useAtomValue(selectedRoomsAtom);
   const reserveGuestAndRoom = useAtomValue(reserveGuestAndRoomAtom);
@@ -15,7 +17,7 @@ const SelectedRoomCard = () => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      <h1 className="text-displayxs text-black">Your reservation</h1>
+      <h1 className="text-displayxs text-black">{t("yourReservation")}</h1>
 
       <div className="flex flex-col gap-4">
         {selectedRooms.map((product, index) => (
@@ -25,13 +27,15 @@ const SelectedRoomCard = () => {
             onClick={() => removeRoom(product.room._id)}
           >
             <div className="flex gap-4">
-              <h1 className="w-20 text-textsm">Өрөө {index + 1}:</h1>
+              <h1 className="w-20 text-textsm">
+                {t("roomNumber", { index: index + 1 })}
+              </h1>
               <div className="w-full flex justify-between">
                 <div>
                   <h2>{product.room?.category?.name}</h2>
                   <span className="text-textsm text-black/60">
                     {formatNumberWithCommas(product.room?.unitPrice)}₮ x{" "}
-                    {nights} шөнө
+                    {t("night", { count: nights })}
                   </span>
                 </div>
                 <h2>
@@ -42,7 +46,7 @@ const SelectedRoomCard = () => {
 
             {product.extras && (
               <div className="flex gap-4 text-textsm">
-                <h1 className="w-20 text-textsm">Extras:</h1>
+                <h1 className="w-20 text-textsm">{t("extras")}</h1>
                 <div className="w-full flex justify-between">
                   <div className="w-full space-y-2">
                     {product.extras?.map((extra, index) => (
@@ -53,7 +57,7 @@ const SelectedRoomCard = () => {
                     ))}
                     <h2>{product.room?.category?.name}</h2>
                     <span className="text-textsm text-black/60">
-                      {product.room?.unitPrice}₮ x {nights} шөнө
+                      {product.room?.unitPrice}₮ x {t("night", { count: nights })}
                     </span>
                   </div>
                 </div>
@@ -63,7 +67,7 @@ const SelectedRoomCard = () => {
             <Separator />
 
             <div className="flex justify-end gap-1">
-              <h2>Total: </h2>
+              <h2>{t("total")} </h2>
               <h2 className="justify-self-end">
                 {product.extras
                   ? formatNumberWithCommas(
@@ -83,7 +87,7 @@ const SelectedRoomCard = () => {
 
       <Separator />
       <div className="flex justify-between text-displayxs font-bold">
-        <h1 className="uppercase">Total: </h1>
+        <h1 className="uppercase">{t("total")} </h1>
         <h1>
           {formatNumberWithCommas(
             selectedRooms.reduce(
@@ -98,7 +102,7 @@ const SelectedRoomCard = () => {
       <div className="flex flex-col gap-2">
         {selectedRooms.length === reserveGuestAndRoom.room && (
           <Button onClick={() => router.push("/booking/your-details")}>
-            Захиалах
+            {t("book")}
           </Button>
         )}
       </div>

@@ -4,8 +4,10 @@ import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import { selectedRoomsAtom } from "@/store/rooms";
 import { format, formatDistance } from "date-fns";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 
 const CheckBookingDetail = () => {
+  const t = useTranslations("Booking");
   const [selectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const [totalAmount] = useAtom(totalAmountAtom);
@@ -17,13 +19,11 @@ const CheckBookingDetail = () => {
     <div className="space-y-3">
       <div>
         <p className="font-bold text-textsm">
-          Stays: {nights} night{nights > 1 && "s"}
+          {t("stay", { count: nights })}
         </p>
         <p className="font-bold text-textsm">
-          Guests: {reserveGuestAndRoom.adults} adult
-          {reserveGuestAndRoom.adults > 1 && "s"},{" "}
-          {reserveGuestAndRoom.children} child
-          {reserveGuestAndRoom.adults > 1 && "ren"}
+          {t("guests")}: {t("adult", { count: reserveGuestAndRoom.adults })},{" "}
+          {t("child", { count: reserveGuestAndRoom.children })}
         </p>
       </div>
 
@@ -31,17 +31,17 @@ const CheckBookingDetail = () => {
 
       <div className="grid grid-cols-5">
         <div className="col-span-2">
-          <h2 className="text-textsm">Check-in</h2>
+          <h2 className="text-textsm">{t("checkIn")}</h2>
           <p className="font-bold">{format(date?.from, "PPPP")}</p>
-          <p className="text-black/60 text-textsm">From 15:00</p>
+          <p className="text-black/60 text-textsm">{t("fromTime")}</p>
         </div>
         <div className="flex justify-center">
           <Separator orientation="vertical" />
         </div>
         <div className="col-span-2">
-          <h2 className="text-textsm">Check-out</h2>
+          <h2 className="text-textsm">{t("checkOut")}</h2>
           <p className="font-bold">{format(date?.to, "PPPP")}</p>
-          <p className="text-black/60 text-textsm">Until 11:00</p>
+          <p className="text-black/60 text-textsm">{t("untilTime")}</p>
         </div>
       </div>
 
@@ -83,7 +83,7 @@ const CheckBookingDetail = () => {
 
       <div className="">
         <div className="flex justify-between font-bold">
-          <span>Price</span>
+          <span>{t("price")}</span>
           <span>{totalAmount}₮</span>
         </div>
       </div>

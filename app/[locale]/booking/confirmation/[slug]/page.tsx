@@ -28,22 +28,29 @@ const YourDetails = () => {
   });
   const { data } = useQuery(queries.dealFullDetail, {
     variables: {
-      id: params.slug,
+      _ids: [params.slug],
     },
+    skip: !params.slug,
   });
   const categories = categoriesData?.productCategories;
-  const deal = data?.dealDetail;
+  const deal = data?.cpDeals?.list;
+  const products = deal?.products || [];
+  const productsData = deal?.productsData || [];
+  const firstProductData = productsData[0];
+  const getProduct = (productId: string) =>
+    products.find((product: any) => product._id === productId);
 
-  const nights = parseInt(
-    deal?.products[0].startDate &&
-      deal?.products[0].endDate &&
-      formatDistance(deal?.products[0].startDate, deal?.products[0].endDate)
+  const nights =
+    parseInt(
+      firstProductData?.startDate &&
+        firstProductData?.endDate &&
+        formatDistance(firstProductData.startDate, firstProductData.endDate),
+    ) || 0;
+  const rooms = productsData.filter(
+    (product: any) => !product.information?.parentId,
   );
-  const rooms = deal?.products.filter(
-    (product: any) => !product.information.parentId
-  );
-  const extras = deal?.products.filter(
-    (product: any) => product.information.parentId
+  const extras = productsData.filter(
+    (product: any) => product.information?.parentId,
   );
 
   useEffect(() => {
@@ -51,7 +58,7 @@ const YourDetails = () => {
     setReserveGuestAndRoom(RESET);
     setDate(RESET);
     setDealId(RESET);
-  }, []);
+  }, [setDate, setDealId, setReserveGuestAndRoom, setSelectedRooms]);
 
   return (
     <BookingLayout currentActive={4}>
@@ -98,10 +105,10 @@ const YourDetails = () => {
                 Stays: {nights} night{nights > 1 && "s"}
               </p>
               <p className="font-bold text-textsm">
-                Guests: {deal?.products[0].information.adults} adult
-                {deal?.products[0].information.adults > 1 && "s"},{" "}
-                {deal?.products[0].information.adults} child
-                {deal?.products[0].information.children > 1 && "ren"}
+                Guests: {firstProductData?.information?.adults ?? 0} adult
+                {(firstProductData?.information?.adults ?? 0) > 1 && "s"},{" "}
+                {firstProductData?.information?.children ?? 0} child
+                {(firstProductData?.information?.children ?? 0) > 1 && "ren"}
               </p>
             </div>
 
@@ -111,25 +118,29 @@ const YourDetails = () => {
               <div className="space-y-2">
                 <h2>Check-in:</h2>
                 <p className="font-bold">
-                  {deal?.products[0].startDate &&
-                    format(deal?.products[0].startDate, "PPP")}
+                  {firstProductData?.startDate &&
+                    format(firstProductData.startDate, "PPP")}
                 </p>
               </div>
               <div className="space-y-2">
                 <h2>Check-out:</h2>
                 <p className="font-bold">
-                  {deal?.products[0].endDate &&
-                    format(deal?.products[0].endDate, "PPP")}
+                  {firstProductData?.endDate &&
+                    format(firstProductData.endDate, "PPP")}
                 </p>
               </div>
 
               {/* <div className="space-y-2">
                   <h2>Adults:</h2>
-                  <p className="font-bold">{deal?.products[0].information.adults}</p>
+                  <p className="font-bold">
+                    {firstProductData?.information.adults}
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <h2>Children:</h2>
-                  <p className="font-bold">{deal?.products[0].information.adults}</p>
+                  <p className="font-bold">
+                    {firstProductData?.information.adults}
+                  </p>
                 </div> */}
             </div>
 
@@ -144,8 +155,10 @@ const YourDetails = () => {
                       {
                         categories?.find(
                           (category: any) =>
-                            category._id === room?.product.categoryId
-                        ).name
+                            category._id ===
+                            (room?.product?.categoryId ||
+                              getProduct(room?.productId)?.categoryId),
+                        )?.name
                       }
                     </h1>
                   </div>
@@ -156,10 +169,10 @@ const YourDetails = () => {
                         <div className="w-full pl-2 space-y-1">
                           {extras?.map(
                             (extra: any, index: number) =>
-                              extra.information.parentId ===
-                                room.product._id && (
+                              extra.information?.parentId ===
+                                room.productId && (
                                 <h2 key={index}>{extra.name},</h2>
-                              )
+                              ),
                           )}
                         </div>
                       </div>
@@ -176,11 +189,16 @@ const YourDetails = () => {
               <span>Price:</span>
               <span>
                 {formatNumberWithCommas(
-                  deal?.products.reduce(
+                  productsData.reduce(
                     (acc: any, item: any) =>
-                      acc + item.product.unitPrice * nights,
-                    0
-                  )
+                      acc +
+                      (item.amount ||
+                        (item.product?.unitPrice ||
+                          getProduct(item.productId)?.unitPrice ||
+                          0) * item.quantity ||
+                        0),
+                    0,
+                  ),
                 )}
                 ₮
               </span>

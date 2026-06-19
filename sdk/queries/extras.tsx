@@ -11,7 +11,7 @@ export const useGetUoms = (options?: QueryHookOptions) => {
 
 export const useGetProducts = (options?: QueryHookOptions) => {
   const { data, loading } = useQuery(queries.extras, options);
-  const products = data?.products || [];
+  const products = data?.cpProducts || [];
   return { products, loading };
 };
 

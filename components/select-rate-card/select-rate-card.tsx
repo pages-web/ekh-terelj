@@ -18,6 +18,7 @@ import { useMediaQuery } from "@/hooks/others/use-media-query";
 import { useEffect, useState } from "react";
 import { IProduct } from "@/types/products";
 import { toggleSelectRateAtom } from "@/store/other";
+import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
   mealType: z.enum(["buffet", "continental"]),
@@ -32,6 +33,7 @@ const SelectRateCard = ({
   room: IProduct;
   index: number;
 }) => {
+  const t = useTranslations("Booking");
   const [toggleSelectRate, setToggleSelectRate] = useAtom(toggleSelectRateAtom);
   // const [mealType, setMealType] = useAtom(reserveMealTypeAtom);
   // const [selectedRoom, setSelectedRoom] = useAtom(selectedRoomAtom);
@@ -62,7 +64,7 @@ const SelectRateCard = ({
       >
         <div className="p-4 space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-textxl">Standard Rate</h2>
+            <h2 className="text-textxl">{t("standardRate")}</h2>
             <OfferDetailsButton />
           </div>
 
@@ -70,7 +72,7 @@ const SelectRateCard = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Utensils className="w-4 h-4" />
-                <h3 className="text-textxl">Meal type</h3>
+                <h3 className="text-textxl">{t("mealType")}</h3>
               </div>
               <FormField
                 control={form.control}
@@ -85,7 +87,7 @@ const SelectRateCard = ({
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="buffet" id="buffet" />
-                          <Label htmlFor="buffet">Buffet Breakfast</Label>
+                          <Label htmlFor="buffet">{t("buffetBreakfast")}</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem
@@ -93,7 +95,7 @@ const SelectRateCard = ({
                             id="continental"
                           />
                           <Label htmlFor="continental">
-                            Continental Breakfast
+                            {t("continentalBreakfast")}
                           </Label>
                         </div>
                       </RadioGroup>
@@ -121,7 +123,7 @@ const SelectRateCard = ({
                 className="text-[16px] h-full md:py-4 md:w-fit w-full"
                 type="submit"
               >
-                Book now
+                {t("bookNow")}
               </Button>
             </div>
           </div>

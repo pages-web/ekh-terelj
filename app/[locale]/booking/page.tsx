@@ -14,7 +14,7 @@ const SelectRoom = () => {
 
   useEffect(() => {
     setSelectedRooms(RESET);
-  }, []);
+  }, [setSelectedRooms]);
 
   return (
     <BookingLayout currentActive={1}>

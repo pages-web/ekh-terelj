@@ -23,12 +23,14 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   phone: phoneZod,
 });
 
 const ChangePhone = () => {
+  const t = useTranslations("Forms");
   const { phone, _id } = useAtomValue(currentUserAtom) || {};
   const { editUser, loading } = useUserEdit();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,10 +53,9 @@ const ChangePhone = () => {
       >
         <SmartphoneIcon className="h-8 w-8 text-black/60" strokeWidth={1.7} />
         <div className="text-center space-y-1 mb-4">
-          <h3 className="font-medium">Enter a number</h3>
+          <h3 className="font-medium">{t("enterNumber")}</h3>
           <div className="text-sm text-black/50">
-            You need to submit a request only from the mobile number in your
-            name.
+            {t("phoneRequestDescription")}
           </div>
         </div>
         <FormField

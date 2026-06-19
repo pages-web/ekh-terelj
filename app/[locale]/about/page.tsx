@@ -1,16 +1,23 @@
-export default function AmanGroupCarousel() {
+import { getTranslations } from "next-intl/server";
+import Image from "next/image";
+
+export default async function AmanGroupCarousel() {
+  const t = await getTranslations("Content");
+
   return (
     <div className="flex flex-col items-center justify-center my-9 p-6">
-      <h1 className="text-[25px] font-semibold text-center">Aman Group</h1>
+      <h1 className="text-[25px] font-semibold text-center">{t("amanGroup")}</h1>
       <p className="text-gray-600 text-center">
-        Unparalleled spaces to celebrate or strategise
+        {t("eventSpacesSubtitle")}
       </p>
 
       <div className="relative w-full max-w-4xl mt-6">
         <div className="relative">
-          <img
+          <Image
             src="/images/Rectangle 2.png"
-            alt="Aman Group"
+            alt={t("amanGroup")}
+            width={1200}
+            height={675}
             className="w-full rounded-lg"
           />
           <button className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-2 rounded-full">

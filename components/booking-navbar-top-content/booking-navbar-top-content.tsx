@@ -8,16 +8,14 @@ import { format } from "date-fns";
 import { useAtom } from "jotai";
 import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import DateForm from "@/containers/reserve/date-form";
-import Image from "../ui/image";
-import { Link } from "@/i18n/routing";
 import RoomForm from "@/containers/reserve/room-form";
 import GuestForm from "@/containers/reserve/guest-form";
+import { useTranslations } from "next-intl";
 
 const BookingNavbarTopContent = () => {
-  const [date, setDate] = useAtom(reserveDateAtom);
-  const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(
-    reserveGuestAndRoomAtom
-  );
+  const t = useTranslations("Booking");
+  const [date] = useAtom(reserveDateAtom);
+  const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const { adults, children, room } = reserveGuestAndRoom;
 
   return (
@@ -42,7 +40,7 @@ const BookingNavbarTopContent = () => {
               {date?.from && date?.to ? (
                 format(date.from, "PPP") + ` - ` + format(date.to, "PPP")
               ) : (
-                <span>Pick a date</span>
+                <span>{t("pickDate")}</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -82,9 +80,9 @@ const BookingNavbarTopContent = () => {
             >
               <Bed className="mr-2 h-4 w-4" />
               {room ? (
-                room + `${room > 1 ? " rooms" : " room"}`
+                t("rooms", { count: room })
               ) : (
-                <span>Add room</span>
+                <span>{t("addRoom")}</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -104,11 +102,10 @@ const BookingNavbarTopContent = () => {
               )}
             >
               <Users className="mr-2 h-4 w-4" />
-              {!!adults && adults + `${adults > 1 ? " Adults" : " Adult"}`}
+              {!!adults && t("adult", { count: adults })}
               {!!adults && !!children && ", "}
-              {!!children &&
-                children + `${children > 1 ? " Children" : " Child"}`}
-              {!children && !adults && "Add guests"}
+              {!!children && t("child", { count: children })}
+              {!children && !adults && t("addGuests")}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="min-w-[300px] p-5 " align="start">

@@ -19,40 +19,30 @@ import {
 } from "../ui/accordion";
 import { Button } from "../ui/button";
 import PaymentPart from "./payment-part/payment-part";
-import { useAtom, useAtomValue } from "jotai";
-import { useStages } from "@/sdk/queries/sales";
-import { useMutation, useQuery } from "@apollo/client";
-import { mutations } from "@/sdk/graphql/sales";
-import { IStage } from "@/types/sales";
+import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { queries } from "@/sdk/graphql/payments";
-import { useCurrentUser } from "@/sdk/queries/auth";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { currentUserAtom } from "@/store/auth";
-import { totalAmountAtom } from "@/store/payments";
-import { dealIdAtom } from "@/store/rooms";
 import { reserveDetailSchema } from "@/lib/schema";
 import useAddDeal from "@/sdk/hooks/useAddDeal";
 import { Loading } from "../ui/loading";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 const CheckoutForm = () => {
+  const tBooking = useTranslations("Booking");
+  const tCheckout = useTranslations("Checkout");
+  const tForms = useTranslations("Forms");
   const router = useRouter();
   const [isMyself, setIsMyself] = useState(true);
 
   const { handleAddDeal, loading: addDealLoading } = useAddDeal();
-  const { stages } = useStages();
-
-  const dealId = useAtomValue(dealIdAtom);
   const { firstName, lastName, email, phone } =
     useAtomValue(currentUserAtom) || {};
-
-  const [editDeal, { loading: editDealLoading }] = useMutation(
-    mutations.dealsEdit
-  );
 
   const form = useForm<z.infer<typeof reserveDetailSchema>>({
     resolver: zodResolver(reserveDetailSchema),
@@ -69,30 +59,26 @@ const CheckoutForm = () => {
   async function onSubmit({
     description,
   }: z.infer<typeof reserveDetailSchema>) {
-    const canceledStageId = stages?.find(
-      (st: IStage) => st.code === "canceled"
-    )?._id;
+    try {
+      const newDealId = await handleAddDeal({ description });
 
-    if (dealId) {
-      await editDeal({
-        variables: { id: dealId, stageId: canceledStageId },
-      });
-    }
-
-    const newDealId = await handleAddDeal({ description });
-
-    if (newDealId) {
-      router.push(`/profile/bookings/${newDealId}`);
-    } else {
-      console.error("newDealId is undefined");
+      if (newDealId) {
+        router.push(`/profile/bookings/${newDealId}`);
+      } else {
+        toast.error("Could not complete booking");
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not complete booking",
+      );
     }
   }
 
-  const loading = addDealLoading || editDealLoading;
+  const loading = addDealLoading;
 
   const accordions = [
     {
-      title: "Your personal information",
+      title: tCheckout("yourPersonalInformation"),
       content: (
         <div className="p-6 border rounded-lg space-y-10 shadow-sm">
           <FormField
@@ -112,7 +98,7 @@ const CheckoutForm = () => {
                         <RadioGroupItem value="myself" />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        Booking for myself
+                        {tCheckout("bookingForMyself")}
                       </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -120,7 +106,7 @@ const CheckoutForm = () => {
                         <RadioGroupItem value="someone" />
                       </FormControl>
                       <FormLabel className="font-normal">
-                        Booking on behalf of someone else
+                        {tCheckout("bookingForSomeone")}
                       </FormLabel>
                     </FormItem>
                   </RadioGroup>
@@ -131,7 +117,7 @@ const CheckoutForm = () => {
           <PersonalInfoPart form={form} />
           {!isMyself && (
             <div className="space-y-6">
-              <h1>Please enter the details of the travelling guest below</h1>
+              <h1>{tForms("guestDetails")}</h1>
               <div className="grid grid-cols-6 gap-6 px-1 mb-3">
                 <FormField
                   control={form.control}
@@ -139,11 +125,11 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormLabel className="text-textxs">
-                        {`Guest's first name`}
+                        {tCheckout("guestFirstName")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter guest's first name"
+                          placeholder={tForms("guestFirstNamePlaceholder")}
                           {...field}
                           className="text-textsm"
                         />
@@ -159,11 +145,11 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormLabel className="text-textxs">
-                        {`Guest's last name`}
+                        {tCheckout("guestLastName")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter guest's last name"
+                          placeholder={tForms("guestLastNamePlaceholder")}
                           {...field}
                           className="text-textsm"
                         />
@@ -181,11 +167,11 @@ const CheckoutForm = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-textxs">
-                        {`Guest's e-mail`}
+                        {tCheckout("guestEmail")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter guest's email"
+                          placeholder={tForms("guestEmailPlaceholder")}
                           {...field}
                           className="text-textsm"
                         />
@@ -201,7 +187,7 @@ const CheckoutForm = () => {
       ),
     },
     {
-      title: "Additional Comments",
+      title: tCheckout("additionalComments"),
       content: (
         <div className="border rounded-lg p-6 shadow-sm">
           <FormField
@@ -210,7 +196,7 @@ const CheckoutForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-textsm">
-                  Special requests (optional){" "}
+                  {tBooking("specialRequests")}{" "}
                   {!!field.value?.length && (
                     <span className="text-[10px] leading-2 text-black/60">
                       {field.value?.length}/250
@@ -219,7 +205,7 @@ const CheckoutForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Limit 250 characters"
+                    placeholder={tForms("specialRequestsPlaceholder")}
                     {...field}
                     className="text-textsm"
                   />
@@ -232,7 +218,7 @@ const CheckoutForm = () => {
       ),
     },
     {
-      title: "Payment",
+      title: tCheckout("payment"),
       content: <PaymentPart />,
     },
   ];
@@ -240,7 +226,7 @@ const CheckoutForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="px-1 space-y-6">
-        <h1 className="text-displayxs">Check-in guest information</h1>
+        <h1 className="text-displayxs">{tForms("checkInGuestInformation")}</h1>
         <Accordion
           type={"multiple"}
           className="w-full"
@@ -266,24 +252,17 @@ const CheckoutForm = () => {
 
         <div className="space-y-10">
           <div className="space-y-3">
-            <h2 className="text-black text-textxl">Cancellation policy</h2>
+            <h2 className="text-black text-textxl">{tBooking("cancellationPolicy")}</h2>
             <ul className="list-disc pl-7 text-black/70 text-textsm">
-              <li>
-                This rate is non-refundable. If you change or cancel your
-                booking you will not get a refund or credit to use for a future
-                stay. This policy will apply regardless of COVID-19, subject to
-                any local consumer laws.
-              </li>
-              <li>
-                No refunds will be issued for late check-in or early check-out.
-              </li>
-              <li>Stay extensions require a new reservation.</li>
+              <li>{tCheckout("nonRefundablePolicy")}</li>
+              <li>{tBooking("lateCheckPolicy")}</li>
+              <li>{tBooking("extensionPolicy")}</li>
             </ul>
           </div>
         </div>
 
         <Button size={"lg"} className="w-full" type="submit" disabled={loading}>
-          {loading ? <Loading /> : "Confirm Booking"}
+          {loading ? <Loading /> : tCheckout("confirmBooking")}
         </Button>
       </form>
     </Form>

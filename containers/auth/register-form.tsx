@@ -1,10 +1,6 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,58 +8,96 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Password } from "@/components/ui/password"
-import { Link } from "@/i18n/routing"
-import { useRegister } from "@/sdk/mutations/auth"
-import { toast } from "sonner"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { InfoIcon, User, Mail, Phone, Lock } from "lucide-react"
-import { useRouter } from "@/i18n/routing"
-import { passwordZod, phoneZod } from "@/lib/zod"
-import { LoadingIcon } from "@/components/ui/loading"
-
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: "Нэрээ оруулна уу" }),
-  lastName: z.string().optional(),
-  email: z.string().email({ message: "Зөв имэйл хаяг оруулна уу" }),
-  phone: phoneZod,
-  password: passwordZod,
-})
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Password } from "@/components/ui/password";
+import { Link } from "@/i18n/routing";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { InfoIcon } from "lucide-react";
+import { LoadingIcon } from "@/components/ui/loading";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { useRegisterForm } from "./use-register-form";
+import { useTranslations } from "next-intl";
 
 const RegisterForm = () => {
-  const router = useRouter()
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      password: "",
-    },
-  })
-  const { register, loading, clientPortalId } = useRegister()
+  const t = useTranslations("Auth");
+  const {
+    code,
+    form,
+    identifier,
+    locale,
+    loading,
+    registeredUser,
+    requestingOTP,
+    verifyingUser,
+    onResendCode,
+    onSubmit,
+    onVerify,
+    setCode,
+  } = useRegisterForm();
+  const isMongolian = locale === "mn";
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    register({
-      variables: { ...values, clientPortalId },
-      onCompleted() {
-        toast.success("Бүртгэл амжилттай!", {
-          description: "Таны имэйл рүү баталгаажуулах холбоос илгээлээ.",
-        })
-        router.push("/login")
-      },
-    })
+  if (registeredUser) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            {t("verifyTitle")}
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {t("verifyDescription", { identifier })}
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <InputOTP
+            maxLength={6}
+            value={code}
+            onChange={setCode}
+            render={({ slots }) => (
+              <InputOTPGroup className="w-full justify-between gap-2">
+                {slots.map((slot, index) => (
+                  <InputOTPSlot
+                    key={index}
+                    {...slot}
+                    className="h-12 w-12 rounded-xl border bg-gray-50/50 text-base"
+                  />
+                ))}
+              </InputOTPGroup>
+            )}
+          />
+        </div>
+
+        <Button
+          type="button"
+          className="w-full h-12 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 text-base"
+          disabled={verifyingUser || code.length !== 6}
+          onClick={onVerify}
+        >
+          {verifyingUser && <LoadingIcon className="mr-2 h-5 w-5" />}
+          {verifyingUser ? t("verifying") : t("verify")}
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full h-12 rounded-xl"
+          disabled={requestingOTP}
+          onClick={onResendCode}
+        >
+          {requestingOTP ? t("sending") : t("resend")}
+        </Button>
+      </div>
+    );
   }
 
   return (
     <Form {...form}>
-      <form
-        className="space-y-6"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -71,12 +105,12 @@ const RegisterForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Нэр *
+                  {t("firstName")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <Input
-                      placeholder="Бат"
+                      placeholder={t("firstNamePlaceholder")}
                       {...field}
                       autoComplete="given-name"
                       className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
@@ -94,12 +128,12 @@ const RegisterForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Овог
+                  {t("lastName")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <Input
-                      placeholder="Дорж"
+                      placeholder={t("lastNamePlaceholder")}
                       {...field}
                       autoComplete="family-name"
                       className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
@@ -112,43 +146,19 @@ const RegisterForm = () => {
           />
         </div>
 
-        {/* Contact Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Имэйл *
-                </FormLabel>
-                <FormControl>
-                  <div className="relative group">
-                    <Input
-                      placeholder="bataa@example.com"
-                      {...field}
-                      autoComplete="email"
-                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
+        {isMongolian ? (
           <FormField
             control={form.control}
             name="phone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Утасны дугаар *
+                  {t("phone")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative group">
                     <Input
-                      placeholder="99112233"
+                      placeholder={t("phonePlaceholder")}
                       {...field}
                       autoComplete="tel"
                       className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
@@ -159,7 +169,30 @@ const RegisterForm = () => {
               </FormItem>
             )}
           />
-        </div>
+        ) : (
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  {t("email")}
+                </FormLabel>
+                <FormControl>
+                  <div className="relative group">
+                    <Input
+                      placeholder={t("emailPlaceholder")}
+                      {...field}
+                      autoComplete="email"
+                      className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-base"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
@@ -167,7 +200,7 @@ const RegisterForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                Нууц үг *
+                {t("passwordRequired")}
               </FormLabel>
               <FormControl>
                 <div className="relative group">
@@ -189,37 +222,37 @@ const RegisterForm = () => {
           disabled={loading}
         >
           {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
-          {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
+          {loading ? t("submitting") : t("submit")}
         </Button>
 
         <Alert className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800/50 rounded-xl">
           <InfoIcon className="h-4 w-4 text-slate-600 dark:text-slate-400" />
           <AlertTitle className="text-sm font-semibold text-slate-800 dark:text-slate-300">
-            Нууцлал ба нөхцөл
+            {t("termsTitle")}
           </AlertTitle>
           <AlertDescription className="text-xs mt-1 text-slate-700 dark:text-slate-400">
-            Бүртгэл үүсгэснээр та манай{" "}
+            {t("termsBefore")}{" "}
             <Button
               variant="link"
               asChild
               className="h-auto px-0 py-0 text-xs underline text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 font-medium"
             >
-              <Link href="#">Нууцлалын бодлого</Link>
+              <Link href="#">{t("privacy")}</Link>
             </Button>{" "}
-            and{" "}
+            {t("termsJoiner")}{" "}
             <Button
               variant="link"
               asChild
               className="h-auto px-0 py-0 text-xs underline text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 font-medium"
             >
-              <Link href="#">Үйлчилгээний нөхцөл</Link>
+              <Link href="#">{t("terms")}</Link>
             </Button>
-            -ийг зөвшөөрсөнд тооцно.
+            {t("termsAfter")}
           </AlertDescription>
         </Alert>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;

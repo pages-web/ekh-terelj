@@ -23,21 +23,23 @@ const commonParams = `
 `;
 
 const dealsAdd = gql`
-  mutation DealsAdd(${commonFields} $customerIds: [String] $labelIds: [String], $tagIds: [String]) {
-    dealsAdd(${commonParams} customerIds: $customerIds labelIds: $labelIds, tagIds: $tagIds) {
+  mutation CpDealsAdd(${commonFields} $companyIds: [String], $customerIds: [String], $labelIds: [String], $parentId: String, $processId: String, $aboveItemId: String, $attachments: [AttachmentInput], $order: Int, $reminderMinute: Int, $isComplete: Boolean, $priority: String, $status: String, $sourceConversationIds: [String], $propertiesData: JSON, $tagIds: [String], $branchIds: [String], $departmentIds: [String], $extraData: JSON) {
+    cpDealsAdd(${commonParams} companyIds: $companyIds customerIds: $customerIds labelIds: $labelIds parentId: $parentId processId: $processId aboveItemId: $aboveItemId attachments: $attachments order: $order reminderMinute: $reminderMinute isComplete: $isComplete priority: $priority status: $status sourceConversationIds: $sourceConversationIds propertiesData: $propertiesData tagIds: $tagIds branchIds: $branchIds departmentIds: $departmentIds extraData: $extraData) {
       _id
+      name
     }
   }
 `;
 
 const dealsEdit = gql`
-  mutation DealsEdit($id: String!, ${commonFields}, $tagIds: [String]) {
-    dealsEdit(
-      _id: $id
+  mutation CpDealsEdit($_id: String!, ${commonFields}, $tagIds: [String]) {
+    cpDealsEdit(
+      _id: $_id
       tagIds: $tagIds
       ${commonParams}
     ) {
       _id
+      name
     }
   }
 `;
@@ -45,10 +47,9 @@ const dealsEdit = gql`
 const changeLabel = gql`
   mutation salesPipelineLabelsLabel(
     $pipelineId: String!
-    $targetId: String!
-    $labelIds: [String!]!
+
   ) {
-    salesPipelineLabelsLabel(
+    CpSalesPipelineLabels(
       pipelineId: $pipelineId
       targetId: $targetId
       labelIds: $labelIds
@@ -114,18 +115,22 @@ const changeDeal = gql`
 `;
 
 const addLabel = gql`
-  mutation salesPipelineLabelsAdd(
+  mutation CpSalesPipelineLabelsAdd(
     $name: String!
+    $cpSalesPipelineLabelsAddPipelineId2: String!
     $colorCode: String!
-    $pipelineId: String!
   ) {
-    salesPipelineLabelsAdd(
+    cpSalesPipelineLabelsAdd(
       name: $name
+      pipelineId: $cpSalesPipelineLabelsAddPipelineId2
       colorCode: $colorCode
-      pipelineId: $pipelineId
     ) {
       _id
-      __typename
+      name
+      colorCode
+      pipelineId
+      createdBy
+      createdAt
     }
   }
 `;

@@ -20,25 +20,26 @@ import { useResetPassword } from "@/sdk/mutations/auth";
 import { LoadingIcon } from "@/components/ui/loading";
 import { CheckCircle2Icon, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Link } from "@/i18n/routing";
-
-const formSchema = z
-  .object({
-    password: z
-      .string()
-      .min(6, { message: "Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой" }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Нууц үг таарахгүй байна",
-    path: ["confirmPassword"],
-  });
+import { useTranslations } from "next-intl";
 
 const ResetPasswordForm = () => {
+  const t = useTranslations("Auth");
+  const tCommon = useTranslations("Common");
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const formSchema = z
+    .object({
+      password: z.string().min(6, { message: t("passwordMin") }),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("passwordMismatch"),
+      path: ["confirmPassword"],
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,11 +78,10 @@ const ResetPasswordForm = () => {
 
           <div className="space-y-3">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Нууц үг амжилттай солигдлоо
+              {t("resetSuccessTitle")}
             </h3>
             <p className="text-base text-gray-600 dark:text-gray-300">
-              Таны нууц үг амжилттай шинэчлэгдлээ. Одоо шинэ нууц үгээрээ
-              нэвтэрч орно уу.
+              {t("resetSuccessDescription")}
             </p>
           </div>
 
@@ -90,7 +90,7 @@ const ResetPasswordForm = () => {
               asChild
               className="w-full h-12 bg-primary text-white font-semibold rounded-xl"
             >
-              <Link href="/login">Нэвтрэх</Link>
+              <Link href="/login">{t("login")}</Link>
             </Button>
           </div>
         </div>
@@ -104,10 +104,10 @@ const ResetPasswordForm = () => {
         <div className="text-center space-y-6">
           <div className="space-y-3">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Буруу холбоос
+              {t("invalidLinkTitle")}
             </h3>
             <p className="text-base text-gray-600 dark:text-gray-300">
-              Нууц үг сэргээх холбоос буруу эсвэл хугацаа дууссан байна.
+              {t("invalidLinkDescription")}
             </p>
           </div>
 
@@ -116,7 +116,7 @@ const ResetPasswordForm = () => {
               asChild
               className="w-full h-12 bg-primary text-white font-semibold rounded-xl"
             >
-              <Link href="/forgot">Дахин оролдох</Link>
+              <Link href="/forgot">{tCommon("retry")}</Link>
             </Button>
 
             <Button
@@ -126,7 +126,7 @@ const ResetPasswordForm = () => {
             >
               <Link href="/login">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Нэвтрэх рүү буцах
+                {tCommon("backToLogin")}
               </Link>
             </Button>
           </div>
@@ -144,10 +144,10 @@ const ResetPasswordForm = () => {
         >
           <div className="space-y-2 text-center">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Нууц үг сэргээх
+              {t("forgotTitle")}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Шинэ нууц үгээ оруулж баталгаажуулна уу.
+              {t("newPasswordPlaceholder")}
             </p>
           </div>
 
@@ -157,13 +157,13 @@ const ResetPasswordForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Шинэ нууц үг
+                  {t("newPassword")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Шинэ нууц үгээ оруулна уу"
+                      placeholder={t("newPasswordPlaceholder")}
                       {...field}
                       className="pr-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 text-base"
                     />
@@ -193,13 +193,13 @@ const ResetPasswordForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Нууц үг баталгаажуулах
+                  {t("confirmPassword")}
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Нууц үгээ дахин оруулна уу"
+                      placeholder={t("confirmPasswordPlaceholder")}
                       {...field}
                       className="pr-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 text-base"
                     />
@@ -232,7 +232,7 @@ const ResetPasswordForm = () => {
               disabled={loading}
             >
               {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
-              {loading ? "Шинэчилж байна..." : "Нууц үг шинэчлэх"}
+              {loading ? t("updating") : t("updatePassword")}
             </Button>
 
             <Button
@@ -242,7 +242,7 @@ const ResetPasswordForm = () => {
             >
               <Link href="/login">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Нэвтрэх рүү буцах
+                {tCommon("backToLogin")}
               </Link>
             </Button>
           </div>

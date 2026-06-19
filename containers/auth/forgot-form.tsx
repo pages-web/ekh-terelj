@@ -18,12 +18,14 @@ import { useForgotPassword } from "@/sdk/mutations/auth"
 import { LoadingIcon } from "@/components/ui/loading"
 import { ArrowLeft } from "lucide-react"
 import { Link } from "@/i18n/routing"
-
-const formSchema = z.object({
-  email: z.string().email({ message: "Зөв имэйл хаяг оруулна уу" }),
-})
+import { useTranslations } from "next-intl"
 
 const ForgotForm = () => {
+  const t = useTranslations("Auth")
+  const tCommon = useTranslations("Common")
+  const formSchema = z.object({
+    email: z.string().email({ message: t("invalidEmail") }),
+  })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,13 +48,13 @@ const ForgotForm = () => {
 
         <div className="space-y-3">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Имэйлээ шалгана уу
+            {t("forgotSuccessTitle")}
           </h3>
           <p className="text-base text-gray-600 dark:text-gray-300">
-            Нууц үг сэргээх холбоосыг таны имэйл хаяг руу илгээлээ.
+            {t("forgotSuccessDescription")}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Имэйл ирээгүй байна уу? Спам хавтасыг шалгах эсвэл дахин оролдоно уу.
+            {t("forgotSuccessHelp")}
           </p>
         </div>
 
@@ -63,7 +65,7 @@ const ForgotForm = () => {
           >
             <Link href="/login">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Нэвтрэх рүү буцах
+              {tCommon("backToLogin")}
             </Link>
           </Button>
 
@@ -72,7 +74,7 @@ const ForgotForm = () => {
             onClick={() => window.location.reload()}
             className="w-full h-12 rounded-xl border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
-            Дахин оролдох
+            {tCommon("retry")}
           </Button>
         </div>
       </div>
@@ -87,10 +89,10 @@ const ForgotForm = () => {
       >
         <div className="space-y-2 text-center">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Нууц үг сэргээх
+            {t("forgotTitle")}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Имэйл хаягаа оруулснаар бид танд нууц үг сэргээх холбоос илгээнэ.
+            {t("forgotDescription")}
           </p>
         </div>
 
@@ -100,12 +102,12 @@ const ForgotForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                Имэйл хаяг
+                {t("emailLabel")}
               </FormLabel>
               <FormControl>
                 <div className="relative group">
                   <Input
-                    placeholder="Имэйл хаягаа оруулна уу"
+                    placeholder={t("emailPlaceholder")}
                     {...field}
                     autoComplete="email"
                     className="pl-12 h-12 bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 text-base"
@@ -124,7 +126,7 @@ const ForgotForm = () => {
             disabled={loading}
           >
             {loading && <LoadingIcon className="mr-2 h-5 w-5" />}
-            {loading ? "Илгээж байна..." : "Холбоос илгээх"}
+            {loading ? t("sending") : t("sendLink")}
           </Button>
 
           <Button
@@ -134,7 +136,7 @@ const ForgotForm = () => {
           >
             <Link href="/login">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Нэвтрэх рүү буцах
+              {tCommon("backToLogin")}
             </Link>
           </Button>
         </div>

@@ -6,14 +6,10 @@ import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import { onError } from "@/lib/utils";
+import type { ClientPortalLoginResponse } from "@/types/auth";
 // import { fbLogout } from "@/lib/facebook";
 
 const clientPortalId = process.env.NEXT_PUBLIC_CP_ID;
-
-interface ILoginData {
-  token?: string;
-  refetchToken?: string;
-}
 
 const useLoginCallback = () => {
   const router = useRouter();
@@ -23,21 +19,25 @@ const useLoginCallback = () => {
 
   return {
     loginCallback: (
-      { token, refetchToken }: ILoginData,
-      callback?: () => void
+      data: ClientPortalLoginResponse,
+      callback?: () => void,
     ) => {
+      const tokenData = typeof data === "string" ? {} : data;
+      const { token, refetchToken } = tokenData;
+
       if (token) {
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("refetchToken", refetchToken || "");
-        triggerRefetchUser(true);
-        setLoadingUser(true);
-        toast.success("Сайн байна уу?", {
-          description: "Та амжилттай нэвтэрлээ",
-        });
-
-        router.push(from ? from : "/");
-        !!callback && callback();
       }
+
+      triggerRefetchUser(true);
+      setLoadingUser(true);
+      toast.success("Сайн байна уу?", {
+        description: "Та амжилттай нэвтэрлээ",
+      });
+
+      router.push(from ? from : "/");
+      !!callback && callback();
     },
   };
 };
@@ -46,13 +46,13 @@ export const useLogin = (onCompleted?: () => void) => {
   const { loginCallback } = useLoginCallback();
 
   const [login, { loading }] = useMutation(mutations.login, {
-    onCompleted: ({ clientPortalLogin }) => {
-      loginCallback(clientPortalLogin, onCompleted);
+    onCompleted: ({ clientPortalUserLoginWithCredentials }) => {
+      loginCallback(clientPortalUserLoginWithCredentials, onCompleted);
     },
     onError,
   });
 
-  return { login, loading, clientPortalId };
+  return { login, loading };
 };
 
 export const useGoogleLogin = () => {
@@ -87,7 +87,33 @@ export const useRegister = (
     onError,
   });
 
-  return { register, loading, clientPortalId };
+  return { register, loading };
+};
+
+export const useRequestOTP = (
+  onCompleted?: BaseMutationOptions["onCompleted"]
+) => {
+  const [requestOTP, { loading }] = useMutation(mutations.requestOTP, {
+    onCompleted: (data) => {
+      !!onCompleted && onCompleted(data);
+    },
+    onError,
+  });
+
+  return { requestOTP, loading };
+};
+
+export const useVerifyUser = (
+  onCompleted?: BaseMutationOptions["onCompleted"]
+) => {
+  const [verifyUser, { loading }] = useMutation(mutations.userVerify, {
+    onCompleted: (data) => {
+      !!onCompleted && onCompleted(data);
+    },
+    onError,
+  });
+
+  return { verifyUser, loading };
 };
 
 export const useUserEdit = () => {

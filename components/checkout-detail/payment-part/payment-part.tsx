@@ -2,8 +2,10 @@ import { isPrePaymentAtom } from "@/store/payments";
 import { useSetAtom } from "jotai";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import { useTranslations } from "next-intl";
 
 const PaymentPart = () => {
+  const t = useTranslations("Checkout");
   const setIsPrePayment = useSetAtom(isPrePaymentAtom);
 
   return (
@@ -19,13 +21,13 @@ const PaymentPart = () => {
           <FormControl>
             <RadioGroupItem value="full" />
           </FormControl>
-          <FormLabel className="font-normal">Full payment</FormLabel>
+          <FormLabel className="font-normal">{t("fullPayment")}</FormLabel>
         </FormItem>
         <FormItem className="flex items-center space-x-3 space-y-0">
           <FormControl>
             <RadioGroupItem value="pre" />
           </FormControl>
-          <FormLabel className="font-normal">Pre payment</FormLabel>
+          <FormLabel className="font-normal">{t("prePayment")}</FormLabel>
         </FormItem>
       </RadioGroup>
     </div>

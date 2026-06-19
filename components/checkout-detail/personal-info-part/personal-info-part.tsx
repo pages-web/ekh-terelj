@@ -10,8 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { useCurrentUser } from "@/sdk/queries/auth";
+import { useTranslations } from "next-intl";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {
+  const t = useTranslations("Forms");
   const { currentUser } = useCurrentUser();
   return (
     <div>
@@ -45,10 +47,10 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           name="firstname"
           render={({ field }) => (
             <FormItem className="col-span-3">
-              <FormLabel className="text-textxs">First name</FormLabel>
+              <FormLabel className="text-textxs">{t("firstName")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your first name"
+                  placeholder={t("firstNamePlaceholder")}
                   {...field}
                   className="text-textsm"
                 />
@@ -63,10 +65,10 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           name="lastname"
           render={({ field }) => (
             <FormItem className="col-span-3">
-              <FormLabel className="text-textxs">Last name</FormLabel>
+              <FormLabel className="text-textxs">{t("lastName")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your last name"
+                  placeholder={t("lastNamePlaceholder")}
                   {...field}
                   className="text-textsm"
                 />
@@ -83,10 +85,10 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           name="mail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-textxs">E-mail</FormLabel>
+              <FormLabel className="text-textxs">{t("email")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your email"
+                  placeholder={t("emailPlaceholder")}
                   {...field}
                   className="text-textsm"
                 />
@@ -101,10 +103,10 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-textxs">Phone number</FormLabel>
+              <FormLabel className="text-textxs">{t("phone")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your phone"
+                  placeholder={t("phonePlaceholder")}
                   {...field}
                   autoComplete="tel-national"
                 />

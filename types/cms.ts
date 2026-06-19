@@ -1,4 +1,4 @@
-import { IAttachment, IProduct, IUser } from "./products"
+import { IAttachment, IUser } from "./products"
 
 export interface ICmsCustomPostType {
   _id: string
@@ -36,4 +36,71 @@ export interface ICmsPost {
   customFieldsMap: any
   createdAt: string
   author: IUser
+}
+
+export interface CmsAttachment {
+  url?: string
+  type?: string
+  name?: string
+}
+
+export interface CmsTranslation {
+  _id?: string
+  objectId?: string
+  language?: string
+  title?: string
+  content?: string
+  excerpt?: string
+  customFieldsData?: unknown
+  type?: string
+}
+
+export interface CmsPost {
+  _id?: string
+  title?: string
+  content?: string
+  excerpt?: string
+  featured?: boolean
+  status?: string
+  createdAt?: string
+  updatedAt?: string
+  customFieldsMap?: unknown
+  videoUrl?: string
+  thumbnail?: CmsAttachment
+  categories?: ICmsPostCategory[]
+  images?: CmsAttachment[]
+}
+
+export interface CmsPage {
+  _id?: string
+  clientPortalId?: string
+  name?: string
+  parentId?: string
+  description?: string
+  coverImage?: string
+  type?: string
+  slug?: string
+  content?: string
+  status?: string
+  createdUserId?: string
+  createdAt?: string
+  updatedAt?: string
+  customFieldsData?: unknown
+  customFieldsMap?: unknown
+  thumbnail?: CmsAttachment
+  pageImages?: CmsAttachment[]
+  video?: CmsAttachment
+  videoUrl?: string
+  translations?: CmsTranslation[]
+}
+
+export interface IPostList {
+  cpPostList?: {
+    totalCount?: number
+    posts?: CmsPost[]
+  }
+}
+
+export interface ICpPageDetail {
+  cpCmsPageDetail?: CmsPage
 }

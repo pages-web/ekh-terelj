@@ -11,7 +11,7 @@ const CurrentConfigProvider = ({ children }: React.PropsWithChildren) => {
   const { loading } = useQuery(queries.PmsBranchDetail, {
     variables: { id: process.env.NEXT_PUBLIC_PMS_TOKEN },
     onCompleted: (data) => {
-      setCurrentConfig(data.pmsBranchDetail);
+      setCurrentConfig(data.cpPmsBranchDetail);
     },
   });
 

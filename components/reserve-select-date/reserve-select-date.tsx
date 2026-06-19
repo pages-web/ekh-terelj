@@ -1,23 +1,22 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addDays, format } from "date-fns";
-import { Bed, CalendarIcon, MapPin, Users } from "lucide-react";
-import React, { useState } from "react";
-import { DateRange } from "react-day-picker";
+import { format } from "date-fns";
+import { Bed, CalendarIcon, Users } from "lucide-react";
+import React from "react";
 import ReserveButton from "../../containers/reserve/reserve-button";
 import { useAtom } from "jotai";
 import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
 import DateForm from "@/containers/reserve/date-form";
 import RoomForm from "@/containers/reserve/room-form";
 import GuestForm from "@/containers/reserve/guest-form";
+import { useTranslations } from "next-intl";
 
 export const ChildrenWithTitle = ({
   children,
@@ -32,6 +31,7 @@ export const ChildrenWithTitle = ({
 };
 
 const ReserveSelectDate = () => {
+  const t = useTranslations("Booking");
   const [date] = useAtom(reserveDateAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
   const { adults, children, room } = reserveGuestAndRoom || "";
@@ -39,22 +39,22 @@ const ReserveSelectDate = () => {
   return (
     <div className="w-full flex flex-col p-6 gap-8 rounded-[12px] bg-white border shadow-lg">
       <div className="w-full flex flex-col lg:flex-row justify-between items-end gap-6 ">
-        <ChildrenWithTitle title="Check-in">
+        <ChildrenWithTitle title={t("checkIn")}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                id="date"
+                id="check-in-date"
                 variant={"outline"}
                 className={cn(
                   "justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
+                  !date?.from && "text-muted-foreground"
                 )}
               >
                 <CalendarIcon className="mr-2 min-h-5 h-5 w-5 min-w-5" />
-                {date?.from && date?.to ? (
-                  format(date.from, "PPP") + ` - ` + format(date.to, "PPP")
+                {date?.from ? (
+                  format(date.from, "PPP")
                 ) : (
-                  <span>Pick a date</span>
+                  <span>{t("pickDate")}</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -64,7 +64,32 @@ const ReserveSelectDate = () => {
           </Popover>
         </ChildrenWithTitle>
 
-        <ChildrenWithTitle title="Room">
+        <ChildrenWithTitle title={t("checkOut")}>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="check-out-date"
+                variant={"outline"}
+                className={cn(
+                  "justify-start text-left font-normal",
+                  !date?.to && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 min-h-5 h-5 w-5 min-w-5" />
+                {date?.to ? (
+                  format(date.to, "PPP")
+                ) : (
+                  <span>{t("pickDate")}</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
+              <DateForm />
+            </PopoverContent>
+          </Popover>
+        </ChildrenWithTitle>
+
+        <ChildrenWithTitle title={t("room")}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -77,9 +102,9 @@ const ReserveSelectDate = () => {
               >
                 <Bed className="mr-2 h-4 w-4" />
                 {room ? (
-                  room + `${room > 1 ? " rooms" : " room"}`
+                  t("rooms", { count: room })
                 ) : (
-                  <span>Add room</span>
+                  <span>{t("addRoom")}</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -89,7 +114,7 @@ const ReserveSelectDate = () => {
           </Popover>
         </ChildrenWithTitle>
 
-        <ChildrenWithTitle title="Guest">
+        <ChildrenWithTitle title={t("guest")}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -101,11 +126,10 @@ const ReserveSelectDate = () => {
                 )}
               >
                 <Users className="mr-2 h-4 w-4" />
-                {!!adults && adults + `${adults > 1 ? " Adults" : " Adult"}`}
+                {!!adults && t("adult", { count: adults })}
                 {!!adults && !!children && ", "}
-                {!!children &&
-                  children + `${children > 1 ? " Children" : " Child"}`}
-                {!children && !adults && "Add guests"}
+                {!!children && t("child", { count: children })}
+                {!children && !adults && t("addGuests")}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] p-5 " align="start">

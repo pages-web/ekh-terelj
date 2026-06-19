@@ -19,14 +19,16 @@ import { Password } from "@/components/ui/password";
 import { passwordZod } from "@/lib/zod";
 import { toast } from "sonner";
 import { LoadingIcon } from "@/components/ui/loading";
-
-const formSchema = z.object({
-  currentPassword: z.string().min(1, "Password is required"),
-  newPassword: passwordZod,
-  verifyPassword: passwordZod,
-});
+import { useTranslations } from "next-intl";
 
 const ChangePassword = () => {
+  const t = useTranslations("Forms");
+  const tAuth = useTranslations("Auth");
+  const formSchema = z.object({
+    currentPassword: z.string().min(1, t("passwordRequired")),
+    newPassword: passwordZod,
+    verifyPassword: passwordZod,
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -36,12 +38,12 @@ const ChangePassword = () => {
     const { currentPassword, newPassword, verifyPassword } = values;
 
     if (newPassword !== verifyPassword)
-      return toast.error("Нууц үг таарахгүй байна");
+      return toast.error(tAuth("passwordMismatch"));
 
     changePassword({
       variables: { clientPortalId, currentPassword, newPassword },
       onCompleted() {
-        toast.success("Нууц үг солигдлоо");
+        toast.success(t("passwordChanged"));
         form.reset();
       },
     });
@@ -58,7 +60,7 @@ const ChangePassword = () => {
           name="currentPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Current password</FormLabel>
+              <FormLabel>{t("currentPassword")}</FormLabel>
               <FormControl>
                 <Password {...field} autoComplete="current-password" />
               </FormControl>
@@ -73,7 +75,7 @@ const ChangePassword = () => {
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>New password</FormLabel>
+              <FormLabel>{t("newPassword")}</FormLabel>
               <FormControl>
                 <Password {...field} autoComplete="new-password" />
               </FormControl>
@@ -86,7 +88,7 @@ const ChangePassword = () => {
           name="verifyPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm new password</FormLabel>
+              <FormLabel>{t("confirmNewPassword")}</FormLabel>
               <FormControl>
                 <Password {...field} autoComplete="new-password" />
               </FormControl>
@@ -96,7 +98,7 @@ const ChangePassword = () => {
         />
         <div className="border border-transparent flex items-end ">
           <Button className="mt-auto w-full" size="lg" disabled={loading}>
-            {loading && <LoadingIcon />} Change password
+            {loading && <LoadingIcon />} {t("changePassword")}
           </Button>
         </div>
       </form>

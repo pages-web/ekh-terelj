@@ -3,8 +3,12 @@ import ForgotForm from "@/containers/auth/forgot-form";
 import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
 import { KeyRound } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-const Forgot = () => {
+const Forgot = async () => {
+  const t = await getTranslations("Auth");
+  const tCommon = await getTranslations("Common");
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-primary dark:via-primary dark:to-primary">
       <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -33,13 +37,13 @@ const Forgot = () => {
 
           <div className="text-center mt-8">
             <p className="text-sm text-primary dark:text-primary">
-              Нууц үгээ санаж байна уу?{" "}
+              {t("hasAccount")}{" "}
               <Button
                 variant="link"
                 className="font-semibold p-0 h-auto text-sm bg-primary bg-clip-text text-transparent"
                 asChild
               >
-                <Link href="/login">Нэвтрэх хуудас руу буцах</Link>
+                <Link href="/login">{tCommon("backToLogin")}</Link>
               </Button>
             </p>
           </div>

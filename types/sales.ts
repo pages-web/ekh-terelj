@@ -4,7 +4,8 @@ import { ICategory, IProduct, RoomType } from "./products";
 export interface IDeal {
   _id: string;
   name: string;
-  products: IDealProduct[];
+  products: IProduct[];
+  productsData: IDealProduct[];
   stage: IStage;
 }
 
@@ -26,9 +27,21 @@ export interface IDealDetail extends IDeal {
   customers: ICustomer[];
   stageId: string;
   labelIds: string[];
+  tagIds?: string[];
   name: string;
   description: string;
   paymentsData: IPaymentData;
+  mobileAmount?: number;
+  mobileAmounts?: {
+    _id: string;
+    amount: number;
+  }[];
+  pipeline?: {
+    _id: string;
+    name: string;
+    paymentIds?: string[];
+    paymentTypes?: unknown;
+  };
 }
 
 export interface ILabel {
@@ -53,6 +66,8 @@ export interface IFullDeal extends IDealDetail, IDealPreview {
 // Define the valid stage codes
 export type StageCode =
   | "unconfirmed"
+  | "prepay"
+  | "confirmed"
   | "today"
   | "future"
   | "inhouse"

@@ -5,11 +5,14 @@ import ChangePhone from "@/components/profile/profile-edit/change-phone";
 import ChangePassword from "@/components/profile/profile-edit/change-password";
 import Email from "@/components/profile/profile-edit/email";
 import { Separator } from "@/components/ui/separator";
+import { getTranslations } from "next-intl/server";
 
-const Profile = () => {
+const Profile = async () => {
+  const t = await getTranslations("Content");
+
   return (
     <div className="w-[80%] min-h-screen space-y-3 md:space-y-6 pt-6 md:pt-10 flex-auto items-center container">
-      <h1 className="text-displaysm font-bold">Profile</h1>
+      <h1 className="text-displaysm font-bold">{t("profile")}</h1>
       <Separator />
       <Tabs defaultValue="info" className="w-full">
         <ProfileTabsList />
