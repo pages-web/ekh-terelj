@@ -1,44 +1,39 @@
 import { Button } from "@/components/ui/button";
 import { Users, Clock, ParkingCircle } from "lucide-react";
 import Image from "next/image";
-
-const eventSpaces = [
-  {
-    title: "The Arva",
-    description:
-      "Drawing its name from the Latin word for ‘cultivated land’, Arva pays homage to Italy’s rustic, cucina del raccolto tradition, creating heart-warming dishes using the finest, sustainably sourced ingredients from local farms and fresh from the ocean.",
-    image: "/images/arva.png",
-  },
-  {
-    title: "The Nama",
-    description:
-      "With immersive views of the city below, The Garden Terrace, with its fire pits, water features, and surrounding greenery, offers a show stopping New York backdrop for any occasion.",
-    image: "/images/nama.png",
-  },
-  {
-    title: "Garden Terrace",
-    description:
-      "Welcoming year-round alfresco dining, the Garden Terrace - with its retractable glass roof, firepits and water features - offers sophisticated light meals and original cocktails served in a convivial atmosphere. A corner bar adds to the allure, with spectacular views overlooking the iconic crossroads of Fifth Avenue and 57th Street.",
-    image: "/images/garden.png",
-  },
-  {
-    title: "Lounge bar",
-    description:
-      "Open day to night, working fireplaces frame the Lounge Bar – Aman New York’s central hub - offering a sophisticated menu of light dishes, sharing plates and cicchetti served alongside premium drinks, original cocktails, craft beers, spirits, and fine wines.",
-    image: "/images/lounge-bar.png",
-  },
-];
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export default function Dining() {
+  const t = useTranslations("Content");
+  const eventSpaces = [
+    {
+      title: t("theArva"),
+      description: t("arvaDescription"),
+      image: "/images/arva.png",
+    },
+    {
+      title: t("theNama"),
+      description: t("namaDescription"),
+      image: "/images/nama.png",
+    },
+    {
+      title: t("gardenTerrace"),
+      description: t("gardenTerraceDescription"),
+      image: "/images/garden.png",
+    },
+    {
+      title: t("loungeBar"),
+      description: t("loungeBarDescription"),
+      image: "/images/lounge-bar.png",
+    },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto p-6 mb-[60px]">
       <div className="text-center mb-10">
-        <h1 className="text-[30px] font-semibold mb-2">Cuisine</h1>
-        <p className="text-sm">
-          Aman Tokyo is home to one of the widest selections of dining venues
-          found in any of the city’s hotels.
-        </p>
+        <h1 className="text-[30px] font-semibold mb-2">{t("cuisine")}</h1>
+        <p className="text-sm">{t("diningIntro")}</p>
       </div>
 
       <div className="space-y-12">
@@ -60,20 +55,20 @@ export default function Dining() {
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <Users size={16} />
-                  120 people
+                  {t("peopleCapacity", { count: 120 })}
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock size={16} />
-                  First hour free
+                  {t("firstHourFree")}
                 </div>
                 <div className="flex items-center gap-1">
                   <ParkingCircle size={16} />
-                  Free parking
+                  {t("freeParking")}
                 </div>
               </div>
 
               <Link href="/dinning-details" passHref>
-                <Button className="mt-4">View more →</Button>
+                <Button className="mt-4">{t("viewMoreArrow")}</Button>
               </Link>
             </div>
           </div>

@@ -7,11 +7,13 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import { onError } from "@/lib/utils/cn";
 import type { ClientPortalLoginResponse } from "@/features/auth/types";
+import { useTranslations } from "next-intl";
 // import { fbLogout } from "@/lib/facebook";
 
 const clientPortalId = process.env.NEXT_PUBLIC_CP_ID;
 
 const useLoginCallback = () => {
+  const t = useTranslations("Auth");
   const router = useRouter();
   const from = useSearchParams().get("from");
   const triggerRefetchUser = useSetAtom(refetchCurrentUserAtom);
@@ -32,8 +34,8 @@ const useLoginCallback = () => {
 
       triggerRefetchUser(true);
       setLoadingUser(true);
-      toast.success("Сайн байна уу?", {
-        description: "Та амжилттай нэвтэрлээ",
+      toast.success(t("loginSuccessTitle"), {
+        description: t("loginSuccessDescription"),
       });
 
       router.push(from ? from : "/");
@@ -117,11 +119,12 @@ export const useVerifyUser = (
 };
 
 export const useUserEdit = () => {
+  const tForms = useTranslations("Forms");
   const setRefetchUser = useSetAtom(refetchCurrentUserAtom);
   const [editUser, { loading }] = useMutation(mutations.userEdit, {
     onCompleted() {
       setRefetchUser(true);
-      toast.success("Хувийн мэдээлэл шинэчлэгдсэн");
+      toast.success(tForms("profileUpdated"));
     },
     onError,
   });

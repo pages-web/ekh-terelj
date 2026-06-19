@@ -124,7 +124,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  aria-label="Open menu"
+                  aria-label={tCommon("openMenu")}
                   className="text-white hover:bg-slate-800 transition-all duration-300 rounded-lg"
                 >
                   <Menu className="h-6 w-6" />

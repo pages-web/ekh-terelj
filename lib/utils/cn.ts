@@ -20,5 +20,4 @@ export const readFile = (url: string = "") => {
   return ERXES_READ_FILE_URL + url;
 };
 
-export const onError = (error: ApolloError) =>
-  toast.error("Алдаа гарлаа!", { description: error.message });
+export const onError = (error: ApolloError) => toast.error(error.message);

@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose } from "@/components/ui/dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from "next-intl";
 
 const PopupOfferDetail = () => {
+  const tContent = useTranslations("Content");
+  const tCommon = useTranslations("Common");
   const TitleWithDesc = ({
     title,
     desc,
@@ -19,19 +22,19 @@ const PopupOfferDetail = () => {
   };
   const datas = [
     {
-      title: "Guarantee policy",
-      desc: "Valid credit card is required upon booking. No deposit will be charged. Payment is proceeded upon the arrival.",
+      title: tContent("guaranteePolicy"),
+      desc: tContent("guaranteePolicyDescription"),
     },
     {
-      title: "Cancellation policy",
-      desc: "If cancelled up to 3 days before the date of arrival, no fee will be charged. If cancelled later or in case of no-show, 100% of the first night will be charged",
+      title: tContent("cancellationPolicy"),
+      desc: tContent("cancellationPolicyDescription"),
     },
-    { title: "Tax policy", desc: "10% VAT" },
-    { title: "Fee policy", desc: "City tax - 2% of stay" },
+    { title: tContent("taxPolicy"), desc: tContent("taxPolicyDescription") },
+    { title: tContent("feePolicy"), desc: tContent("feePolicyDescription") },
   ];
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="px-4 text-displayxs">Standard Rate</h1>
+      <h1 className="px-4 text-displayxs">{tContent("standardRate")}</h1>
       <Separator className="my-2" />
       <div className="px-4 flex flex-col gap-6">
         {datas.map((data, index) => {
@@ -44,7 +47,7 @@ const PopupOfferDetail = () => {
       <div className="px-4 flex justify-end">
         <DialogClose>
           <Button variant={"secondary"} className="w-fit">
-            Close
+            {tCommon("close")}
           </Button>
         </DialogClose>
       </div>

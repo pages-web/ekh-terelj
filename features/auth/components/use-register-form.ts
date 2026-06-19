@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -23,6 +23,7 @@ import {
 import { getRegisterFormSchema } from "./auth.schema";
 
 export const useRegisterForm = () => {
+  const t = useTranslations("Auth");
   const router = useRouter();
   const locale = useLocale();
   const [registeredUser, setRegisteredUser] = useState<ClientPortalUser | null>(
@@ -56,15 +57,9 @@ export const useRegisterForm = () => {
           variables: { identifier: otpIdentifier },
         });
 
-        if (locale === "mn") {
-          toast.success("Бүртгэл амжилттай!", {
-            description: "Баталгаажуулах кодоо оруулна уу.",
-          });
-        } else {
-          toast.success("Registration successful!", {
-            description: "Enter your verification code.",
-          });
-        }
+        toast.success(t("registrationSuccess"), {
+          description: t("enterVerificationCode"),
+        });
       },
     });
   }
@@ -76,15 +71,9 @@ export const useRegisterForm = () => {
       variables: buildVerifyVariables(registeredUser, code),
       onCompleted(data) {
         if (data?.clientPortalUserVerify) {
-          if (locale === "mn") {
-            toast.success("Баталгаажлаа!", {
-              description: "Та одоо нэвтрэх боломжтой.",
-            });
-          } else {
-            toast.success("Verified!", {
-              description: "You can now log in.",
-            });
-          }
+          toast.success(t("verified"), {
+            description: t("verificationSuccessText"),
+          });
           router.push("/login");
         }
       },
@@ -97,9 +86,7 @@ export const useRegisterForm = () => {
     requestOTP({
       variables: { identifier },
       onCompleted() {
-        toast.success(
-          locale === "mn" ? "Код дахин илгээгдлээ" : "Code sent again",
-        );
+        toast.success(t("codeSentAgain"));
       },
     });
   }

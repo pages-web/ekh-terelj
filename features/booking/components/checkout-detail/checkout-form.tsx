@@ -65,11 +65,11 @@ const CheckoutForm = () => {
       if (newDealId) {
         router.push(`/profile/bookings/${newDealId}`);
       } else {
-        toast.error("Could not complete booking");
+        toast.error(tCheckout("bookingCompleteError"));
       }
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Could not complete booking",
+        error instanceof Error ? error.message : tCheckout("bookingCompleteError"),
       );
     }
   }

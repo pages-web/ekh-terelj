@@ -17,19 +17,21 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useLocale, useTranslations } from "next-intl";
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string, locale: string) => {
   const date = new Date(dateString);
+  const dateLocale = locale === "mn" ? "mn-MN" : "en-US";
   return {
-    full: date.toLocaleDateString("mn-MN", {
+    full: date.toLocaleDateString(dateLocale, {
       year: "numeric",
       month: "long",
       day: "numeric",
     }),
     day: date.getDate().toString().padStart(2, "0"),
-    month: date.toLocaleDateString("mn-MN", { month: "short" }),
+    month: date.toLocaleDateString(dateLocale, { month: "short" }),
     year: date.getFullYear(),
-    time: date.toLocaleTimeString("mn-MN", {
+    time: date.toLocaleTimeString(dateLocale, {
       hour: "2-digit",
       minute: "2-digit",
     }),
@@ -42,6 +44,10 @@ const getReadingTime = (content: string) => {
 };
 
 const NewsDetail = () => {
+  const tCommon = useTranslations("Common");
+  const tContent = useTranslations("Content");
+  const tNav = useTranslations("Nav");
+  const locale = useLocale();
   const params = useParams();
   const slug = params.id as string;
 
@@ -57,13 +63,13 @@ const NewsDetail = () => {
 
   if (!post) return notFound();
 
-  const dateInfo = formatDate(post.createdAt || new Date().toISOString());
+  const dateInfo = formatDate(post.createdAt || new Date().toISOString(), locale);
   const readingTime = getReadingTime(post.content || "");
 
   const breadcrumbs = [
-    { name: "Нүүр", link: "/" },
-    { name: "Мэдээ мэдээлэл", link: "/news" },
-    { name: post.title || "Мэдээ", link: `/news/${slug}` },
+    { name: tNav("home"), link: "/" },
+    { name: tNav("news"), link: "/news" },
+    { name: post.title || tNav("news"), link: `/news/${slug}` },
   ];
 
   return (
@@ -71,7 +77,7 @@ const NewsDetail = () => {
       <Button variant="outline" asChild className="mb-6">
         <Link href="/news" className="flex items-center gap-2">
           <ArrowLeftIcon className="w-4 h-4" />
-          Буцах
+          {tCommon("back")}
         </Link>
       </Button>
 
@@ -129,7 +135,7 @@ const NewsDetail = () => {
             <Card className="mb-8">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6 text-gray-900">
-                  Нэмэлт зургууд
+                  {tContent("additionalImages")}
                 </h3>
                 <Swiper
                   modules={[Navigation, Pagination, Autoplay]}
@@ -149,7 +155,10 @@ const NewsDetail = () => {
                       <div className="rounded-xl overflow-hidden shadow-lg group cursor-pointer">
                         <Image
                           src={image.url}
-                          alt={`${post.title || "Мэдээ"} - зураг ${index + 2}`}
+                          alt={tContent("newsImageAlt", {
+                            title: post.title || tNav("news"),
+                            index: index + 2,
+                          })}
                           width={400}
                           height={250}
                           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
@@ -167,7 +176,7 @@ const NewsDetail = () => {
           <div className="sticky top-8">
             <Card>
               <CardContent className="p-6">
-                <h4 className="font-semibold mb-4">Мэдээллийн дэлгэрэнгүй</h4>
+                <h4 className="font-semibold mb-4">{tContent("details")}</h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm text-gray-600">
                     <CalendarIcon className="w-4 h-4" />
@@ -179,7 +188,7 @@ const NewsDetail = () => {
                   </div>
                   <div className="flex items-center gap-3 text-sm text-gray-600">
                     <UserIcon className="w-4 h-4" />
-                    <span>Унших хугацаа: {readingTime} минут</span>
+                    <span>{tContent("readingTime", { count: readingTime })}</span>
                   </div>
                 </div>
               </CardContent>
@@ -191,7 +200,7 @@ const NewsDetail = () => {
       <Separator className="my-12" />
       <div className="flex justify-end">
         <Button asChild>
-          <Link href="/news">Бусад мэдээ үзэх</Link>
+          <Link href="/news">{tContent("moreNews")}</Link>
         </Button>
       </div>
     </div>

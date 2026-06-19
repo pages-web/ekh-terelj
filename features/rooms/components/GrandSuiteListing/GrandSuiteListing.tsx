@@ -37,6 +37,7 @@ import { useRouter } from "@/i18n/routing"
 import { useLazyQuery } from "@apollo/client"
 import roomQueries from "@/features/rooms/lib/gql/queries"
 import { currentConfigAtom } from "@/constants/config"
+import { useTranslations } from "next-intl"
 
 const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA"
 
@@ -75,6 +76,7 @@ const BookingField = ({
 }
 
 const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
+  const tBooking = useTranslations("Booking")
   const router = useRouter()
   const [date] = useAtom(reserveDateAtom)
   const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(
@@ -106,14 +108,14 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
 
   const handleReserveRoom = async () => {
     if (!date?.from || !date?.to) {
-      toast.error("Pick a date")
+      toast.error(tBooking("pickDate"))
       return
     }
 
     const pipelineId = currentConfig?.pipelineConfig?.pipelineId
 
     if (!pipelineId) {
-      toast.error("Booking configuration is not ready")
+      toast.error(tBooking("bookingConfigNotReady"))
       return
     }
 
@@ -130,7 +132,7 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
     )
 
     if (!isRoomAvailable) {
-      toast.error("This room is already reserved for the selected date")
+      toast.error(tBooking("roomAlreadyReserved"))
       return
     }
 
@@ -156,13 +158,13 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
           </span>
         </div>
         <div className='text-gray-600 font-semibold text-lg'>
-          Нэг хоногийн үнэ
+          {tBooking("pricePerNight")}
         </div>
       </div>
 
       <div className='space-y-4'>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-          <BookingField title='Check-in'>
+          <BookingField title={tBooking("checkIn")}>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -173,16 +175,16 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
                   )}
                 >
                   <CalendarIcon className='mr-2 h-4 w-4' />
-                  {date?.from ? format(date.from, "PPP") : <span>Pick date</span>}
+                  {date?.from ? format(date.from, "PPP") : <span>{tBooking("pickDate")}</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className='min-w-[300px] w-fit p-5' align='start'>
-                <DateForm />
+                <DateForm mode='check-in' />
               </PopoverContent>
             </Popover>
           </BookingField>
 
-          <BookingField title='Check-out'>
+          <BookingField title={tBooking("checkOut")}>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -193,17 +195,17 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
                   )}
                 >
                   <CalendarIcon className='mr-2 h-4 w-4' />
-                  {date?.to ? format(date.to, "PPP") : <span>Pick date</span>}
+                  {date?.to ? format(date.to, "PPP") : <span>{tBooking("pickDate")}</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className='min-w-[300px] w-fit p-5' align='start'>
-                <DateForm />
+                <DateForm mode='check-out' />
               </PopoverContent>
             </Popover>
           </BookingField>
         </div>
 
-        <BookingField title='Room'>
+        <BookingField title={tBooking("room")}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -211,7 +213,7 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
                 className='w-full justify-start text-left font-normal'
               >
                 <Bed className='mr-2 h-4 w-4' />
-                {roomCount} {roomCount > 1 ? "rooms" : "room"}
+                {tBooking("rooms", { count: roomCount })}
               </Button>
             </PopoverTrigger>
             <PopoverContent className='min-w-[300px] p-5' align='start'>
@@ -220,7 +222,7 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
           </Popover>
         </BookingField>
 
-        <BookingField title='Guest'>
+        <BookingField title={tBooking("guest")}>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -228,8 +230,8 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
                 className='w-full justify-start text-left font-normal'
               >
                 <Users className='mr-2 h-4 w-4' />
-                {adults} {adults > 1 ? "Adults" : "Adult"}
-                {!!children && `, ${children} ${children > 1 ? "Children" : "Child"}`}
+                {tBooking("adult", { count: adults })}
+                {!!children && `, ${tBooking("child", { count: children })}`}
               </Button>
             </PopoverTrigger>
             <PopoverContent className='min-w-[300px] p-5' align='start'>
@@ -244,7 +246,7 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
           onClick={handleReserveRoom}
           disabled={checkingAvailability}
         >
-          {checkingAvailability ? "Checking..." : "Reserve this room"}
+          {checkingAvailability ? tBooking("checking") : tBooking("reserveThisRoom")}
           <ArrowRight className='ml-2 h-5 w-5' />
         </Button>
       </div>
@@ -253,6 +255,7 @@ const RoomDetailBookingPanel = ({ room }: { room: IProduct }) => {
 }
 
 export default function GrandSuiteListing() {
+  const tBooking = useTranslations("Booking")
   const params = useParams()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel()
@@ -336,7 +339,7 @@ export default function GrandSuiteListing() {
                         <div className='relative w-full aspect-video overflow-hidden rounded-xl shadow-md'>
                           <Image
                             src={attachment?.url}
-                            alt={`Suite image ${idx + 1}`}
+                            alt={tBooking("suiteImageAlt", { index: idx + 1 })}
                             width={300}
                             height={200}
                             className='w-full h-full object-cover'
@@ -346,7 +349,7 @@ export default function GrandSuiteListing() {
                       <DialogContent>
                         <Image
                           src={attachment?.url}
-                          alt={`Suite image ${idx + 1}`}
+                          alt={tBooking("suiteImageAlt", { index: idx + 1 })}
                           width={800}
                           height={500}
                           className='rounded-2xl shadow-md w-full aspect-video object-contain'
@@ -378,7 +381,7 @@ export default function GrandSuiteListing() {
                       <DialogTrigger>
                         <Image
                           src={attachment?.url}
-                          alt={`Suite thumbnail ${idx + 1}`}
+                          alt={tBooking("suiteThumbnailAlt", { index: idx + 1 })}
                           width={300}
                           height={200}
                           className='rounded-xl shadow-md w-full aspect-video object-cover'
@@ -387,7 +390,7 @@ export default function GrandSuiteListing() {
                       <DialogContent>
                         <Image
                           src={attachment?.url}
-                          alt={`Suite thumbnail ${idx + 1}`}
+                          alt={tBooking("suiteThumbnailAlt", { index: idx + 1 })}
                           width={800}
                           height={500}
                           className='rounded-2xl shadow-md w-full aspect-video object-contain'
@@ -417,8 +420,8 @@ export default function GrandSuiteListing() {
                     </div>
                     <h3 className='text-xl font-bold text-gray-900'>
                       {post._id === "S2M8Q14Ihj_vXyJne5a5H"
-                        ? "Рестораны мэдээлэл"
-                        : "Өрөөний мэдээлэл"}
+                        ? tBooking("restaurantInformation")
+                        : tBooking("roomInformation")}
                     </h3>
                   </div>
                   <div

@@ -2,21 +2,23 @@ import { useMutation } from "@apollo/client";
 import mutations from "@/features/auth/lib/gql/mutations";
 import { toast } from "sonner";
 import { onError } from "@/lib/utils/cn";
+import { useTranslations } from "next-intl";
 
 export const useConfirmInvitation = () => {
+  const t = useTranslations("Auth");
   const [confirmInvitation, { loading }] = useMutation(mutations.confirmInvitation, {
     onCompleted: (data) => {
       if (data?.clientPortalConfirmInvitation) {
-        toast.success("Амжилттай баталгаажлаа!");
+        toast.success(t("verificationSuccess"));
         return data.clientPortalConfirmInvitation;
       } else {
-        toast.error("Баталгаажуулахад алдаа гарлаа");
+        toast.error(t("verificationError"));
         return false;
       }
     },
     onError: (error) => {
-      console.error('Баталгаажуулах үед алдаа гарлаа:', error);
-      toast.error("Баталгаажуулахад алдаа гарлаа");
+      console.error(t("verificationError"), error);
+      toast.error(t("verificationError"));
       onError(error);
     },
   });

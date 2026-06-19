@@ -18,6 +18,7 @@ import { IPayment } from "@/features/payments/types";
 import { Button } from "@/components/ui/button";
 import { LoadingIcon } from "@/components/ui/loading";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 type BankLink = {
   name?: string;
@@ -79,6 +80,8 @@ const PaymentDetail = ({
   dealDetail: IFullDeal;
   refetch: () => void;
 }) => {
+  const tCheckout = useTranslations("Checkout");
+  const tCommon = useTranslations("Common");
   const { payments, loading: paymentsLoading } = usePayments();
   const { handleInvoiceCreate, loading: invoiceLoading } = useInvoiceCreate();
   const { handleAddTransaction, loading: transactionLoading } =
@@ -134,7 +137,7 @@ const PaymentDetail = ({
       pollRef.current = null;
     }
 
-    toast.success("Төлбөр амжилттай төлөгдлөө.");
+    toast.success(tCheckout("paymentSuccess"));
     setOpen(false);
     await refetch();
   }, [refetch]);
@@ -178,7 +181,7 @@ const PaymentDetail = ({
     );
 
     if (!payment) {
-      setError("Төлбөрийн хэрэгсэл сонгоно уу.");
+      setError(tCheckout("selectPaymentMethodError"));
       return;
     }
 
@@ -191,14 +194,14 @@ const PaymentDetail = ({
         amount,
         currency,
         description: `${dealDetail.number} ${
-          isPrePayment ? "урьдчилгаа" : "бүтэн"
-        } төлбөр`,
+          isPrePayment ? tCheckout("prePayment") : tCheckout("fullPayment")
+        }`,
         paymentId: payment._id,
       });
       const createdInvoiceId = invoiceResult?.data?.invoiceCreate?._id || "";
 
       if (!createdInvoiceId) {
-        throw new Error("Invoice creation returned no ID.");
+        throw new Error(tCheckout("invoiceMissingId"));
       }
 
       setInvoiceId(createdInvoiceId);
@@ -219,7 +222,7 @@ const PaymentDetail = ({
 
       setPaymentResponse(parsedResponse || {});
     } catch (error: any) {
-      setError(error?.message || "Төлбөр эхлүүлэхэд алдаа гарлаа.");
+      setError(error?.message || tCheckout("paymentStartError"));
     }
   };
 
@@ -234,10 +237,10 @@ const PaymentDetail = ({
       if (isPaidStatus(result?.data?.cpInvoicesCheck)) {
         await handlePaid();
       } else {
-        setError("Төлбөр хараахан баталгаажаагүй байна.");
+        setError(tCheckout("paymentNotConfirmed"));
       }
     } catch {
-      setError("Төлбөр шалгахад алдаа гарлаа.");
+      setError(tCheckout("paymentCheckError"));
     }
   };
 
@@ -252,21 +255,21 @@ const PaymentDetail = ({
       }}
     >
       <DialogTrigger asChild>
-        <Button>Төлбөр төлөх</Button>
+        <Button>{tCheckout("payTitle")}</Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Төлбөр төлөх</DialogTitle>
+          <DialogTitle>{tCheckout("payTitle")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5">
           <div className="flex items-center justify-between rounded-lg border p-3">
-            <span className="text-sm text-muted-foreground">Дүн</span>
+            <span className="text-sm text-muted-foreground">{tCheckout("amount")}</span>
             <span className="text-right font-semibold">
               {amount.toLocaleString()} {currency}
               {isPrePayment && (
                 <span className="block text-xs font-normal text-muted-foreground">
-                  Урьдчилгаа 50%
+                  {tCheckout("prePaymentPercent", { percent: 50 })}
                 </span>
               )}
             </span>
@@ -281,12 +284,12 @@ const PaymentDetail = ({
           {!paymentResponse && (
             <>
               <div className="space-y-2">
-                <p className="text-sm font-medium">Төлбөрийн хэрэгсэл</p>
+                <p className="text-sm font-medium">{tCheckout("paymentMethod")}</p>
                 <div className="grid gap-2">
                   {paymentsLoading && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <LoadingIcon className="mr-0" />
-                      Уншиж байна
+                      {tCommon("loading")}
                     </div>
                   )}
                   {availablePayments.map((payment) => (
@@ -314,7 +317,7 @@ const PaymentDetail = ({
                 disabled={loading || !selectedPaymentId}
                 onClick={startPayment}
               >
-                {loading ? <LoadingIcon /> : "Үргэлжлүүлэх"}
+                {loading ? <LoadingIcon /> : tCommon("continue")}
               </Button>
             </>
           )}
@@ -331,23 +334,23 @@ const PaymentDetail = ({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrSource}
-                    alt="QR Code"
+                    alt={tCheckout("qrCodeAlt")}
                     className="h-56 w-56 object-contain"
                   />
                 </div>
               ) : (
                 <p className="text-center text-sm text-muted-foreground">
-                  QR мэдээлэл олдсонгүй.
+                  {tCheckout("qrNotFound")}
                 </p>
               )}
 
               <p className="max-w-xs text-center text-sm text-muted-foreground">
-                QR кодыг банкны апп-аар уншуулж төлбөрөө төлнө үү.
+                {tCheckout("qrInstruction")}
               </p>
 
               {pollCapped && (
                 <Button variant="outline" size="sm" onClick={handleCheckAgain}>
-                  Дахин шалгах
+                  {tCheckout("checkAgain")}
                 </Button>
               )}
             </div>

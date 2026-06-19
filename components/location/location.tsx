@@ -3,8 +3,10 @@
 import Heading from "@/components/heading/heading";
 import Image from "@/components/ui/image";
 import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
+import { useTranslations } from "next-intl";
 
 export default function Location() {
+  const tContent = useTranslations("Content");
   const { posts } = useCmsPostsBySlug("");
 
   const post = posts[0];
@@ -30,7 +32,7 @@ export default function Location() {
           <div className="h-[400px] w-full rounded-xl overflow-hidden shadow-lg border">
             <Image
               src={post?.thumbnail?.url || "/images/plan_zurag.jpg"}
-              alt="location"
+              alt={tContent("contactLocation")}
               width={500}
               height={500}
               className="w-full h-full object-cover"

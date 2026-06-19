@@ -7,6 +7,7 @@ import { IExtra, IProduct, IRoom } from "@/features/rooms/types";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export const useAddRoomExtras = ({ extra }: { extra: IExtra }) => {
   const [isAdd, setIsAdd] = useState<boolean>(true);
@@ -44,6 +45,7 @@ export const useAddRoomExtras = ({ extra }: { extra: IExtra }) => {
 };
 
 export const useSelectRoom = ({ room }: { room: IRoom }) => {
+  const tBooking = useTranslations("Booking");
   const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
 
@@ -67,7 +69,9 @@ export const useSelectRoom = ({ room }: { room: IRoom }) => {
     }
 
     if (selectedRooms.length >= reserveGuestAndRoom.room) {
-      toast.error("It's full", { description: "You can't add more rooms" });
+      toast.error(tBooking("roomSelectionFull"), {
+        description: tBooking("roomSelectionFullDescription"),
+      });
       return;
     }
 

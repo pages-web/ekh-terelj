@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { ChevronDown, ChevronUp, ExternalLink, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "next-intl"
 
 const stars = Array.from({ length: 5 }, (_, i) => (
   <Star key={i} className='h-4 w-4 fill-amber-400 text-amber-400' />
@@ -12,6 +13,7 @@ const googleReviewsUrl =
   "https://www.google.com/maps/search/?api=1&query=Ekh%20Terelj%20Resort%2047.848267%2C107.401080"
 
 const Review = () => {
+  const tContent = useTranslations("Content")
   const [showAllReviews, setShowAllReviews] = useState(false)
 
   useEffect(() => {
@@ -32,13 +34,13 @@ const Review = () => {
         <div className='mx-auto mb-8 max-w-3xl text-center lg:mb-10'>
           <div className='mb-5 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-800'>
             <span className='flex items-center gap-0.5'>{stars}</span>
-            <span>Google reviews</span>
+            <span>{tContent("googleReviews")}</span>
           </div>
 
           <h2 className='text-2xl font-bold leading-tight text-gray-900 sm:text-3xl lg:text-4xl'>
-            Эх Тэрэлжид амарсан зочдын сэтгэлд хоногшсон дурсамж
+            {tContent("googleReviewsTitle")}
             <span className='block'>
-              үнэн бодит туршлагуудтай танилцана уу.
+              {tContent("googleReviewsSubtitle")}
             </span>
           </h2>
         </div>
@@ -67,12 +69,12 @@ const Review = () => {
               {showAllReviews ? (
                 <>
                   <ChevronUp className='mr-2 h-4 w-4' />
-                  Цөөнөөр харах
+                  {tContent("showFewerReviews")}
                 </>
               ) : (
                 <>
                   <ChevronDown className='mr-2 h-4 w-4' />
-                  Бүх сэтгэгдэл харах
+                  {tContent("showAllReviews")}
                 </>
               )}
             </Button>
@@ -86,9 +88,9 @@ const Review = () => {
                 href={googleReviewsUrl}
                 target='_blank'
                 rel='noreferrer'
-                aria-label='Google дээрх бүх сэтгэгдлийг нээх'
+                aria-label={tContent("openGoogleReviews")}
               >
-                Google дээр харах
+                {tContent("viewOnGoogle")}
                 <ExternalLink className='ml-2 h-4 w-4' />
               </a>
             </Button>

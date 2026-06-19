@@ -27,8 +27,11 @@ import { EmblaCarouselType } from "embla-carousel";
 import { IProduct } from "@/features/rooms/types";
 import { CmsContent } from "@/features/cms/components/content-render";
 import { getProductDescriptionHtml } from "@/lib/product-description";
+import { useTranslations } from "next-intl";
 
 const PopupProductDetail = ({ ...room }: IProduct) => {
+  const tContent = useTranslations("Content");
+  const tCommon = useTranslations("Common");
   const category = room.category;
   const { name, description, attachment, attachmentMore } = room;
   const overview = getProductDescriptionHtml(
@@ -36,13 +39,13 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
   );
   const images = [attachment, attachmentMore].flat();
   const facilities = [
-    { title: "1 King Bed", icon: <BedDouble className="w-6 h-6" /> },
-    { title: "Free WiFi", icon: <Wifi className="w-6 h-6" /> },
-    { title: "Free self parking", icon: <CarFront className="w-6 h-6" /> },
-    { title: "Sleeps 3", icon: <Users className="w-6 h-6" /> },
-    { title: "452 sq ft", icon: <House className="w-6 h-6" /> },
+    { title: tContent("kingBed", { count: 1 }), icon: <BedDouble className="w-6 h-6" /> },
+    { title: tContent("freeWifi"), icon: <Wifi className="w-6 h-6" /> },
+    { title: tContent("freeSelfParking"), icon: <CarFront className="w-6 h-6" /> },
+    { title: tContent("sleepsGuests", { count: 3 }), icon: <Users className="w-6 h-6" /> },
+    { title: tContent("roomSizeSqFt", { count: 452 }), icon: <House className="w-6 h-6" /> },
     {
-      title: "Reserve now, pay later",
+      title: tContent("reserveNowPayLater"),
       icon: <CreditCard className="w-6 h-6" />,
     },
   ];
@@ -89,7 +92,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
                 <Image
                   // src={image?.url}
                   src="/images/product.png"
-                  alt={name || category?.name || "Room"}
+                  alt={name || category?.name || tContent("room")}
                   width={1000}
                   height={800}
                   quality={100}
@@ -112,11 +115,11 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
       </Carousel>
       <div className="space-y-8">
         <div className="px-4 space-y-4">
-          <h3 className="text-displayxs">Overview</h3>
+          <h3 className="text-displayxs">{tContent("overview")}</h3>
           <CmsContent html={overview} className="text-textsm" />
         </div>
         <div className="px-4 space-y-4">
-          <h3 className="text-displayxs">Room best facilities</h3>
+          <h3 className="text-displayxs">{tContent("roomFacilities")}</h3>
           <div className="grid md:grid-cols-2 gap-3 md:gap-6">
             {facilities.map((facility, index) => {
               return (
@@ -134,7 +137,7 @@ const PopupProductDetail = ({ ...room }: IProduct) => {
       <div className="px-4 flex justify-end">
         <DialogClose>
           <Button variant={"secondary"} className="w-fit">
-            Close
+            {tCommon("close")}
           </Button>
         </DialogClose>
       </div>

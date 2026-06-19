@@ -10,8 +10,10 @@ import { useLabels, useStages, useTags } from "@/features/booking/hooks/sales";
 import { useLabelAdd, useAddPrePaymentTag } from "@/features/booking/hooks/sales-mutations";
 import { isPrePaymentAtom } from "@/features/payments/store";
 import { currentConfigAtom } from "@/constants/config";
+import { useTranslations } from "next-intl";
 
 const useAddDeal = () => {
+  const tBooking = useTranslations("Booking");
   const [addDeal, { data, loading: addDealLoading }] = useMutation(
     mutations.dealsAdd,
   );
@@ -75,15 +77,15 @@ const useAddDeal = () => {
       .filter(Boolean);
 
     if (!from || !to) {
-      throw new Error("Pick a date before booking");
+      throw new Error(tBooking("pickDateBeforeBooking"));
     }
 
     if (!pipelineId) {
-      throw new Error("Booking configuration is not ready");
+      throw new Error(tBooking("bookingConfigNotReady"));
     }
 
     if (selectedRoomIds.length === 0) {
-      throw new Error("Select a room before booking");
+      throw new Error(tBooking("selectRoomBeforeBooking"));
     }
 
     const { data: roomAvailabilityData } = await checkRooms({
@@ -106,7 +108,9 @@ const useAddDeal = () => {
 
     if (unavailableRoom) {
       throw new Error(
-        `${unavailableRoom.room?.name || "This room"} is already reserved for the selected date`,
+        tBooking("roomNameAlreadyReserved", {
+          room: unavailableRoom.room?.name || tBooking("thisRoom"),
+        }),
       );
     }
 
@@ -132,7 +136,7 @@ const useAddDeal = () => {
     const targetStage = stages?.find((st: IStage) => st.code === "unconfirmed");
 
     if (!targetStage?._id) {
-      throw new Error("Booking stage not found: unconfirmed");
+      throw new Error(tBooking("bookingStageNotFound"));
     }
 
     const variables = {

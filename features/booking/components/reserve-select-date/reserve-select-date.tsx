@@ -59,7 +59,7 @@ const ReserveSelectDate = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
-              <DateForm />
+              <DateForm mode="check-in" />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>
@@ -84,7 +84,7 @@ const ReserveSelectDate = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="min-w-[300px] w-fit p-5" align="start">
-              <DateForm />
+              <DateForm mode="check-out" />
             </PopoverContent>
           </Popover>
         </ChildrenWithTitle>

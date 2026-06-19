@@ -4,8 +4,10 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/ui/image";
 import { useCmsPosts } from "@/features/cms/hooks/cms";
+import { useTranslations } from "next-intl";
 
 const CustomerFeedback = () => {
+  const tContent = useTranslations("Content");
   const { posts } = useCmsPosts({
     tagIds: ["QKHx6if6ktGQ7roaLyw-V"],
     perPage: 1000,
@@ -41,7 +43,7 @@ const CustomerFeedback = () => {
           <div className="w-52 h-52">
             <Image
               src={qrMenuPost?.thumbnail?.url || "/images/feedback.png"}
-              alt="QR Menu"
+              alt={tContent("qrMenu")}
               width={120}
               height={120}
               className="w-full h-full object-contain rounded-lg"
@@ -49,15 +51,15 @@ const CustomerFeedback = () => {
           </div>
 
           <h3 className="text-2xl font-bold mb-4 text-gray-800">
-            {qrMenuPost?.title || "QR Menu"}
+            {qrMenuPost?.title || tContent("qrMenu")}
           </h3>
           <p className="text-gray-600 text-center max-w-sm mb-6">
-            {qrMenuPost?.excerpt || "QR Menu"}
+            {qrMenuPost?.excerpt || tContent("qrMenu")}
           </p>
           <Button className="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all duration-300 border border-gray-600">
             <span
               dangerouslySetInnerHTML={{
-                __html: qrMenuPost?.content || "Дэлгэрэнгүй үзэх",
+                __html: qrMenuPost?.content || tContent("viewMore"),
               }}
             />
           </Button>
@@ -68,7 +70,7 @@ const CustomerFeedback = () => {
             <div className="w-52 h-52">
               <Image
                 src={foodMenuPost?.thumbnail?.url || "/images/food_menu.jpg"}
-                alt="Food Menu"
+                alt={tContent("foodMenu")}
                 width={120}
                 height={120}
                 className="w-full h-full object-contain rounded-lg"
@@ -77,15 +79,15 @@ const CustomerFeedback = () => {
           </div>
 
           <h3 className="text-2xl font-bold mb-4 text-gray-800">
-            {foodMenuPost?.title || "Хоолны цэс"}
+            {foodMenuPost?.title || tContent("foodMenu")}
           </h3>
           <p className="text-gray-600 text-center max-w-sm mb-6">
-            {foodMenuPost?.excerpt || "QR Menu"}
+            {foodMenuPost?.excerpt || tContent("qrMenu")}
           </p>
           <Button className="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all duration-300 border border-gray-600">
             <span
               dangerouslySetInnerHTML={{
-                __html: foodMenuPost?.content || "Дэлгэрэнгүй үзэх",
+                __html: foodMenuPost?.content || tContent("viewMore"),
               }}
             />
           </Button>

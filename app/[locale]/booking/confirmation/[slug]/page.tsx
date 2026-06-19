@@ -14,8 +14,10 @@ import { RESET } from "jotai/utils";
 import { formatNumberWithCommas } from "@/lib/utils/format-number";
 import { dealIdAtom, selectedRoomsAtom } from "@/features/booking/store/rooms";
 import { currentConfigAtom } from "@/constants/config";
+import { useTranslations } from "next-intl";
 
 const YourDetails = () => {
+  const tBooking = useTranslations("Booking");
   const params = useParams();
   const currentConfig = useAtomValue(currentConfigAtom);
   const setReserveGuestAndRoom = useSetAtom(reserveGuestAndRoomAtom);
@@ -69,7 +71,7 @@ const YourDetails = () => {
               <div className="flex gap-2">
                 <div className="w-fit rounded-lg bg-[#dcf6df] border-[#46cb53] text-[#46cb53] flex items-center gap-2 px-5 py-[6px]">
                   <CircleCheck className="h-4 w-4" color="#46cb53" />
-                  <p className="w-fit text-[#46cb53] text-textsm">Confirmed</p>
+                  <p className="w-fit text-[#46cb53] text-textsm">{tBooking("confirmed")}</p>
                 </div>
                 {/* <div className="flex items-center gap-1 pl-2 text-textxs text-black/60">
                   <Check className="h-4 w-4" color="#46cb53" />
@@ -80,13 +82,13 @@ const YourDetails = () => {
 
               <div>
                 <h1 className="font-bold text-textlg">
-                  Your reservation confirmed
+                  {tBooking("reservationConfirmed")}
                 </h1>
               </div>
 
               <div>
                 <div className="flex gap-2 text-textsm">
-                  <span>Your confirmation code: </span>
+                  <span>{tBooking("confirmationCode")}</span>
                   <span className="font-bold">{deal?.number}</span>
                 </div>
               </div>
@@ -95,20 +97,19 @@ const YourDetails = () => {
 
           <div className="w-full flex flex-col gap-6 border rounded-lg p-6 shadow-md">
             <h1 className="text-displayxs text-black">
-              Your reservation details
+              {tBooking("reservationDetails")}
             </h1>
 
             <Separator />
 
             <div>
               <p className="font-bold text-textsm">
-                Stays: {nights} night{nights > 1 && "s"}
+                {tBooking("stay", { count: nights })}
               </p>
               <p className="font-bold text-textsm">
-                Guests: {firstProductData?.information?.adults ?? 0} adult
-                {(firstProductData?.information?.adults ?? 0) > 1 && "s"},{" "}
-                {firstProductData?.information?.children ?? 0} child
-                {(firstProductData?.information?.children ?? 0) > 1 && "ren"}
+                {tBooking("guests")}:{" "}
+                {tBooking("adult", { count: firstProductData?.information?.adults ?? 0 })},{" "}
+                {tBooking("child", { count: firstProductData?.information?.children ?? 0 })}
               </p>
             </div>
 
@@ -116,14 +117,14 @@ const YourDetails = () => {
 
             <div className="text-textsm flex flex-col gap-6">
               <div className="space-y-2">
-                <h2>Check-in:</h2>
+                <h2>{tBooking("checkIn")}:</h2>
                 <p className="font-bold">
                   {firstProductData?.startDate &&
                     format(firstProductData.startDate, "PPP")}
                 </p>
               </div>
               <div className="space-y-2">
-                <h2>Check-out:</h2>
+                <h2>{tBooking("checkOut")}:</h2>
                 <p className="font-bold">
                   {firstProductData?.endDate &&
                     format(firstProductData.endDate, "PPP")}
@@ -151,7 +152,7 @@ const YourDetails = () => {
                 <div key={index} className="space-y-3">
                   <div className="flex gap-4">
                     <h1 className="w-fit font-bold">
-                      {rooms.length > 1 && "Room " + (index + 1) + ", "}
+                      {rooms.length > 1 && `${tBooking("roomNumber", { index: index + 1 })} `}
                       {
                         categories?.find(
                           (category: any) =>
@@ -186,7 +187,7 @@ const YourDetails = () => {
             </div>
             <Separator />
             <div className="flex justify-between font-bold text-textxl">
-              <span>Price:</span>
+              <span>{tBooking("price")}:</span>
               <span>
                 {formatNumberWithCommas(
                   productsData.reduce(

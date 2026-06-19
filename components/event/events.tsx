@@ -1,37 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Users, Clock, ParkingCircle } from "lucide-react";
 import Image from "next/image";
-
-const eventSpaces = [
-  {
-    title: "Celebrations",
-    description:
-      "Whether a special birthday, anniversary, or cocktail-raising occasion, Aman New York serves as the perfect backdrop for life’s milestones.",
-    image: "/images/number1.png",
-  },
-  {
-    title: "Garden Terrace",
-    description:
-      "With immersive views of the city below, The Garden Terrace, with its fire pits, water features, and surrounding greenery, offers a show stopping New York backdrop for any occasion.",
-    image: "/images/number2.png",
-  },
-  {
-    title: "Private Dining",
-    description:
-      "The ideal setting for an upcoming gathering, Aman New York’s Private Dining rooms combine the brand’s warm hospitality with menus created by renowned chefs.",
-    image: "/images/number3.png",
-  },
-];
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export default function Events() {
+  const t = useTranslations("Content");
+  const eventSpaces = [
+    {
+      title: t("eventCelebrationsTitle"),
+      description: t("eventCelebrationsDescription"),
+      image: "/images/number1.png",
+    },
+    {
+      title: t("eventGardenTitle"),
+      description: t("eventGardenDescription"),
+      image: "/images/number2.png",
+    },
+    {
+      title: t("eventPrivateDiningTitle"),
+      description: t("eventPrivateDiningDescription"),
+      image: "/images/number3.png",
+    },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto p-6 mb-[60px]">
       <div className="text-center mb-10">
-        <h1 className="text-[30px] font-semibold mb-2">Meetings & Events</h1>
-        <p className="text-sm">
-          Unparalleled spaces to celebrate or strategise
-        </p>
+        <h1 className="text-[30px] font-semibold mb-2">{t("meetingsEvents")}</h1>
+        <p className="text-sm">{t("eventSpacesSubtitle")}</p>
       </div>
 
       <div className="space-y-12">
@@ -53,20 +50,20 @@ export default function Events() {
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <Users size={16} />
-                  120 people
+                  {t("peopleCapacity", { count: 120 })}
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock size={16} />
-                  First hour free
+                  {t("firstHourFree")}
                 </div>
                 <div className="flex items-center gap-1">
                   <ParkingCircle size={16} />
-                  Free parking
+                  {t("freeParking")}
                 </div>
               </div>
 
               <Link href="/events-details" passHref>
-                <Button className="mt-4">View more →</Button>
+                <Button className="mt-4">{t("viewMoreArrow")}</Button>
               </Link>
             </div>
           </div>

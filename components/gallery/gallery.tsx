@@ -3,17 +3,19 @@ import Heading from "@/components/heading/heading";
 import HeadingButton from "../heading-button/heading-button";
 import { usePathname } from "@/i18n/routing";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useTranslations } from "next-intl";
 
 export default function Gallery() {
+  const tContent = useTranslations("Content");
   const pathname = usePathname();
 
   return (
     <div className="space-y-10">
       <div className="flex flex-col items-center text-center space-y-6">
-        <HeadingButton title="Gallery" link="/gallery" />
+        <HeadingButton title={tContent("gallery")} link="/gallery" />
         <Heading
-          title="Gallery"
-          desc="The Otemachi Tower is connected to the five-line Otemachi subway station, close to Tokyo Station, offering access to the nationwide bullet train network."
+          title={tContent("gallery")}
+          desc={tContent("galleryDescription")}
         />
       </div>
 
@@ -27,7 +29,7 @@ export default function Gallery() {
                   width={400}
                   height={300}
                   className="w-full h-full"
-                  alt={`Image ${index + 1}`}
+                  alt={tContent("galleryImageAlt", { index: index + 1 })}
                   key={index}
                 />
               </div>
@@ -39,7 +41,7 @@ export default function Gallery() {
                   width={400}
                   height={300}
                   className="w-full h-full"
-                  alt={`Image ${index + 1}`}
+                  alt={tContent("galleryImageAlt", { index: index + 1 })}
                   key={index}
                 />
               </div>
