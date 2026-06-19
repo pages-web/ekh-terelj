@@ -1,10 +1,10 @@
 "use client";
 
 import BookingLayout from "./booking-layout";
-import SelectRoomProducts from "@/components/select-room-products/select-room-products";
+import SelectRoomProducts from "@/features/booking/components/select-room-products/select-room-products";
 
-import SelectedRoomCard from "@/components/selected-room-card/selected-room-card";
-import { selectedRoomsAtom } from "@/store/rooms";
+import SelectedRoomCard from "@/features/booking/components/selected-room-card/selected-room-card";
+import { selectedRoomsAtom } from "@/features/booking/store/rooms";
 import { useSetAtom } from "jotai";
 import { RESET } from "jotai/utils";
 import { useEffect } from "react";

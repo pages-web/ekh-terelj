@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Heading from "../heading/heading";
+import Heading from "@/components/heading/heading";
 import HeadingButton from "../heading-button/heading-button";
 import { usePathname } from "@/i18n/routing";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Gallery() {
   const pathname = usePathname();

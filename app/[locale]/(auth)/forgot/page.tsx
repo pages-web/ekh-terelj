@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import ForgotForm from "@/containers/auth/forgot-form";
+import ForgotForm from "@/features/auth/components/forgot-form";
 import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
 import { KeyRound } from "lucide-react";

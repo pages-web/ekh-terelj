@@ -1,8 +1,8 @@
-import ReservedRoomDetail from "@/components/reserved-room-detail/reserved-room-detail";
+import ReservedRoomDetail from "@/features/booking/components/reserved-room-detail/reserved-room-detail";
 import BookingLayout from "../booking-layout";
 
-import DealEndAlert from "@/components/deal-end-alert/deal-end-alert";
-import CheckoutForm from "@/components/checkout-detail/checkout-form";
+import DealEndAlert from "@/features/booking/components/deal-end-alert/deal-end-alert";
+import CheckoutForm from "@/features/booking/components/checkout-detail/checkout-form";
 
 const YourDetails = () => {
   return (

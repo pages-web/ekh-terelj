@@ -3,7 +3,7 @@
 import { ErxesFormEmbed } from "@/components/erxes-form/erxes-form-embed";
 import { Phone, MapPin, Mail, MessageCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useCmsPosts } from "@/sdk/queries/cms";
+import { useCmsPosts } from "@/features/cms/hooks/cms";
 import { useTranslations } from "next-intl";
 
 export default function ContactComponent() {

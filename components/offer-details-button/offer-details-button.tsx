@@ -6,9 +6,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import PopupProductDetail from "../popup-product-detail/popup-product-detail";
-import PopupOfferDetail from "../popup-offer-detail/popup-offer-detail";
+import { Button } from "@/components/ui/button";
+import PopupProductDetail from "@/features/rooms/components/popup-product-detail/popup-product-detail";
+import PopupOfferDetail from "@/components/popup-offer-detail/popup-offer-detail";
 
 const OfferDetailsButton = () => {
   return (

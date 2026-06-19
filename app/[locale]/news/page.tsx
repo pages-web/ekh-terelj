@@ -8,8 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Heading from "@/components/heading/heading";
 import { CalendarIcon, UserIcon } from "lucide-react";
-import { useCmsPostsBySlug } from "@/hooks/useCmsPostsBySlug";
-import { usePageBySlug } from "@/hooks/usePageBySlug";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
+import { usePageBySlug } from "@/features/cms/hooks/usePageBySlug";
 
 const News = () => {
   const { posts, loading } = useCmsPostsBySlug("medee-medeelel");

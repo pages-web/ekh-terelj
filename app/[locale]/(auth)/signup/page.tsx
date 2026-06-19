@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import RegisterForm from "@/containers/auth/register-form";
+import RegisterForm from "@/features/auth/components/register-form";
 import { Link } from "@/i18n/routing";
 import { User } from "lucide-react";
 import { getTranslations } from "next-intl/server";

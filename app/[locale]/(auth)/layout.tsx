@@ -1,4 +1,4 @@
-import Redirector from "@/containers/auth/redirector";
+import Redirector from "@/features/auth/components/redirector";
 import { Suspense } from "react";
 
 const AuthLayout = ({ children }: React.PropsWithChildren) => {

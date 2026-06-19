@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/cn";
 import { Loader2Icon, type LucideProps } from "lucide-react";
 
 const LoadingOverlay = () => (

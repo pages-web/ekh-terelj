@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import Image from "../ui/image";
-import { useCmsPosts } from "@/sdk/queries/cms";
+import Image from "@/components/ui/image";
+import { useCmsPosts } from "@/features/cms/hooks/cms";
 
 const CustomerFeedback = () => {
   const { posts } = useCmsPosts({

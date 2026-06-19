@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
-import { useConfirmInvitation } from "@/sdk/mutations/verify";
+import { useConfirmInvitation } from "@/features/auth/hooks/verify";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 

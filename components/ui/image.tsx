@@ -2,8 +2,8 @@
 
 import NextImage, { ImageProps as NextImageProps } from "next/image";
 
-import { cn, readFile } from "@/lib/utils";
-import cloudflareLoader from "@/lib/image-loader";
+import { cn, readFile } from "@/lib/utils/cn";
+import cloudflareLoader from "@/lib/utils/image-loader";
 import { useState } from "react";
 import { useMediaQuery } from "@/hooks/others/use-media-query";
 

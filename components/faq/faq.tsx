@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useCmsPostsBySlug } from "@/hooks/useCmsPostsBySlug";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
 
 export default function FAQPage() {
   const { posts: faqPosts, loading: faqPostsLoading } = useCmsPostsBySlug(

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/cn";
 import { Input, InputProps } from "./input";
 import { Separator } from "./separator";
 import { Button } from "./button";

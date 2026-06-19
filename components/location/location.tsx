@@ -1,8 +1,8 @@
 "use client";
 
-import Heading from "../heading/heading";
-import Image from "../ui/image";
-import { useCmsPostsBySlug } from "@/hooks/useCmsPostsBySlug";
+import Heading from "@/components/heading/heading";
+import Image from "@/components/ui/image";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
 
 export default function Location() {
   const { posts } = useCmsPostsBySlug("");

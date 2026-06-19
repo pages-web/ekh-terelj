@@ -2,7 +2,7 @@
 
 import Location from "@/components/location/location";
 import Review from "@/components/google-review/review";
-import Accommodation from "@/components/home-Accommodation/accommodation";
+import Accommodation from "@/features/rooms/components/home-Accommodation/accommodation";
 import HomeBooking from "@/components/home-booking/home-booking";
 import FAQ from "@/components/faq/faq";
 import CustomerFeedback from "@/components/customer-feedback/customer-feedback";

@@ -1,19 +1,19 @@
 "use client";
 import BookingLayout from "../../booking-layout";
 import { useAtomValue, useSetAtom } from "jotai";
-import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/store/reserve";
+import { reserveDateAtom, reserveGuestAndRoomAtom } from "@/features/booking/store/reserve";
 import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@apollo/client";
-import { queries } from "@/sdk/graphql/sales";
+import queries from "@/features/booking/lib/gql/queries";
 import { useParams } from "next/navigation";
 import { CircleCheck } from "lucide-react";
 import { format, formatDistance } from "date-fns";
-import { queries as roomQueries } from "@/sdk/graphql/rooms";
+import roomQueries from "@/features/rooms/lib/gql/queries";
 import { RESET } from "jotai/utils";
-import { formatNumberWithCommas } from "@/lib/formatNumber";
-import { dealIdAtom, selectedRoomsAtom } from "@/store/rooms";
-import { currentConfigAtom } from "@/store/config";
+import { formatNumberWithCommas } from "@/lib/utils/format-number";
+import { dealIdAtom, selectedRoomsAtom } from "@/features/booking/store/rooms";
+import { currentConfigAtom } from "@/constants/config";
 
 const YourDetails = () => {
   const params = useParams();

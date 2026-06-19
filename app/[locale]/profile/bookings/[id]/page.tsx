@@ -2,16 +2,16 @@
 import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
 import { format, formatDistance } from "date-fns";
-import { useDealDetail, useStages, useTags } from "@/sdk/queries/sales";
+import { useDealDetail, useStages, useTags } from "@/features/booking/hooks/sales";
 import { Loading } from "@/components/ui/loading";
-import { useRoomCategories } from "@/sdk/queries/rooms";
-import PaymentDetail from "@/components/payment-detail/payment-detail";
+import { useRoomCategories } from "@/features/rooms/hooks/rooms";
+import PaymentDetail from "@/features/payments/components/payment-detail/payment-detail";
 import { useEffect } from "react";
-import { useChangeStage } from "@/sdk/mutations/sales";
+import { useChangeStage } from "@/features/booking/hooks/sales-mutations";
 import {
   useInvoiceDetail,
   useInvoiceIdByDealId,
-} from "@/sdk/queries/payments";
+} from "@/features/payments/hooks/payments";
 
 const OrderDetail = () => {
   const params = useParams();

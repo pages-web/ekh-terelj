@@ -1,10 +1,10 @@
 "use client";
 import { useQuery } from "@apollo/client";
 import { Suspense } from "react";
-import { queries } from "@/sdk/graphql/sales";
-import { useCurrentUser } from "@/sdk/queries/auth";
+import queries from "@/features/booking/lib/gql/queries";
+import { useCurrentUser } from "@/features/auth/hooks/auth";
 import { useRouter } from "@/i18n/routing";
-import { queries as roomQueries } from "@/sdk/graphql/rooms";
+import roomQueries from "@/features/rooms/lib/gql/queries";
 import {
   Table,
   TableBody,
@@ -15,11 +15,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import { formatNumberWithCommas } from "@/lib/formatNumber";
+import { formatNumberWithCommas } from "@/lib/utils/format-number";
 import { Separator } from "@/components/ui/separator";
-import { useLabels } from "@/sdk/queries/sales";
+import { useLabels } from "@/features/booking/hooks/sales";
 import { useAtom, useAtomValue } from "jotai";
-import { currentConfigAtom } from "@/store/config";
+import { currentConfigAtom } from "@/constants/config";
 import { useTranslations } from "next-intl";
 
 const Orders = () => {

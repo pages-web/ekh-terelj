@@ -1,6 +1,6 @@
-import { SidebarNav } from "@/components/sidebar-nav/sidebar-nav";
+import { SidebarNav } from "@/features/profile/components/sidebar-nav/sidebar-nav";
 import { Separator } from "@/components/ui/separator";
-import PrivateRoute from "@/containers/auth/private-route";
+import PrivateRoute from "@/features/auth/components/private-route";
 import { Suspense } from "react";
 
 const ProfileLayout = ({

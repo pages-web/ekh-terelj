@@ -1,9 +1,9 @@
-import ProfileEdit from "@/components/profile/profile-edit/profile-edit";
+import ProfileEdit from "@/features/profile/components/profile-edit/profile-edit";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import ProfileTabsList from "@/components/profile/profile-tab-trigger";
-import ChangePhone from "@/components/profile/profile-edit/change-phone";
-import ChangePassword from "@/components/profile/profile-edit/change-password";
-import Email from "@/components/profile/profile-edit/email";
+import ProfileTabsList from "@/features/profile/components/profile-tab-trigger";
+import ChangePhone from "@/features/profile/components/profile-edit/change-phone";
+import ChangePassword from "@/features/profile/components/profile-edit/change-password";
+import Email from "@/features/profile/components/profile-edit/email";
 import { Separator } from "@/components/ui/separator";
 import { getTranslations } from "next-intl/server";
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { notFound, useParams } from "next/navigation";
-import { useCmsPostBySlug } from "@/hooks/useCmsPostDetail";
+import { useCmsPostBySlug } from "@/features/cms/hooks/useCmsPostDetail";
 import { Loading } from "@/components/ui/loading";
 import Image from "@/components/ui/image";
 import { Link } from "@/i18n/routing";
@@ -11,7 +11,7 @@ import { CalendarIcon, ArrowLeftIcon, UserIcon, ClockIcon } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CmsContent } from "@/components/contentRender";
+import { CmsContent } from "@/features/cms/components/content-render";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";

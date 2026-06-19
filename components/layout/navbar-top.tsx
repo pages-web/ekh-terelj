@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import Image from "../ui/image";
+import Image from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Facebook, Instagram } from "lucide-react";
@@ -14,10 +14,10 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { menuItems } from "@/lib/menuItems";
-import { cn } from "@/lib/utils";
-import { useGetProducts } from "@/sdk/queries/extras";
-import { IProduct } from "@/types/products";
+import { menuItems } from "@/constants/navigation";
+import { cn } from "@/lib/utils/cn";
+import { useGetProducts } from "@/features/booking/hooks/extras";
+import { IProduct } from "@/features/rooms/types";
 import { useTranslations } from "next-intl";
 
 const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA";

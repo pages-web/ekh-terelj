@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-// import FacebookLogin from "@/containers/auth/facebook-login";
-// import GoogleLogin from "@/containers/auth/google-login";
+// import FacebookLogin from "@/features/auth/components/facebook-login";
+// import GoogleLogin from "@/features/auth/components/google-login";
 import { Link } from "@/i18n/routing";
 import { Suspense } from "react";
-import LoginForm from "@/containers/auth/login-form";
+import LoginForm from "@/features/auth/components/login-form";
 import { Lock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 

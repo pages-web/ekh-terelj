@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { useCmsPosts } from "@/sdk/queries/cms";
+import { useCmsPosts } from "@/features/cms/hooks/cms";
 import { Loading } from "@/components/ui/loading";
 import { useTranslations } from "next-intl";
-import { CmsContent } from "@/components/contentRender";
+import { CmsContent } from "@/features/cms/components/content-render";
 
 const Tourist = () => {
   const t = useTranslations("Common");

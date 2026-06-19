@@ -2,9 +2,9 @@
 
 import { LinkProps } from "next/link";
 import { Link } from "@/i18n/routing";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MoreHorizontalIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export type Breadcrumb = {
   name: string;

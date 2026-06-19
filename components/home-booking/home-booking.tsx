@@ -1,14 +1,14 @@
-import ReserveSelectDate from "../reserve-select-date/reserve-select-date";
-import Image from "../ui/image";
+import ReserveSelectDate from "@/features/booking/components/reserve-select-date/reserve-select-date";
+import Image from "@/components/ui/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { Loading } from "../ui/loading";
+import { Loading } from "@/components/ui/loading";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { useTranslations } from "next-intl";
-import { usePageBySlug } from "@/hooks/usePageBySlug";
+import { usePageBySlug } from "@/features/cms/hooks/usePageBySlug";
 
 const stripHtml = (html: string) => html.replace(/<[^>]*>/g, "").trim();
 

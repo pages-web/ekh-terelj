@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { menuItems } from "@/lib/menuItems";
+import { menuItems } from "@/constants/navigation";
 import {
   Facebook,
   FacebookIcon,

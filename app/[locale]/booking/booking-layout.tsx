@@ -1,8 +1,8 @@
 "use client";
 
-import Stepper from "@/components/stepper/stepper";
-import PrivateRoute from "@/containers/auth/private-route";
-import { steps } from "@/lib/steps";
+import Stepper from "@/features/booking/components/stepper/stepper";
+import PrivateRoute from "@/features/auth/components/private-route";
+import { steps } from "@/features/booking/lib/steps";
 import { PropsWithChildren } from "react";
 
 const BookingLayout = ({

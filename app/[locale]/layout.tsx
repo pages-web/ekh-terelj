@@ -3,8 +3,8 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import DefaultLayout from "@/components/layout";
-import Apollo from "./ApolloClient";
-import CurrentConfigProvider from "@/containers/config/currentConfig";
+import Apollo from "@/lib/apollo/client";
+import CurrentConfigProvider from "@/components/layout/current-config-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 export async function generateMetadata(): Promise<Metadata> {
