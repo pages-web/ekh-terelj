@@ -4,6 +4,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingRoot: process.cwd(),
   env: {
     ERXES_API_URL: "https://ekhterelj-w917z.next.erxes.io/gateway/graphql",
     ERXES_API_URL_MAIN: "https://ekhterelj-w917z.next.erxes.io/gateway/graphql",

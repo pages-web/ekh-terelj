@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Offer {
   title: string;
@@ -94,12 +95,12 @@ const ExclusiveOffers = () => {
             <h3 className="text-2xl font-medium mb-3">{offers[0].title}</h3>
             <p className="text-gray-700 mb-4">{offers[0].description}</p>
             <div className="flex flex-wrap gap-3 mt-4">
-              <a
+              <Link
                 href="/offer-details"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors"
               >
                 {offers[0].primaryCta}
-              </a>
+              </Link>
               {offers[0].secondaryCta && (
                 <a
                   href="#"
@@ -133,8 +134,8 @@ const ExclusiveOffers = () => {
                 <h3 className="text-xl font-medium mb-3">{offer.title}</h3>
                 <p className="text-gray-700 mb-4">{offer.description}</p>
 
-                <a
-                  href="#"
+                <Link
+                  href="/offer-details"
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors"
                 >
                   {offer.primaryCta}
@@ -154,7 +155,7 @@ const ExclusiveOffers = () => {
                       />
                     </svg>
                   )}
-                </a>
+                </Link>
               </div>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -36,11 +37,11 @@ export default function Welness() {
                 includes a steam bath experience, body scrub, and invigorating
                 massage to exfoliate and cleanse the skin.
               </p>
-              <a href="/wellness-details">
+              <Link href="/wellness-details">
                 <Button variant="outline" className="flex items-center gap-2">
                   View more <ArrowRight size={16} />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         ))}
