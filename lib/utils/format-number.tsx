@@ -1,7 +1,10 @@
-import { useLocale } from "next-intl";
-
-export function formatNumberWithCommas(number: number) {
-  const locale = useLocale();
+export function formatNumberWithCommas(
+  number: number | null | undefined,
+  locale?: string,
+) {
   const formatter = new Intl.NumberFormat(locale);
-  return formatter.format(number);
+  const value =
+    typeof number === "number" && Number.isFinite(number) ? number : 0;
+
+  return formatter.format(value);
 }

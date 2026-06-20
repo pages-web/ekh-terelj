@@ -4,13 +4,12 @@ import type { LoginFormValues, RegisterFormValues } from "./auth.types";
 export const getIdentifier = (user?: ClientPortalUser | null) =>
   user?.email || user?.phone || "";
 
-export const buildLoginVariables = (values: LoginFormValues) => {
+export const buildLoginVariables = (values: LoginFormValues, locale: string) => {
   const identifier = values.login.trim();
-  const isEmail = identifier.includes("@");
 
   return {
-    email: isEmail ? identifier : undefined,
-    phone: isEmail ? undefined : identifier,
+    email: locale === "mn" ? undefined : identifier,
+    phone: locale === "mn" ? identifier : undefined,
     password: values.password,
   };
 };

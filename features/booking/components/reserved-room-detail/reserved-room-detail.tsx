@@ -13,7 +13,7 @@ import { useRouter } from "@/i18n/routing";
 import { isPrePaymentAtom, totalAmountAtom } from "@/features/payments/store";
 import { formatNumberWithCommas } from "@/lib/utils/format-number";
 import { selectedRoomsAtom } from "@/features/booking/store/rooms";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type TitleWithPrice = {
   title: string;
@@ -29,6 +29,7 @@ type TitleWithIcon = {
 
 const ReservedRoomDetail = () => {
   const t = useTranslations("Booking");
+  const locale = useLocale();
   const router = useRouter();
   const [selectedRooms, setSelectedRooms] = useAtom(selectedRoomsAtom);
   const [reserveGuestAndRoom] = useAtom(reserveGuestAndRoomAtom);
@@ -112,12 +113,12 @@ const ReservedRoomDetail = () => {
                 <div>
                   <h2>{product.room?.category?.name}</h2>
                   <span className="text-textsm text-black/60">
-                    {formatNumberWithCommas(product.room?.unitPrice)}₮ x{" "}
+                    {formatNumberWithCommas(product.room?.unitPrice, locale)}₮ x{" "}
                     {t("night", { count: nights })}
                   </span>
                 </div>
                 <h2>
-                  {formatNumberWithCommas(product.room?.unitPrice * nights)}₮
+                  {formatNumberWithCommas(product.room?.unitPrice * nights, locale)}₮
                 </h2>
               </div>
             </div>
@@ -130,7 +131,7 @@ const ReservedRoomDetail = () => {
                     {product.extras?.map((extra, index) => (
                       <div key={index} className="w-full flex justify-between">
                         <h2>{extra.name}</h2>
-                        <span>{formatNumberWithCommas(extra.unitPrice)}₮</span>
+                        <span>{formatNumberWithCommas(extra.unitPrice, locale)}₮</span>
                       </div>
                     ))}
                     {/* <h2>{product.room?.category?.name}</h2>
@@ -153,9 +154,10 @@ const ReservedRoomDetail = () => {
                         product.extras.reduce(
                           (acc, extra) => acc + extra.unitPrice,
                           0
-                        )
+                        ),
+                      locale
                     )
-                  : formatNumberWithCommas(product.room.unitPrice * nights)}
+                  : formatNumberWithCommas(product.room.unitPrice * nights, locale)}
                 ₮
               </h2>
             </div>
@@ -173,7 +175,7 @@ const ReservedRoomDetail = () => {
               0
             ) / paymentTypeDivider
           )} */}
-          {formatNumberWithCommas(totalAmount)}₮
+          {formatNumberWithCommas(totalAmount, locale)}₮
         </h1>
       </div>
     </div>

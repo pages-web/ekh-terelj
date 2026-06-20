@@ -1,6 +1,16 @@
 import { z } from "zod";
 import { phoneZod } from "@/lib/validations/shared";
 
+const stringFromNullable = (value: unknown) => value ?? "";
+const optionalEmail = z.preprocess(
+  (value) => (value === null || value === "" ? undefined : value),
+  z.string().email().optional(),
+);
+const optionalPhone = z.preprocess(
+  (value) => (value === null || value === "" ? undefined : value),
+  phoneZod.optional(),
+);
+
 export const dateSchema = z.string({ required_error: "" }).date("Буруу огноо");
 
 export const customerSchema = z.object({
@@ -72,14 +82,33 @@ export const addPaymentSchema = z.object({
   room: z.string().min(1),
 });
 
-export const reserveDetailSchema = z.object({
+const reserveDetailBaseSchema = z.object({
   forWho: z.string(),
-  firstname: z.string().min(1, { message: "Firstname" }),
-  lastname: z.string().min(1, { message: "Lastname" }),
-  mail: z.string().email(),
-  phone: phoneZod,
+  firstname: z.preprocess(
+    stringFromNullable,
+    z.string().min(1, { message: "Firstname" }),
+  ),
+  lastname: z.preprocess(
+    stringFromNullable,
+    z.string().min(1, { message: "Lastname" }),
+  ),
   description: z.string().max(250).optional(),
   guestFirstname: z.string().optional(),
   guestLastname: z.string().optional(),
-  guestMail: z.string().email().optional(),
+  guestMail: optionalEmail,
 });
+
+export const getReserveDetailSchema = (locale: string) =>
+  reserveDetailBaseSchema.extend({
+    mail:
+      locale === "mn"
+        ? optionalEmail
+        : z.preprocess(stringFromNullable, z.string().email()),
+    phone:
+      locale === "mn" ? z.preprocess(stringFromNullable, phoneZod) : optionalPhone,
+  });
+
+export const reserveDetailSchema = getReserveDetailSchema("mn");
+export type ReserveDetailFormValues = z.infer<
+  ReturnType<typeof getReserveDetailSchema>
+>;

@@ -53,54 +53,53 @@ const pmsRooms = gql`
 `;
 
 const deals = gql`
-  query Deals(
-    $initialStageId: String
-    $stageId: String
-    $limit: Int
-    $ids: [String]
-    $parentId: String
-    $pipelineId: String
-    $pipelineIds: [String]
-    $customerIds: [String]
-    $companyIds: [String]
-    $productIds: [String]
-    $search: String
-    $startDate: String
-    $endDate: String
-    $sortField: String
-    $sortDirection: Int
-  ) {
-    deals(
-      initialStageId: $initialStageId
-      stageId: $stageId
-      limit: $limit
-      _ids: $ids
-      parentId: $parentId
-      pipelineId: $pipelineId
-      pipelineIds: $pipelineIds
-      customerIds: $customerIds
-      companyIds: $companyIds
-      productIds: $productIds
-      search: $search
-      startDate: $startDate
-      endDate: $endDate
-      sortField: $sortField
-      sortDirection: $sortDirection
-    ) {
+  query CpDeals($customerIds: [String]) {
+  cpDeals(customerIds: $customerIds) {
+    list {
       _id
+      name
+      order
       createdAt
-      products {
-        ${productFields}
-      }
-      productsData
-      stage {
-        _id
-        code
-        name
-      }
+      hasNotified
+      assignedUserIds
+      labelIds
       startDate
+      closeDate
+      description
+      modifiedAt
+      modifiedBy
+      reminderMinute
+      isComplete
+      stageId
+      boardId
+      priority
+      status
+   
+      userId
+      tagIds
+      relations
+
+      pipelineId
+  
+      propertiesData
+      score
+   
+      number
+      stageChangedDate
+      customProperties
+      unUsedAmount
+      amount
+  
+      productsData
+      mobileAmount
+      mobileAmounts
+      paymentsData
+      extraData
+      cursor
     }
+      totalCount
   }
+}
 `;
 
 const dealDetail = gql`

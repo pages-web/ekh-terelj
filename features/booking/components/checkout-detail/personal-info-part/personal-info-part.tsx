@@ -1,6 +1,5 @@
 "use client";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -9,12 +8,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { useCurrentUser } from "@/features/auth/hooks/auth";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const PersonalInfoPart = ({ form }: { form: any }) => {
   const t = useTranslations("Forms");
-  const { currentUser } = useCurrentUser();
+  const locale = useLocale();
+  const shouldShowPhone = locale === "mn";
+
   return (
     <div>
       <div className="grid grid-cols-6 gap-6 px-1 mb-3">
@@ -80,47 +80,43 @@ const PersonalInfoPart = ({ form }: { form: any }) => {
       </div>
 
       <div className="px-1 space-y-3">
-        <FormField
-          control={form.control}
-          name="mail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-textxs">{t("email")}</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={t("emailPlaceholder")}
-                  {...field}
-                  className="text-textsm"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-textxs">{t("phone")}</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={t("phonePlaceholder")}
-                  {...field}
-                  autoComplete="tel-national"
-                />
-                {/* <PhoneInput
-                  international
-                  className="text-textsm"
-                  placeholder="Enter your phone"
-                  {...field}
-                /> */}
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {shouldShowPhone ? (
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textxs">{t("phone")}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("phonePlaceholder")}
+                    {...field}
+                    autoComplete="tel-national"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="mail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textxs">{t("email")}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("emailPlaceholder")}
+                    {...field}
+                    className="text-textsm"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {/* <FormField
           control={form.control}

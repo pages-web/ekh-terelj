@@ -13,7 +13,6 @@ export interface IReserveGuestAndRoom {
   adults: number;
   children: number;
   room: number;
-  pet?: boolean;
 }
 
 export interface IReserveInfo extends IReserveGuestAndRoom {

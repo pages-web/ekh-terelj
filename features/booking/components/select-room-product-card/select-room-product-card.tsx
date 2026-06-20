@@ -1,9 +1,13 @@
 import Image from "@/components/ui/image";
 import { IProduct } from "@/features/rooms/types";
 import { formatNumberWithCommas } from "@/lib/utils/format-number";
+import { useLocale, useTranslations } from "next-intl";
 
 const SelectRoomProductCard = ({ ...room }: IProduct) => {
+  const t = useTranslations("Booking");
+  const locale = useLocale();
   const title = room.name || room.category?.name;
+  const price = `${formatNumberWithCommas(room.unitPrice, locale)}₮`;
 
   return (
     <div className="text-start space-y-3 cursor-pointer group">
@@ -30,13 +34,14 @@ const SelectRoomProductCard = ({ ...room }: IProduct) => {
         </h3>
       </div>
 
-      <div className="flex justify-between">
-        <span className="text-textsm">
-          {`MNT ${formatNumberWithCommas(room.unitPrice)}₮ per night`}
-        </span>
-        <span className="text-textlg font-bold">
-          {`MNT ${formatNumberWithCommas(room.unitPrice)}₮`}
-        </span>
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <p className="text-textxs font-medium uppercase tracking-wide text-black/50">
+            {t("pricePerNight")}
+          </p>
+          <p className="text-textsm font-semibold text-black/70">{price}</p>
+        </div>
+        <span className="text-textlg font-bold text-primary">{price}</span>
       </div>
     </div>
   );

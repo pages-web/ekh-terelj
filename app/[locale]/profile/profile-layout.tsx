@@ -35,8 +35,8 @@ const sidebarNavItems = [
     href: "/profile",
   },
   {
-    title: "Orders",
-    href: "/profile/orders",
+    title: "Bookings",
+    href: "/profile/bookings",
   },
   {
     title: "Log out",

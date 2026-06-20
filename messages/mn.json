@@ -124,8 +124,8 @@
     "roomInformation": "Өрөөний мэдээлэл"
   },
   "Auth": {
-    "loginIdentifier": "Имэйл эсвэл утасны дугаар",
-    "loginIdentifierPlaceholder": "Имэйл эсвэл утасны дугаараа оруулна уу",
+    "loginIdentifier": "Утасны дугаар",
+    "loginIdentifierPlaceholder": "Утасны дугаараа оруулна уу",
     "password": "Нууц үг",
     "forgotPasswordQuestion": "Нууц үгээ мартсан уу?",
     "loggingIn": "Нэвтэрч байна...",

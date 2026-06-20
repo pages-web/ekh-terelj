@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import queries from "@/features/booking/lib/gql/queries";
 import { useCurrentUser } from "@/features/auth/hooks/auth";
 import { useRouter } from "@/i18n/routing";
-import roomQueries from "@/features/rooms/lib/gql/queries";
 import {
   Table,
   TableBody,
@@ -17,37 +16,32 @@ import {
 import { format } from "date-fns";
 import { formatNumberWithCommas } from "@/lib/utils/format-number";
 import { Separator } from "@/components/ui/separator";
-import { useLabels } from "@/features/booking/hooks/sales";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { currentConfigAtom } from "@/constants/config";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { Loading } from "@/components/ui/loading";
 
-const Orders = () => {
+const Bookings = () => {
   const tContent = useTranslations("Content");
   const tBooking = useTranslations("Booking");
+  const locale = useLocale();
   const { currentUser } = useCurrentUser();
   const currentConfig = useAtomValue(currentConfigAtom);
-  const { data } = useQuery(queries.deals, {
+  const customerId = currentUser?.erxesCustomerId;
+  const { data, loading } = useQuery(queries.deals, {
     variables: {
-      limit: 10000,
-      customerIds: [currentUser?.erxesCustomerId],
-      sortField: "createdAt",
-      sortDirection: 1,
+      customerIds: customerId ? [customerId] : [],
     },
-  });
-  const { data: roomCategoriesData } = useQuery(roomQueries.roomCategories, {
-    variables: { parentId: currentConfig?.roomCategories[0] },
+    errorPolicy: "ignore",
+    skip: !customerId,
   });
   const { data: stagesData } = useQuery(queries.stages, {
-    variables: { pipelineId: currentConfig?.pipelineConfig.pipelineId },
+    variables: { pipelineId: currentConfig?.pipelineConfig?.pipelineId },
+    skip: !currentConfig?.pipelineConfig?.pipelineId,
   });
 
-  const { labels } = useLabels();
-  const roomCategories = roomCategoriesData?.productCategories;
-  const deals = data?.deals;
   const stages = stagesData?.cpSalesStages;
-
-  console.log(data);
+  const deals = data?.cpDeals?.list ?? data?.deals ?? [];
 
   const router = useRouter();
   return (
@@ -91,59 +85,80 @@ const Orders = () => {
                 <TableHead>{tBooking("checkInDate")}</TableHead>
                 <TableHead>{tBooking("payment")}</TableHead>
                 <TableHead>{tBooking("status")}</TableHead>
-                <TableHead className="text-right">{tBooking("totalPrice")}</TableHead>
+                <TableHead className="text-right">
+                  {tBooking("totalPrice")}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.deals.length === 0 && (
-                <TableRow>{tContent("noBookings")}</TableRow>
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <Loading />
+                  </TableCell>
+                </TableRow>
               )}
-              {data?.deals.map((deal: any, index: number) => {
-                return (
-                  <TableRow
-                    onClick={() =>
-                      deal.stage.code !== "canceled" &&
-                      router.push(`/profile/bookings/${deal._id}`)
-                    }
-                    key={index}
-                    className="cursor-pointer py-10 h-[70px]"
-                  >
-                    <TableCell className="font-medium">{deal._id}</TableCell>
-                    <TableCell>{format(deal.createdAt, "PPpp")}</TableCell>
-                    <TableCell>{format(deal.startDate, "PP")}</TableCell>
-                    <TableCell className="capitalize">{"-"}</TableCell>
-                    <TableCell>
-                      {deal.stage.code === "unconfirmed" ? (
-                        <span className="text-textxs text-[#726e34] bg-[#fcf37e] px-2 py-1 rounded-lg">
-                          {tContent("waiting")}
-                        </span>
-                      ) : deal.stage.code !== "unconfirmed" &&
-                        deal.stage.code !== "canceled" ? (
-                        <span
-                          className={`text-textxs px-2 py-1 rounded-lg bg-[#95fea0] text-[#1d6824]`}
-                        >
-                          {tContent("paid")}
-                        </span>
-                      ) : (
-                        <span className="text-textxs text-destructive bg-[#ffc0c0] px-2 py-1 rounded-lg">
-                          {tContent("canceled")}
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      MNT{" "}
-                      {formatNumberWithCommas(
-                        deal?.productsData?.reduce(
-                          (acc: any, item: any) =>
-                            acc + (item.amount || 0),
-                          0
-                        ) || 0
-                      )}
-                      ₮
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {!loading && deals.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6}>{tContent("noBookings")}</TableCell>
+                </TableRow>
+              )}
+              {!loading &&
+                deals.map((deal: any, index: number) => {
+                  const stageCode =
+                    deal.stage?.code ||
+                    stages?.find((stage: any) => stage._id === deal.stageId)
+                      ?.code;
+
+                  return (
+                    <TableRow
+                      onClick={() =>
+                        stageCode !== "canceled" &&
+                        router.push(`/profile/bookings/${deal._id}`)
+                      }
+                      key={index}
+                      className="cursor-pointer py-10 h-[70px]"
+                    >
+                      <TableCell className="font-medium">{deal._id}</TableCell>
+                      <TableCell>
+                        {deal.createdAt ? format(deal.createdAt, "PPpp") : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {deal.startDate ? format(deal.startDate, "PP") : "-"}
+                      </TableCell>
+                      <TableCell className="capitalize">{"-"}</TableCell>
+                      <TableCell>
+                        {stageCode === "unconfirmed" ? (
+                          <span className="text-textxs text-[#726e34] bg-[#fcf37e] px-2 py-1 rounded-lg">
+                            {tContent("waiting")}
+                          </span>
+                        ) : stageCode !== "unconfirmed" &&
+                          stageCode !== "canceled" ? (
+                          <span
+                            className={`text-textxs px-2 py-1 rounded-lg bg-[#95fea0] text-[#1d6824]`}
+                          >
+                            {tContent("paid")}
+                          </span>
+                        ) : (
+                          <span className="text-textxs text-destructive bg-[#ffc0c0] px-2 py-1 rounded-lg">
+                            {tContent("canceled")}
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        MNT
+                        {formatNumberWithCommas(
+                          deal?.productsData?.reduce(
+                            (acc: any, item: any) => acc + (item.amount || 0),
+                            0,
+                          ) || 0,
+                          locale,
+                        )}
+                        ₮
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </div>
@@ -152,4 +167,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Bookings;

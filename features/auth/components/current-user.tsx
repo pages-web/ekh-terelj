@@ -50,16 +50,16 @@ const CurrentUser = () => {
               </Avatar>
             </MenubarTrigger>
             <MenubarContent>
-              <Link href={"/profile"}>
-                <MenubarItem className="gap-4">
+              <MenubarItem className="gap-4" asChild>
+                <Link href={"/profile"}>
                   <User className="w-5 h-5" /> Profile
-                </MenubarItem>
-              </Link>
-              <Link href={"/profile/bookings"}>
-                <MenubarItem className="gap-4">
+                </Link>
+              </MenubarItem>
+              <MenubarItem className="gap-4" asChild>
+                <Link href={"/profile/bookings"}>
                   <Briefcase className="w-5 h-5" /> Bookings
-                </MenubarItem>
-              </Link>
+                </Link>
+              </MenubarItem>
 
               <MenubarSeparator />
 

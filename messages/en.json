@@ -124,8 +124,8 @@
     "roomInformation": "Room information"
   },
   "Auth": {
-    "loginIdentifier": "Email or phone number",
-    "loginIdentifierPlaceholder": "Enter your email or phone number",
+    "loginIdentifier": "Email",
+    "loginIdentifierPlaceholder": "Enter your email",
     "password": "Password",
     "forgotPasswordQuestion": "Forgot your password?",
     "loggingIn": "Logging in...",

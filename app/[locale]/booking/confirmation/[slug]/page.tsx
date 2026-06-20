@@ -14,10 +14,11 @@ import { RESET } from "jotai/utils";
 import { formatNumberWithCommas } from "@/lib/utils/format-number";
 import { dealIdAtom, selectedRoomsAtom } from "@/features/booking/store/rooms";
 import { currentConfigAtom } from "@/constants/config";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const YourDetails = () => {
   const tBooking = useTranslations("Booking");
+  const locale = useLocale();
   const params = useParams();
   const currentConfig = useAtomValue(currentConfigAtom);
   const setReserveGuestAndRoom = useSetAtom(reserveGuestAndRoomAtom);
@@ -200,6 +201,7 @@ const YourDetails = () => {
                         0),
                     0,
                   ),
+                  locale,
                 )}
                 ₮
               </span>

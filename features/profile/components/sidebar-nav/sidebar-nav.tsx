@@ -33,8 +33,8 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               pathname === item.href ||
-                (pathname.includes("/profile/orders/") &&
-                  item.href === "/profile/orders")
+                (pathname.includes("/profile/bookings/") &&
+                  item.href === "/profile/bookings")
                 ? "bg-muted hover:bg-muted"
                 : "hover:bg-transparent hover:underline",
               "justify-start hover:text-primary"

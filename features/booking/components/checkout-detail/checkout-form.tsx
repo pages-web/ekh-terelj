@@ -1,7 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   FormLabel,
   Form,
@@ -20,45 +19,62 @@ import {
 import { Button } from "@/components/ui/button";
 import PaymentPart from "./payment-part/payment-part";
 import { useAtomValue } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { currentUserAtom } from "@/features/auth/store";
-import { reserveDetailSchema } from "@/features/booking/lib/validation";
+import {
+  getReserveDetailSchema,
+  type ReserveDetailFormValues,
+} from "@/features/booking/lib/validation";
 import useAddDeal from "@/features/booking/hooks/useAddDeal";
 import { Loading } from "@/components/ui/loading";
 import { useRouter } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { usePageBySlug } from "@/features/cms/hooks/usePageBySlug";
+import { CmsContent } from "@/features/cms/components/content-render";
 
 const CheckoutForm = () => {
   const tBooking = useTranslations("Booking");
   const tCheckout = useTranslations("Checkout");
   const tForms = useTranslations("Forms");
+  const locale = useLocale();
   const router = useRouter();
   const [isMyself, setIsMyself] = useState(true);
+  const { page } = usePageBySlug("cancellation-policy");
 
   const { handleAddDeal, loading: addDealLoading } = useAddDeal();
-  const { firstName, lastName, email, phone } =
-    useAtomValue(currentUserAtom) || {};
+  const currentUser = useAtomValue(currentUserAtom);
+  const { firstName, lastName, email, phone } = currentUser || {};
 
-  const form = useForm<z.infer<typeof reserveDetailSchema>>({
-    resolver: zodResolver(reserveDetailSchema),
+  const form = useForm<ReserveDetailFormValues>({
+    resolver: zodResolver(getReserveDetailSchema(locale)),
     defaultValues: {
       forWho: "myself",
-      firstname: firstName,
-      lastname: lastName,
-      mail: email,
-      phone: phone,
+      firstname: firstName ?? "",
+      lastname: lastName ?? "",
+      mail: email ?? "",
+      phone: phone ?? "",
       description: "",
     },
   });
 
-  async function onSubmit({
-    description,
-  }: z.infer<typeof reserveDetailSchema>) {
+  useEffect(() => {
+    if (!currentUser) return;
+
+    form.reset({
+      ...form.getValues(),
+      firstname: currentUser.firstName ?? "",
+      lastname: currentUser.lastName ?? "",
+      mail: currentUser.email ?? "",
+      phone: currentUser.phone ?? "",
+    });
+  }, [currentUser, form]);
+
+  async function onSubmit({ description }: ReserveDetailFormValues) {
     try {
       const newDealId = await handleAddDeal({ description });
 
@@ -69,7 +85,9 @@ const CheckoutForm = () => {
       }
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : tCheckout("bookingCompleteError"),
+        error instanceof Error
+          ? error.message
+          : tCheckout("bookingCompleteError"),
       );
     }
   }
@@ -252,12 +270,8 @@ const CheckoutForm = () => {
 
         <div className="space-y-10">
           <div className="space-y-3">
-            <h2 className="text-black text-textxl">{tBooking("cancellationPolicy")}</h2>
-            <ul className="list-disc pl-7 text-black/70 text-textsm">
-              <li>{tCheckout("nonRefundablePolicy")}</li>
-              <li>{tBooking("lateCheckPolicy")}</li>
-              <li>{tBooking("extensionPolicy")}</li>
-            </ul>
+            <h2 className="text-black text-textxl">{page?.name}</h2>
+            <CmsContent html={page?.description} />
           </div>
         </div>
 

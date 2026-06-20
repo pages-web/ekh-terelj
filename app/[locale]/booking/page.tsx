@@ -4,18 +4,8 @@ import BookingLayout from "./booking-layout";
 import SelectRoomProducts from "@/features/booking/components/select-room-products/select-room-products";
 
 import SelectedRoomCard from "@/features/booking/components/selected-room-card/selected-room-card";
-import { selectedRoomsAtom } from "@/features/booking/store/rooms";
-import { useSetAtom } from "jotai";
-import { RESET } from "jotai/utils";
-import { useEffect } from "react";
 
 const SelectRoom = () => {
-  const setSelectedRooms = useSetAtom(selectedRoomsAtom);
-
-  useEffect(() => {
-    setSelectedRooms(RESET);
-  }, [setSelectedRooms]);
-
   return (
     <BookingLayout currentActive={1}>
       <div className="flex justify-center gap-6 md:gap-12">

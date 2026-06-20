@@ -13,6 +13,18 @@ export const loginFormSchema = z.object({
   password: z.string().min(1, { message: "Нууц үгээ оруулна уу" }),
 });
 
+export const getLoginFormSchema = (locale: string) =>
+  z.object({
+    login:
+      locale === "mn"
+        ? phoneZod
+        : z
+            .string()
+            .min(1, { message: "Email is required" })
+            .email({ message: "Enter a valid email address" }),
+    password: z.string().min(1, { message: "Нууц үгээ оруулна уу" }),
+  });
+
 const registerBaseSchema = z.object({
   firstName: z.string().min(1, { message: "Нэрээ оруулна уу" }),
   lastName: z.string().optional(),

@@ -5,17 +5,11 @@ import CountField from "@/components/count-field/count-field";
 import { PopoverClose } from "@/components/ui/popover";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { reserveGuestAndRoomAtom } from "@/features/booking/store/reserve";
 import { useTranslations } from "next-intl";
 const FormSchema = z.object({
-  pet: z.boolean().default(false),
   room: z.number().min(0),
   adults: z.number().min(0),
   children: z.number().min(0),
@@ -25,13 +19,12 @@ const RoomForm = () => {
   const t = useTranslations("Booking");
   const tCommon = useTranslations("Common");
   const [reserveGuestAndRoom, setReserveGuestAndRoom] = useAtom(
-    reserveGuestAndRoomAtom
+    reserveGuestAndRoomAtom,
   );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      pet: reserveGuestAndRoom?.pet || false,
       room: reserveGuestAndRoom?.room || 1,
       adults: reserveGuestAndRoom?.adults || 1,
       children: reserveGuestAndRoom?.children || 0,
@@ -58,10 +51,6 @@ const RoomForm = () => {
               </FormItem>
             )}
           />
-
-          <PopoverClose type="submit" className="self-end">
-            <Button className="w-fit">{tCommon("apply")}</Button>
-          </PopoverClose>
         </div>
       </form>
     </Form>

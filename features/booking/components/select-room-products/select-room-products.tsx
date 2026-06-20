@@ -18,7 +18,6 @@ const SelectRoomProducts = ({ className }: { className?: string }) => {
   });
 
   useEffect(() => {
-    // Only send the query if both from and to dates are available
     if (date?.from && date?.to) {
       refetch({
         startDate: date.from,
