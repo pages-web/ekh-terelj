@@ -9,6 +9,7 @@ export interface ICmsCustomPostType {
 export interface ICmsPostCategory {
   _id: string
   name: string
+  slug?: string
 }
 
 export interface ICmsPostTag {
@@ -29,6 +30,7 @@ export interface ICmsPost {
   tags: ICmsPostTag
   thumbnail: IAttachment
   images: IAttachment[]
+  attachments?: IAttachment[]
   title: string
   content: string
   slug: string
@@ -64,11 +66,14 @@ export interface CmsPost {
   status?: string
   createdAt?: string
   updatedAt?: string
+  customFieldsData?: unknown
   customFieldsMap?: unknown
+  slug?: string
   videoUrl?: string
   thumbnail?: CmsAttachment
   categories?: ICmsPostCategory[]
   images?: CmsAttachment[]
+  attachments?: CmsAttachment[]
 }
 
 export interface CmsPage {

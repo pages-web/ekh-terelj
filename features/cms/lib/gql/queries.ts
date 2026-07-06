@@ -42,6 +42,7 @@ const CmsPosts = gql`
         categories {
           _id
           name
+          slug
         }
         author {
           ... on User {
@@ -263,14 +264,17 @@ const CpCmsPosts = gql`
         status
         createdAt
         updatedAt
+        customFieldsData
         customFieldsMap
         videoUrl
         thumbnail {
+          name
           url
         }
         categories {
           _id
           name
+          slug
         }
         images {
           url
@@ -293,13 +297,17 @@ const postDetail = gql`
       status
       createdAt
       updatedAt
+      customFieldsData
       customFieldsMap
+      slug
       thumbnail {
+        name
         url
       }
       categories {
         _id
         name
+        slug
       }
       images {
         url

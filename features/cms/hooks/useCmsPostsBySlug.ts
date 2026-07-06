@@ -6,13 +6,14 @@ import { IPostList } from "@/features/cms/types";
 import { useCategories } from "./useCategory";
 
 export const useCmsPostsBySlug = (slug: string) => {
-  const { categoryId } = useCategories(slug);
+  const { categoryId, loading: categoryLoading } = useCategories(slug);
   const shouldWaitForCategory = Boolean(slug && !categoryId);
 
   const {
     loading,
     error,
     data: cmsPosts,
+    refetch,
   } = useQuery<IPostList>(queries.CpCmsPosts, {
     variables: {
       categoryIds: categoryId ? [categoryId] : undefined,
@@ -22,5 +23,5 @@ export const useCmsPostsBySlug = (slug: string) => {
 
   const posts = cmsPosts?.cpPostList?.posts || [];
 
-  return { loading, error, posts };
+  return { loading: loading || categoryLoading, error, posts, refetch };
 };

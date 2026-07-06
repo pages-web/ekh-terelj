@@ -1,6 +1,6 @@
 export const menuItems = [
   { href: "/", labelKey: "home", extra: undefined },
-  { href: "/accommodation", labelKey: "accommodation", extra: "Accomodation" },
+  { href: "/accommodation", labelKey: "accommodation", extra: "Accommodation" },
   { href: "/news", labelKey: "news", extra: undefined },
   { href: "/tourist", labelKey: "tourist", extra: undefined },
   { href: "/job-openings", labelKey: "jobs", extra: undefined },

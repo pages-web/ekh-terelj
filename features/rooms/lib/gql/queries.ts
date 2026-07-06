@@ -5,6 +5,7 @@ const rooms = gql`
     $pipelineId: String
     $boardId: String
     $categoryIds: [String]
+    $ids: [String]
     $perPage: Int
     $page: Int
   ) {
@@ -12,6 +13,7 @@ const rooms = gql`
       pipelineId: $pipelineId
       boardId: $boardId
       categoryIds: $categoryIds
+      ids: $ids
       perPage: $perPage
       page: $page
     ) {

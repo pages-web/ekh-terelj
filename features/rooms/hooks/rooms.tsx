@@ -10,28 +10,60 @@ import { type ICategory, type IProduct } from "@/features/rooms/types";
 import queries from "@/features/rooms/lib/gql/queries";
 import { selectedRoomsAtom } from "@/features/booking/store/rooms";
 import { currentConfigAtom } from "@/constants/config";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
+import {
+  ACCOMMODATION_CATEGORY_SLUG,
+  ACCOMMODATION_PRODUCT_FIELD_ID,
+} from "@/constants/accommodation";
+import { CmsPost } from "@/features/cms/types";
+
+type CmsProductField = {
+  field?: string;
+  value?: string[];
+};
+
+const getAccommodationProductId = (post: CmsPost) => {
+  const customFieldsData = post.customFieldsData as
+    | CmsProductField[]
+    | undefined;
+
+  return customFieldsData?.find(
+    (item) => item.field === ACCOMMODATION_PRODUCT_FIELD_ID,
+  )?.value?.[0];
+};
 
 const useRooms = (
   options?: OperationVariables,
 ): { rooms: IProduct[]; loading: boolean } => {
-  const currentConfig = useAtomValue(currentConfigAtom);
+  const { posts, loading: postsLoading } = useCmsPostsBySlug(
+    ACCOMMODATION_CATEGORY_SLUG,
+  );
+  const productIds = posts
+    .map((post) => getAccommodationProductId(post as CmsPost))
+    .filter((id): id is string => Boolean(id));
 
   const { data, loading } = useQuery<{ cpProducts: IProduct[] }>(
     queries.rooms,
     {
       variables: {
-        pipelineId: currentConfig?.pipelineConfig.pipelineId,
-        categoryIds: [currentConfig?.roomCategories[0]],
         perPage: 1000,
       },
-      skip:
-        !currentConfig?.pipelineConfig?.pipelineId ||
-        !currentConfig?.roomCategories?.[0],
+      skip: postsLoading || productIds.length === 0,
       ...options,
     },
   );
 
-  return { rooms: data?.cpProducts ?? [], loading };
+  const products = data?.cpProducts ?? [];
+  const roomCategoryIds = new Set(
+    products
+      .filter((product) => productIds.includes(product._id))
+      .map((product) => product.categoryId),
+  );
+  const rooms = products.filter((product) =>
+    roomCategoryIds.has(product.categoryId),
+  );
+
+  return { rooms, loading: postsLoading || loading };
 };
 
 export default useRooms;
@@ -136,5 +168,47 @@ export const useCheckRooms = (
     roomCategoriesByProduct,
     loading: !isConfigReady || loadingRooms || loadingCheckRooms,
     refetch,
+  };
+};
+
+export type ResultRoomPost = CmsPost & {
+  availableRooms: IProduct[];
+  roomCategoryId: string;
+};
+
+export const useResultRooms = (options?: OperationVariables) => {
+  const { rooms, loading: roomsLoading } = useRooms();
+  const {
+    rooms: availableRooms,
+    loading: availableRoomsLoading,
+    refetch,
+  } = useCheckRooms(options);
+  const { posts, loading: postsLoading } = useCmsPostsBySlug(
+    ACCOMMODATION_CATEGORY_SLUG,
+  );
+
+  const resultRoomsPosts: ResultRoomPost[] = posts
+    .map((post) => {
+      const productId = getAccommodationProductId(post as CmsPost);
+      const roomCategoryId =
+        rooms.find((room) => room._id === productId)?.categoryId || "";
+
+      return {
+        ...(post as CmsPost),
+        availableRooms: availableRooms.filter(
+          (availableRoom) => availableRoom.categoryId === roomCategoryId,
+        ),
+        roomCategoryId,
+      };
+    })
+    .filter((post) => post.roomCategoryId && post.availableRooms.length > 0);
+
+  return {
+    resultRoomsPosts,
+    resultAvailableRooms: resultRoomsPosts.flatMap(
+      (post) => post.availableRooms,
+    ),
+    loading: roomsLoading || availableRoomsLoading || postsLoading,
+    refetchResultRooms: refetch,
   };
 };

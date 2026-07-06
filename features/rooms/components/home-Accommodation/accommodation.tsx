@@ -1,14 +1,19 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "@/components/ui/image";
 import Heading from "@/components/heading/heading";
 import { useCmsPosts } from "@/features/cms/hooks/cms";
 import { useState } from "react";
 import { useGetProducts } from "@/features/booking/hooks/extras";
 import { IProduct } from "@/features/rooms/types";
-
-const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
+import { CmsPost } from "@/features/cms/types";
+import {
+  ACCOMMODATION_CATEGORY_SLUG,
+  ACCOMMODATION_PRODUCT_FIELD_ID,
+} from "@/constants/accommodation";
+import { useTranslations } from "next-intl";
 
 const getDescriptionText = (description?: string) => {
   if (!description) return "";
@@ -27,6 +32,32 @@ const getDescriptionText = (description?: string) => {
   } catch {
     return description;
   }
+};
+
+const stripHtml = (value?: string) =>
+  getDescriptionText(value)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+type CmsProductField = {
+  field?: string;
+  value?: string[];
+};
+
+const getProductId = (post: CmsPost) => {
+  const customFieldsData = post.customFieldsData as
+    | CmsProductField[]
+    | undefined;
+
+  return customFieldsData?.find(
+    (item) => item.field === ACCOMMODATION_PRODUCT_FIELD_ID,
+  )?.value?.[0];
+};
+
+const findLinkedRoom = (post: CmsPost, rooms: IProduct[]) => {
+  const productId = getProductId(post);
+  return rooms.find((room) => room._id === productId);
 };
 
 const RoomCardSkeleton = () => (
@@ -72,6 +103,7 @@ const FallbackImage = ({ name }: { name: string }) => (
 );
 
 export default function Rooms() {
+  const t = useTranslations("Accommodation");
   const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -81,17 +113,20 @@ export default function Rooms() {
     perPage: 1000,
   });
 
+  const { posts: accommodationPosts, loading: accommodationPostsLoading } =
+    useCmsPostsBySlug(ACCOMMODATION_CATEGORY_SLUG);
+
   const {
-    products: grandSuitePosts,
-    loading: grandSuitePostsLoading,
+    products: rooms,
+    loading: roomsLoading,
   }: { products: IProduct[]; loading: boolean } = useGetProducts({
     variables: {
-      categoryIds: [ACCOMMODATION_CATEGORY_ID],
       perPage: 1000,
     },
   });
 
   const post = posts[0];
+  const isLoading = accommodationPostsLoading || roomsLoading;
 
   const handleImageError = (categoryId: string) => {
     setImageErrors((prev) => ({ ...prev, [categoryId]: true }));
@@ -103,7 +138,7 @@ export default function Rooms() {
         <Heading title={post?.title} desc={post?.content} />
       </div>
 
-      {grandSuitePostsLoading ? (
+      {isLoading ? (
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, index) => (
             <RoomCardSkeleton key={index} />
@@ -111,17 +146,22 @@ export default function Rooms() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {grandSuitePosts &&
-            grandSuitePosts?.map((category, index) => {
-              const imageUrl = category.attachment?.url;
+          {accommodationPosts &&
+            accommodationPosts?.map((accommodationPost) => {
+              const imageUrl =
+                accommodationPost.thumbnail?.url ||
+                accommodationPost.images?.[0]?.url;
 
-              const hasImageError = imageErrors[category._id];
-              const description = getDescriptionText(category.description);
+              const hasImageError = imageErrors[accommodationPost._id || ""];
+              const room = findLinkedRoom(accommodationPost, rooms);
+              const description = stripHtml(
+                accommodationPost.excerpt || accommodationPost.content,
+              );
 
               return (
                 <Link
-                  href={`/room-detail/${category._id}`}
-                  key={category._id}
+                  href={`/accommodation/${accommodationPost._id}`}
+                  key={accommodationPost._id}
                   className="block h-full"
                 >
                   <div className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
@@ -133,46 +173,40 @@ export default function Rooms() {
                             width={600}
                             height={400}
                             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                            alt={category.name}
-                            onError={() => handleImageError(category._id)}
+                            alt={accommodationPost.title || t("roomImage")}
+                            onError={() =>
+                              handleImageError(accommodationPost._id || "")
+                            }
                             loading="lazy"
                           />
                           <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                       ) : (
-                        <FallbackImage name={category.name} />
+                        <FallbackImage
+                          name={accommodationPost.title || t("room")}
+                        />
                       )}
                     </div>
 
                     <div className="flex flex-1 flex-col p-5">
                       <div className="space-y-1">
                         <h3 className="text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors line-clamp-1">
-                          {category.name}
+                          {accommodationPost.title}
                         </h3>
-                        <p
-                          className="text-sm text-gray-500 line-clamp-2"
-                          dangerouslySetInnerHTML={{
-                            __html: description,
-                          }}
-                        />
+                        <p className="text-sm text-gray-500 line-clamp-2">
+                          {description}
+                        </p>
                       </div>
 
                       <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100">
                         <div>
                           <div className="flex items-baseline gap-1">
                             <span className="text-xl font-bold text-gray-900">
-                              {category.unitPrice
-                                ? category.unitPrice.toLocaleString() + "₮"
-                                : ""}
+                              {room ? `${room.unitPrice.toLocaleString()}₮` : ""}
                             </span>
                           </div>
-                          {/* <p className="text-xs text-gray-500">
-                            {category.customFieldsMap?.room_post?.hour_rate ||
-                              "N/A"}
-                            Нэг хоногийн үнэ
-                          </p> */}
                           <p className="text-xs text-gray-500">
-                            Нэг хоногийн үнэ
+                            {t("perNight")}
                           </p>
                         </div>
 
@@ -200,35 +234,31 @@ export default function Rooms() {
         </div>
       )}
 
-      {grandSuitePosts &&
-        grandSuitePosts.length === 0 &&
-        !grandSuitePostsLoading && (
-          <div className="text-center py-12">
-            <div className="max-w-md mx-auto">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Одоогоор өрөө байхгүй байна
-              </h3>
-              <p className="text-gray-500">
-                Удахгүй шинэ өрөөнүүд нэмэгдэх болно.
-              </p>
+      {accommodationPosts && accommodationPosts.length === 0 && !isLoading && (
+        <div className="text-center py-12">
+          <div className="max-w-md mx-auto">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+              <svg
+                className="w-8 h-8 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
+              </svg>
             </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {t("emptyTitle")}
+            </h3>
+            <p className="text-gray-500">{t("emptyDescription")}</p>
           </div>
-        )}
+        </div>
+      )}
     </section>
   );
 }

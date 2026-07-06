@@ -35,6 +35,24 @@
     "offer": "Offers",
     "gallery": "Gallery"
   },
+  "Accommodation": {
+    "room": "Room",
+    "roomImage": "Room image",
+    "perNight": "Per night",
+    "emptyTitle": "No rooms are available right now",
+    "emptyDescription": "New accommodation options will be added soon.",
+    "roomNotFound": "Room not found",
+    "roomNotFoundDescription": "This accommodation post is not connected to an active room product.",
+    "backToAccommodation": "Back to accommodation",
+    "gallerySlide": "Gallery slide {index}",
+    "amenities": "Amenities",
+    "roomRules": "Room rules",
+    "information": "Information",
+    "noInformation": "No information available",
+    "priceSoon": "Price soon",
+    "extraServices": "Extra services",
+    "bookRoom": "Book room"
+  },
   "Footer": {
     "description": "Experience luxury and calm at Ekh Terelj Resort, surrounded by Mongolia's beautiful natural landscape.",
     "links": "Links",

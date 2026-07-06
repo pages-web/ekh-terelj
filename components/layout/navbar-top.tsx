@@ -16,22 +16,16 @@ import {
 } from "@/components/ui/navigation-menu";
 import { menuItems } from "@/constants/navigation";
 import { cn } from "@/lib/utils/cn";
-import { useGetProducts } from "@/features/booking/hooks/extras";
-import { IProduct } from "@/features/rooms/types";
 import { useTranslations } from "next-intl";
-
-const ACCOMMODATION_CATEGORY_ID = "gx_eK_IA1ohXzYzpawBaA";
+import { useCmsPostsBySlug } from "@/features/cms/hooks/useCmsPostsBySlug";
+import { ACCOMMODATION_CATEGORY_SLUG } from "@/constants/accommodation";
 
 export function NavbarTop({ children }: { children?: React.ReactNode }) {
   const tCommon = useTranslations("Common");
   const tNav = useTranslations("Nav");
-  const { products: sortedRoomCategories }: { products: IProduct[] } =
-    useGetProducts({
-      variables: {
-        categoryIds: [ACCOMMODATION_CATEGORY_ID],
-        perPage: 1000,
-      },
-    });
+  const { posts: accommodationPosts } = useCmsPostsBySlug(
+    ACCOMMODATION_CATEGORY_SLUG,
+  );
 
   return (
     <header className="z-50 sticky top-0 w-full bg-primary shadow-xl backdrop-blur-md">
@@ -57,7 +51,7 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
               <NavigationMenuList className="gap-1">
                 {menuItems.map((item, index) => (
                   <NavigationMenuItem key={index}>
-                    {item.extra === "Accomodation" ? (
+                    {item.extra === "Accommodation" ? (
                       <NavigationMenuTrigger className="!text-white hover:bg-slate-800 hover:!text-white focus:!text-white active:!text-white data-[state=open]:bg-slate-800 data-[state=open]:!text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium !bg-transparent">
                         {tNav(item.labelKey)}
                       </NavigationMenuTrigger>
@@ -66,26 +60,26 @@ export function NavbarTop({ children }: { children?: React.ReactNode }) {
                         href={item.href}
                         className={cn(
                           navigationMenuTriggerStyle(),
-                          "bg-transparent text-white hover:bg-slate-800 hover:text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium"
+                          "bg-transparent text-white hover:bg-slate-800 hover:text-white transition-all duration-300 rounded-lg px-5 py-3 font-medium",
                         )}
                       >
-                          {tNav(item.labelKey)}
+                        {tNav(item.labelKey)}
                       </NavigationMenuLink>
                     )}
 
-                    {item.extra === "Accomodation" && (
+                    {item.extra === "Accommodation" && (
                       <NavigationMenuContent className="p-4 flex flex-col gap-2 bg-primary border border-gray-600 rounded-lg shadow-lg min-w-[280px]">
-                        {sortedRoomCategories &&
-                          sortedRoomCategories.map((category, index) => (
+                        {accommodationPosts &&
+                          accommodationPosts.map((post) => (
                             <NavigationMenuLink
                               className={cn(
                                 navigationMenuTriggerStyle(),
-                                "text-white hover:text-white hover:bg-slate-700/80 transition-all duration-300 rounded-lg px-4 py-3 font-medium bg-transparent hover:backdrop-blur-sm"
+                                "text-white hover:text-white hover:bg-slate-700/80 transition-all duration-300 rounded-lg px-4 py-3 font-medium bg-transparent hover:backdrop-blur-sm",
                               )}
-                              href={`/room-detail/${category._id}`}
-                              key={index}
+                              href={`/accommodation/${post._id}`}
+                              key={post._id}
                             >
-                              {category.name}
+                              {post.title}
                             </NavigationMenuLink>
                           ))}
                       </NavigationMenuContent>
