@@ -1,26 +1,8 @@
 import { QueryHookOptions, useQuery } from "@apollo/client";
 import queries from "@/features/booking/lib/gql/extras-queries";
-import { useAtomValue } from "jotai";
-import { currentConfigAtom } from "@/constants/config";
-
-export const useGetUoms = (options?: QueryHookOptions) => {
-  const { data, loading } = useQuery(queries.uoms, options);
-  const uoms = data?.uoms || [];
-  return { uoms, loading };
-};
 
 export const useGetProducts = (options?: QueryHookOptions) => {
   const { data, loading } = useQuery(queries.extras, options);
   const products = data?.cpProducts || [];
   return { products, loading };
-};
-
-export const useGetCategories = (options?: QueryHookOptions) => {
-  const currentConfig = useAtomValue(currentConfigAtom);
-  const { data, loading } = useQuery(queries.categories, {
-    variables: { parentId: currentConfig?.extraProductCategories[0] },
-    ...options,
-  });
-  const categories = data?.productCategories || [];
-  return { categories, loading };
 };

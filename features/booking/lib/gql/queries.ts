@@ -1,57 +1,5 @@
 import { gql } from "@apollo/client";
 
-const productFields = `
-  _id
-  name
-  shortName
-  status
-  code
-  type
-  description
-  barcodes
-  variants
-  barcodeDescription
-  unitPrice
-  categoryId
-  propertiesData
-  createdAt
-  tagIds
-  vendorId
-  scopeBrandIds
-  uom
-  subUoms
-  currency
-  hasSimilarity
-  inventories
-  discounts
-  remainder
-  discount
-`;
-
-const pmsRooms = gql`
-  query PmsRooms(
-    $pipelineId: String!
-    $endDate1: Date
-    $endDate2: Date
-    $startDate1: Date
-    $startDate2: Date
-  ) {
-    pmsRooms(
-      pipelineId: $pipelineId
-      endDate1: $endDate1
-      endDate2: $endDate2
-      startDate1: $startDate1
-      startDate2: $startDate2
-    ) {
-      _id
-      name
-      stage {
-        code
-      }
-    }
-  }
-`;
-
 const deals = gql`
   query CpDeals($customerIds: [String]) {
   cpDeals(customerIds: $customerIds) {
@@ -100,45 +48,6 @@ const deals = gql`
       totalCount
   }
 }
-`;
-
-const dealDetail = gql`
-  query DealDetail($id: String!) {
-    dealDetail(_id: $id) {
-      _id
-      customers {
-        _id
-        lastName
-        firstName
-      }
-      products {
-        ${productFields}
-      }
-      productsData
-      stageId
-      name
-      description
-      labelIds
-      paymentsData
-      tagIds
-      number
-    }
-  }
-`;
-
-const dealPreview = gql`
-  query DealPreview($id: String!) {
-    dealDetail(_id: $id) {
-      customers {
-        _id
-        lastName
-        firstName
-      }
-      description
-      labelIds
-      paymentsData
-    }
-  }
 `;
 
 const dealFullDetail = gql`
@@ -227,14 +136,6 @@ const stages = gql`
   }
 `;
 
-const paymentTypes = gql`
-  query PaymentTypes($pipelineId: String!) {
-    salesPipelineDetail(_id: $pipelineId) {
-      paymentTypes
-    }
-  }
-`;
-
 const tags = gql`
   query Tags(
     $type: String
@@ -265,14 +166,10 @@ const tags = gql`
 `;
 
 const queries = {
-  pmsRooms,
   deals,
   salesPipelineLabels,
   stages,
-  dealDetail,
   dealFullDetail,
-  paymentTypes,
-  dealPreview,
   tags,
 };
 export default queries;

@@ -2,8 +2,6 @@
 
 import { Link } from "@/i18n/routing";
 import Image from "@/components/ui/image";
-import Heading from "@/components/heading/heading";
-import { useCmsPosts } from "@/features/cms/hooks/cms";
 import { useState } from "react";
 import { useGetProducts } from "@/features/booking/hooks/extras";
 import { IProduct } from "@/features/rooms/types";
@@ -108,11 +106,6 @@ export default function Rooms() {
     {},
   );
 
-  const { posts, loading: postsLoading } = useCmsPosts({
-    tagIds: ["wVx0BObZxZJ94IaJrhGPe"],
-    perPage: 1000,
-  });
-
   const { posts: accommodationPosts, loading: accommodationPostsLoading } =
     useCmsPostsBySlug(ACCOMMODATION_CATEGORY_SLUG);
 
@@ -125,7 +118,6 @@ export default function Rooms() {
     },
   });
 
-  const post = posts[0];
   const isLoading = accommodationPostsLoading || roomsLoading;
 
   const handleImageError = (categoryId: string) => {
@@ -134,10 +126,6 @@ export default function Rooms() {
 
   return (
     <section id="room" className="space-y-8 py-8 px-4 max-w-7xl mx-auto">
-      <div className="space-y-4 flex flex-col items-center text-center max-w-2xl mx-auto">
-        <Heading title={post?.title} desc={post?.content} />
-      </div>
-
       {isLoading ? (
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, index) => (

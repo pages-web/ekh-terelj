@@ -14,10 +14,14 @@ export const ERXES_READ_FILE_URL =
   "https://ekhterelj-w917z.next.erxes.io/gateway/read-file?key=";
 
 export const readFile = (url: string = "") => {
-  if (!url) return "";
-  if (url.startsWith("/") || /^https?:\/\//.test(url)) return url;
+  const trimmedUrl = url.trim();
 
-  return ERXES_READ_FILE_URL + url;
+  if (!trimmedUrl) return "";
+  if (trimmedUrl.startsWith("/") || /^https?:\/\//.test(trimmedUrl)) {
+    return trimmedUrl;
+  }
+
+  return ERXES_READ_FILE_URL + encodeURIComponent(trimmedUrl);
 };
 
 export const onError = (error: ApolloError) => toast.error(error.message);

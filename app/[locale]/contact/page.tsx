@@ -3,18 +3,12 @@
 import { ErxesFormEmbed } from "@/components/erxes-form/erxes-form-embed";
 import { Phone, MapPin, Mail, MessageCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useCmsPosts } from "@/features/cms/hooks/cms";
 import { useTranslations } from "next-intl";
 
 export default function ContactComponent() {
   const t = useTranslations("Content");
   const tFooter = useTranslations("Footer");
-  const { posts } = useCmsPosts({
-    tagIds: ["P_ga05OkoXh2uQDdlCwho"],
-    perPage: 1000,
-  });
-
-  const post = posts[0];
+  const tNav = useTranslations("Nav");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -22,10 +16,10 @@ export default function ContactComponent() {
         <div className="container mx-auto px-6 py-12">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {post?.title}
+              {tNav("contact")}
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {post?.excerpt}
+              {t("sendMessageDescription")}
             </p>
           </div>
         </div>
@@ -36,7 +30,7 @@ export default function ContactComponent() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                {post?.title}
+                {tNav("contact")}
               </h2>
               <div className="space-y-6">
                 <Card className="p-6 bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">

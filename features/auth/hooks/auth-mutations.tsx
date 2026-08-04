@@ -57,28 +57,6 @@ export const useLogin = (onCompleted?: () => void) => {
   return { login, loading };
 };
 
-export const useGoogleLogin = () => {
-  const { loginCallback } = useLoginCallback();
-  const [googleLogin, { loading }] = useMutation(mutations.googleLogin, {
-    onCompleted({ clientPortalGoogleAuthentication }) {
-      loginCallback(clientPortalGoogleAuthentication);
-    },
-    onError,
-  });
-  return { googleLogin, loading, clientPortalId };
-};
-
-export const useFacebookLogin = () => {
-  const { loginCallback } = useLoginCallback();
-  const [facebookLogin, { loading }] = useMutation(mutations.fbLogin, {
-    onCompleted({ clientPortalFacebookAuthentication }) {
-      loginCallback(clientPortalFacebookAuthentication);
-    },
-    onError,
-  });
-  return { facebookLogin, loading, clientPortalId };
-};
-
 export const useRegister = (
   onCompleted?: BaseMutationOptions["onCompleted"]
 ) => {

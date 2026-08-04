@@ -23,47 +23,6 @@ const userDetail = gql`
   }
 `;
 
-const currentConfig = gql`
-  query CurrentConfig {
-    currentConfig {
-      erxesAppToken
-      paymentIds
-      deliveryConfig
-      name
-      description
-      pdomain
-      isCheckRemainder
-      branchId
-      initialCategoryIds
-      uiOptions {
-        logo
-        colors
-        favIcon
-      }
-    }
-  }
-`;
-
-const branchDetail = gql`
-  query branchDetail($id: String!) {
-    branchDetail(_id: $id) {
-      _id
-      title
-      address
-      phoneNumber
-      email
-      links
-      coordinate {
-        longitude
-        latitude
-      }
-      image {
-        url
-      }
-    }
-  }
-`;
-
-const queries = { currentUser, currentConfig, userDetail, branchDetail };
+const queries = { currentUser, userDetail };
 
 export default queries;

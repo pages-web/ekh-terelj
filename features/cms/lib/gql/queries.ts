@@ -1,238 +1,5 @@
 import { gql } from "@apollo/client";
 
-const CmsPosts = gql`
-  query PostList(
-    $clientPortalId: String!
-    $type: String
-    $featured: Boolean
-    $categoryIds: [String]
-    $searchValue: String
-    $status: PostStatus
-    $page: Int
-    $perPage: Int
-    $tagIds: [String]
-    $sortField: String
-    $sortDirection: String
-  ) {
-    cmsPostList(
-      clientPortalId: $clientPortalId
-      featured: $featured
-      type: $type
-      categoryIds: $categoryIds
-      searchValue: $searchValue
-      status: $status
-      page: $page
-      perPage: $perPage
-      tagIds: $tagIds
-      sortField: $sortField
-      sortDirection: $sortDirection
-    ) {
-      currentPage
-      totalCount
-      totalPages
-      posts {
-        _id
-        type
-        customPostType {
-          _id
-          code
-          label
-        }
-        categoryIds
-        categories {
-          _id
-          name
-          slug
-        }
-        author {
-          ... on User {
-            _id
-            username
-            email
-            details {
-              fullName
-              shortName
-              avatar
-              firstName
-              lastName
-              middleName
-              __typename
-            }
-            __typename
-          }
-          ... on ClientPortalUser {
-            _id
-            fullName
-            firstName
-            lastName
-            email
-            username
-            customer {
-              avatar
-              __typename
-            }
-            __typename
-          }
-          __typename
-        }
-        featured
-        status
-        tagIds
-        tags {
-          _id
-          name
-        }
-        thumbnail {
-          name
-          url
-        }
-        images {
-          url
-          name
-        }
-        title
-        content
-        slug
-        excerpt
-        customFieldsData
-        customFieldsMap
-      }
-    }
-  }
-`;
-
-const CmsPostDetail = gql`
-  query Post($id: String) {
-    cmsPost(_id: $id) {
-      _id
-      type
-      clientPortalId
-      title
-      slug
-      content
-      excerpt
-      categoryIds
-      status
-      tagIds
-      authorId
-      featured
-      featuredDate
-      scheduledDate
-      autoArchiveDate
-      reactions
-      reactionCounts
-      thumbnail {
-        url
-        type
-        name
-      }
-      images {
-        url
-        type
-        name
-      }
-      video {
-        url
-        type
-        name
-      }
-      audio {
-        url
-        type
-        name
-      }
-      documents {
-        url
-        type
-        name
-      }
-      attachments {
-        url
-        type
-        name
-      }
-      pdfAttachment {
-        pages {
-          url
-          name
-          type
-          size
-          duration
-        }
-      }
-      videoUrl
-      createdAt
-      updatedAt
-      authorKind
-      author {
-        ... on User {
-          _id
-          username
-          email
-          details {
-            fullName
-            shortName
-            avatar
-            firstName
-            lastName
-            middleName
-          }
-        }
-        ... on ClientPortalUser {
-          _id
-          fullName
-          firstName
-          lastName
-          email
-          username
-          customer {
-            avatar
-          }
-        }
-      }
-      categories {
-        _id
-        name
-        slug
-      }
-      tags {
-        _id
-        name
-      }
-      customFieldsData
-      customFieldsMap
-    }
-  }
-`;
-
-const CmsTags = gql`
-  query CmsTags(
-    $clientPortalId: String!
-    $searchValue: String
-    $page: Int
-    $perPage: Int
-    $sortField: String
-    $sortDirection: String
-  ) {
-    cpTags(
-      clientPortalId: $clientPortalId
-      searchValue: $searchValue
-      page: $page
-      perPage: $perPage
-      sortField: $sortField
-      sortDirection: $sortDirection
-    ) {
-      _id
-      clientPortalId
-      name
-      slug
-      colorCode
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
 const CpCmsPosts = gql`
   query CpPostList(
     $type: String
@@ -243,6 +10,7 @@ const CpCmsPosts = gql`
     $tagIds: [String]
     $sortField: String
     $sortDirection: String
+    $language: String
   ) {
     cpPostList(
       featured: $featured
@@ -253,6 +21,7 @@ const CpCmsPosts = gql`
       tagIds: $tagIds
       sortField: $sortField
       sortDirection: $sortDirection
+      language: $language
     ) {
       totalCount
       posts {
@@ -318,48 +87,6 @@ const postDetail = gql`
   }
 `;
 
-const CpPages = gql`
-  query CpPages($language: String) {
-    cpPages(language: $language) {
-      _id
-      clientPortalId
-      name
-      parentId
-      description
-      coverImage
-      type
-      slug
-      content
-      status
-      createdUserId
-      createdAt
-      updatedAt
-      customFieldsData
-      customFieldsMap
-      thumbnail {
-        url
-      }
-      pageImages {
-        url
-      }
-      video {
-        url
-      }
-      videoUrl
-      translations {
-        _id
-        objectId
-        language
-        title
-        content
-        excerpt
-        customFieldsData
-        type
-      }
-    }
-  }
-`;
-
 const pageDetail = gql`
   query CpCmsPageDetail($id: String, $slug: String, $language: String) {
     cpCmsPageDetail(_id: $id, slug: $slug, language: $language) {
@@ -420,11 +147,7 @@ const categories = gql`
 `;
 
 const queries = {
-  CmsPosts,
-  CmsPostDetail,
-  CmsTags,
   CpCmsPosts,
-  CpPages,
   categories,
   pageDetail,
   postDetail,

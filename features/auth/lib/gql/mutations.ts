@@ -55,11 +55,6 @@ const logout = gql`
   }
 `;
 
-const getCode = gql`
-  mutation sendVerificationCode($phone: String!) {
-    sendVerificationCode(phone: $phone)
-  }
-`;
 const resetPassword = gql`
   mutation clientPortalResetPassword($newPassword: String!, $token: String!) {
     clientPortalResetPassword(newPassword: $newPassword, token: $token)
@@ -106,14 +101,6 @@ const userEdit = gql`
   }
 `;
 
-const changePhone = gql`
-  mutation changePhone($_id: String!, $phone: String) {
-    clientPortalUsersEdit(_id: $_id, phone: $phone) {
-      _id
-    }
-  }
-`;
-
 const userChangePassword = gql`
   mutation clientPortalUserChangePassword(
     $currentPassword: String!
@@ -152,48 +139,6 @@ const userVerify = gql`
   }
 `;
 
-const posChooseConfig = gql`
-  mutation PosChooseConfig($token: String!) {
-    posChooseConfig(token: $token)
-  }
-`;
-
-const fbLogin = gql`
-  mutation ClientPortalFacebookAuthentication(
-    $clientPortalId: String!
-    $accessToken: String!
-  ) {
-    clientPortalFacebookAuthentication(
-      clientPortalId: $clientPortalId
-      accessToken: $accessToken
-    )
-  }
-`;
-
-const googleLogin = gql`
-  mutation ClientPortalGoogleAuthentication(
-    $clientPortalId: String!
-    $code: String!
-  ) {
-    clientPortalGoogleAuthentication(
-      clientPortalId: $clientPortalId
-      code: $code
-    )
-  }
-`;
-
-const socialPayLogin = gql`
-  mutation clientPortalLoginWithSocialPay(
-    $clientPortalId: String!
-    $token: String!
-  ) {
-    clientPortalLoginWithSocialPay(
-      clientPortalId: $clientPortalId
-      token: $token
-    )
-  }
-`;
-
 const confirmInvitation = gql`
   mutation ClientPortalConfirmInvitation($token: String) {
     clientPortalConfirmInvitation(token: $token) {
@@ -208,17 +153,11 @@ const mutations = {
   logout,
   createUser,
   requestOTP,
-  getCode,
   userEdit,
   resetPassword,
   userChangePassword,
   forgotPassword,
   userVerify,
-  posChooseConfig,
-  fbLogin,
-  googleLogin,
-  changePhone,
-  socialPayLogin,
   confirmInvitation,
 };
 

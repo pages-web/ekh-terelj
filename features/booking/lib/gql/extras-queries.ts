@@ -1,16 +1,5 @@
 import { gql } from "@apollo/client";
 
-const uoms = gql`
-  query uoms {
-    uoms {
-      _id
-      name
-      code
-      isForSubscription
-    }
-  }
-`;
-
 const extras = gql`
   query CpProducts(
     $categoryIds: [String]
@@ -44,16 +33,5 @@ const extras = gql`
   }
 `;
 
-const categories = gql`
-  query ProductCategories($parentId: String, $withChild: Boolean) {
-    productCategories(parentId: $parentId, withChild: $withChild) {
-      _id
-      code
-      name
-      order
-    }
-  }
-`;
-
-const queries = { uoms, extras, categories };
+const queries = { extras };
 export default queries;

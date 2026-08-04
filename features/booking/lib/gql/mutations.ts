@@ -44,76 +44,6 @@ const dealsEdit = gql`
   }
 `;
 
-const changeLabel = gql`
-  mutation salesPipelineLabelsLabel(
-    $pipelineId: String!
-
-  ) {
-    CpSalesPipelineLabels(
-      pipelineId: $pipelineId
-      targetId: $targetId
-      labelIds: $labelIds
-    )
-  }
-`;
-
-const conformityEdit = gql`
-  mutation conformityEdit(
-    $mainType: String
-    $mainTypeId: String
-    $relType: String
-    $relTypeIds: [String]
-  ) {
-    conformityEdit(
-      mainType: $mainType
-      mainTypeId: $mainTypeId
-      relType: $relType
-      relTypeIds: $relTypeIds
-    ) {
-      success
-    }
-  }
-`;
-
-const addPayment = gql`
-  mutation AddPayment(
-    $id: String!
-    $proccessId: String
-    $paymentsData: JSON
-    $stageId: String
-  ) {
-    dealsEdit(
-      _id: $id
-      proccessId: $proccessId
-      paymentsData: $paymentsData
-      stageId: $stageId
-    ) {
-      _id
-    }
-  }
-`;
-
-const changeDeal = gql`
-  mutation dealsChange(
-    $itemId: String!
-    $aboveItemId: String
-    $destinationStageId: String!
-    $sourceStageId: String
-    $proccessId: String
-  ) {
-    dealsChange(
-      itemId: $itemId
-      aboveItemId: $aboveItemId
-      destinationStageId: $destinationStageId
-      sourceStageId: $sourceStageId
-      proccessId: $proccessId
-    ) {
-      _id
-      __typename
-    }
-  }
-`;
-
 const addLabel = gql`
   mutation CpSalesPipelineLabelsAdd(
     $name: String!
@@ -157,10 +87,6 @@ const addTag = gql`
 const mutations = {
   dealsAdd,
   dealsEdit,
-  changeLabel,
-  conformityEdit,
-  addPayment,
-  changeDeal,
   addLabel,
   addTag,
 };

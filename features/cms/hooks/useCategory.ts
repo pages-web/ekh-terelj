@@ -2,6 +2,7 @@
 
 import { useQuery } from "@apollo/client";
 import queries from "@/features/cms/lib/gql/queries";
+import { useLocale } from "next-intl";
 
 interface CategoryDetailData {
   cpCmsCategoryDetail?: {
@@ -10,11 +11,13 @@ interface CategoryDetailData {
 }
 
 export const useCategories = (slug: string) => {
+  const locale = useLocale();
   const { loading, error, data } = useQuery<CategoryDetailData>(
     queries.categories,
     {
       variables: {
         slug,
+        language: locale,
       },
       skip: !slug,
     },
